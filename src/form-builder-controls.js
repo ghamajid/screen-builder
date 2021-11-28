@@ -9,15 +9,21 @@ import FormNestedScreen from './components/renderer/form-nested-screen';
 import FileUpload from './components/renderer/file-upload';
 import FileDownload from './components/renderer/file-download';
 import {DataTypeProperty, DataFormatProperty, DataTypeDateTimeProperty} from './VariableDataTypeProperties';
+import FormAgGrid from './components/renderer/form-ag-grid';
+import FormMap from './components/renderer/form-map';
+import FormPersianDatePicker from './components/renderer/form-persian-date-picker';
+import FormPersianDatePickerBuilder from './components/renderer/form-persian-date-picker-builder';
+import FormMultiSelectOption from './components/renderer/form_multi_select_option';
+import FormJsTree from './components/renderer/form-vuejs-tree';
+import FormRecaptcha from './components/renderer/form-recaptcha';
+import FormHelp from './components/renderer/form-help';
 import {
   FormInput,
   FormTextArea,
-  FormSelectList,
   FormCheckbox,
-  FormDatePicker,
   FormHtmlEditor,
 } from '@processmaker/vue-form-elements';
-import { dataSourceValues } from '@/components/inspector/data-source-types';
+import {dataSourceValues} from '@/components/inspector/data-source-types';
 
 import {
   bgcolorProperty,
@@ -36,6 +42,7 @@ import {
   defaultValueProperty,
   buttonTypeEvent,
   tooltipProperty,
+  colorTheme,
 } from './form-control-common-properties';
 
 export default [
@@ -169,23 +176,23 @@ export default [
     },
   },
   {
-    editorComponent: FormSelectList,
-    editorBinding: 'FormSelectList',
-    rendererComponent: FormSelectList,
-    rendererBinding: 'FormSelectList',
+    editorComponent: FormMultiSelectOption,
+    editorBinding: 'FormMultiSelectOption',
+    rendererComponent: FormMultiSelectOption,
+    rendererBinding: 'FormMultiSelectOption',
     control: {
       label: 'Select List',
-      component: 'FormSelectList',
-      'editor-component': 'FormSelectList',
-      'editor-control': 'FormSelectList',
+      component: 'FormMultiSelectOption',
+      'editor-component': 'FormMultiSelectOption',
+      'editor-control': 'FormMultiSelectOption',
       config: {
         icon: 'fas fa-angle-double-down',
         label: 'New Select List',
         placeholder: '',
         validation: '',
-        dataSourceUrl:'',
-        dataSourceEndpoint:'',
-        rootElement:'response',
+        dataSourceUrl: '',
+        dataSourceEndpoint: '',
+        rootElement: 'response',
         options: {
           showRenderAs: true,
           dataSource: dataSourceValues.provideData,
@@ -196,8 +203,8 @@ export default [
           allowMultiSelect: false,
           selectedOptions: [],
           optionsList: [],
-          key:'value',
-          value:'content',
+          key: 'value',
+          value: 'content',
           valueTypeReturned: 'single',
         },
         helper: null,
@@ -211,7 +218,9 @@ export default [
         {
           type: 'OptionsList',
           field: 'options',
-          config: {},
+          config: {
+            helper: {make: 'Porsche', model: 'Boxter', price: 72000},
+          },
         },
         colorProperty,
         bgcolorProperty,
@@ -260,21 +269,97 @@ export default [
     },
   },
   {
-    editorComponent: FormDatePicker,
-    editorBinding: 'FormDatePicker',
-    rendererComponent: FormDatePicker,
-    rendererBinding: 'FormDatePicker',
+    builderComponent: FormHelp,
+    builderBinding: 'FormHelp',
+    rendererComponent: FormHelp,
+    rendererBinding: 'FormHelp',
     control: {
-      label: 'Date Picker',
-      component: 'FormDatePicker',
-      'editor-component': 'FormDatePicker',
-      'editor-control': 'FormDatePicker',
+      label: 'Help',
+      component: 'FormHelp',
+      'editor-component': 'FormHelp',
+      'editor-control': 'FormHelp',
+      config: {
+        icon: 'fas fa-question-circle',
+        label: 'New Help',
+        variant: 'primary',
+        event: 'submit',
+        defaultSubmit: true,
+        help_editor: '',
+        name: null,
+        fieldValue: null,
+        tooltip: {},
+      },
+      inspector: [
+        {
+          type: 'FormInput',
+          field: 'label',
+          config: {
+            label: 'Label',
+            helper: 'The label describes the button\'s text',
+          },
+        },
+        {
+          type: 'FormInput',
+          field: 'name',
+          config: {
+            label: 'Variable Name',
+            name: 'Variable Name',
+            helper: 'A variable name is a symbolic name to reference information.',
+            validation: 'regex:/^(?:[A-Za-z])(?:[0-9A-Z_.a-z])*(?<![.])$/|not_in:' + javascriptReservedKeywords,
+
+          },
+        },
+        tooltipProperty,
+        buttonVariantStyleProperty,
+        {
+          type: 'FormTextArea',
+          field: 'content',
+          config: {
+            rows: 5,
+            label: 'Content',
+            helper: 'The HTML text to display',
+            value: '',
+          },
+        },
+        {
+          type: 'HelpEditor',
+          field: 'help_editor',
+          config: {
+            label: 'Hello World',
+            helper: 'The HTML text to display',
+          },
+        },
+        {
+          type: 'FormCheckbox',
+          field: 'renderVarHtml',
+          config: {
+            label: 'Render HTML from a Variable',
+            helper: '',
+            value: '',
+          },
+        },
+      ],
+    },
+  },
+  {
+    builderComponent: FormPersianDatePickerBuilder,
+    builderBinding: 'FormPersianDatePickerBuilder',
+    rendererComponent: FormPersianDatePicker,
+    rendererBinding: 'FormPersianDatePicker',
+    control: {
+      label: 'Persian Date',
+      component: 'FormPersianDatePicker',
+      'editor-component': 'FormPersianDatePickerBuilder',
+      'editor-control': 'FormPersianDatePickerBuilder',
       config: {
         icon: 'far fa-calendar-alt',
-        label: 'New Date Picker',
-        type: 'datetime',
+        label: 'Persian Date Input',
         name: '',
         placeholder: '',
+        validation: '',
+        helper: null,
+        type: 'text',
+        dataFormat: 'string',
         minDate: '',
         maxDate: '',
       },
@@ -285,6 +370,7 @@ export default [
           config: {
             label: 'Minimum Date',
             validation: 'date_or_mustache',
+            helper: 'example : 1400-08-08',
           },
         },
         {
@@ -293,6 +379,7 @@ export default [
           config: {
             label: 'Maximum Date',
             validation: 'date_or_mustache',
+            helper: 'example : 1400-08-08',
           },
         },
         keyNameProperty,
@@ -303,8 +390,9 @@ export default [
         helperTextProperty,
         colorProperty,
         bgcolorProperty,
-        disabledProperty,
+        readonlyProperty,
         defaultValueProperty,
+        colorTheme,
       ],
     },
   },
@@ -410,8 +498,7 @@ export default [
         {
           type: 'LoopInspector',
           field: 'settings',
-          config: {
-          },
+          config: {},
         },
       ],
     },
@@ -519,6 +606,7 @@ export default [
           helper: null,
         },
       },
+      helperTextProperty,
       {
         type: 'FormInput',
         field: 'height',
@@ -640,20 +728,22 @@ export default [
         icon: 'fas fa-file-upload',
       },
       inspector: [
-        keyNameProperty,
+        {
+          type: 'FormInput',
+          field: 'name',
+          config: {
+            label: 'Variable Name',
+            name: 'Name',
+            helper: 'A variable name is a symbolic name to reference information.',
+            validation: 'regex:/^(?:[A-Za-z])(?:[0-9A-Z_.a-z])*(?<![.])$/|required',
+          },
+        },
         {
           type: 'FormInput',
           field: 'label',
           config: {
             label: 'Label',
             helper: 'The label describes the field\'s name',
-          },
-        },
-        {
-          type: 'MultipleUploadsCheckbox',
-          field: 'multipleUpload',
-          config: {
-            label: 'Upload multiple files',
           },
         },
         {
@@ -705,6 +795,165 @@ export default [
           helper: 'The name of the Download',
         },
       },
+      ],
+    },
+  },
+  {
+    builderComponent: FormAgGrid,
+    builderBinding: 'FormAgGrid',
+    rendererComponent: FormAgGrid,
+    rendererBinding: 'FormAgGrid',
+    control: {
+      label: 'AG Grid',
+      component: 'FormAgGrid',
+      'editor-component': 'FormAgGrid',
+      'editor-control': 'FormAgGrid',
+      config: {
+        icon: 'fas fa-table',
+        label: 'AG Grid',
+        name: '',
+        placeholder: '',
+        validation: '',
+        helper: null,
+        type: 'text',
+        dataFormat: 'string',
+        height_ag_grid: 200,
+      },
+      inspector: [
+        {
+          type: 'FormInput',
+          field: 'height_ag_grid',
+          config: {
+            label: 'Height',
+            helper: 'Put a number for height of ag-grid',
+          },
+        },
+        {
+          type: 'ColumnSetupTable',
+          field: 'fields',
+          config: {
+            label: 'Columns',
+            helper: 'List of columns to display in the record list',
+          },
+        },
+        {
+          type: 'FormInputUrl',
+          field: 'url_grid',
+          config: {
+            label: 'Url Data Grid',
+            name: 'Url Data Grid',
+            helper: {make: 'Porsche', model: 'Boxter', price: 72000},
+          },
+        },
+        keyNameProperty,
+        labelProperty,
+        validationRulesProperty,
+        helperTextProperty,
+        colorProperty,
+        bgcolorProperty,
+        readonlyProperty,
+        defaultValueProperty,
+      ],
+    },
+  },
+  {
+    builderComponent: FormMap,
+    builderBinding: 'FormMap',
+    rendererComponent: FormMap,
+    rendererBinding: 'FormMap',
+    control: {
+      label: 'Map',
+      component: 'FormMap',
+      'editor-component': 'FormMap',
+      'editor-control': 'FormMap',
+      config: {
+        icon: 'fas fa-map',
+        label: 'Map',
+        name: '',
+        helper: null,
+        type: 'text',
+        dataFormat: 'string',
+      },
+      inspector: [
+        keyNameProperty,
+        labelProperty,
+        helperTextProperty,
+        colorProperty,
+        bgcolorProperty,
+        defaultValueProperty,
+      ],
+    },
+  },
+  {
+    builderComponent: FormJsTree,
+    builderBinding: 'FormJsTree',
+    rendererComponent: FormJsTree,
+    rendererBinding: 'FormJsTree',
+    control: {
+      label: 'JsTree',
+      component: 'FormJsTree',
+      'editor-component': 'FormJsTree',
+      'editor-control': 'FormJsTree',
+      config: {
+        icon: 'fas fa-tree',
+        label: 'JsTree',
+        name: '',
+        helper: null,
+        type: 'text',
+        dataFormat: 'string',
+      },
+      inspector: [
+        keyNameProperty,
+        labelProperty,
+        helperTextProperty,
+        colorProperty,
+        bgcolorProperty,
+        defaultValueProperty,
+        {
+          type: 'JsTreeOptionsList',
+          field: 'options_jstree',
+          config: {
+            helper: null,
+          },
+        },
+      ],
+    },
+  },
+  {
+    builderComponent: FormRecaptcha,
+    builderBinding: 'FormRecaptcha',
+    rendererComponent: FormRecaptcha,
+    rendererBinding: 'FormRecaptcha',
+    control: {
+      label: 'Recaptcha',
+      component: 'FormRecaptcha',
+      'editor-component': 'FormRecaptcha',
+      'editor-control': 'FormRecaptcha',
+      config: {
+        icon: 'fas fa-shield-alt',
+        label: 'Recaptcha',
+        name: '',
+        helper: null,
+        type: 'text',
+        dataFormat: 'string',
+        sitekey: '',
+      },
+      inspector: [
+        keyNameProperty,
+        labelProperty,
+        helperTextProperty,
+        colorProperty,
+        bgcolorProperty,
+        defaultValueProperty,
+        {
+          type: 'FormInput',
+          field: 'sitekey',
+          config: {
+            label: 'Site Key',
+            // name: 'Url Data Grid',
+            helper: null,
+          },
+        },
       ],
     },
   },

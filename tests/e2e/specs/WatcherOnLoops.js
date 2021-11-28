@@ -25,7 +25,7 @@ describe('Watcher on Loops', () => {
       '/api/1.0/scripts/execute/4',
       JSON.stringify({
         output: [],
-      })
+      }),
     ).as('executeScript');
     cy.get('[data-cy=mode-preview]').click();
     cy.get('#watchers-synchronous').should('not.exist');
@@ -42,7 +42,7 @@ describe('Watcher on Loops', () => {
       '/api/1.0/scripts/execute/4',
       JSON.stringify({
         output: [],
-      })
+      }),
     ).as('executeScript');
 
     cy.get('[data-cy=mode-preview]').click();

@@ -1,6 +1,5 @@
 import '@4tw/cypress-drag-drop';
 import { set } from 'lodash';
-import 'cypress-wait-until';
 
 Cypress.Commands.add('setPreviewDataInput', (input) => {
   cy.get('#screen-builder-container').then((div) => {
@@ -86,16 +85,6 @@ Cypress.Commands.add('assertComponentValue', (selector, expectedData) => {
 });
 
 /**
- * Compares the content of a control (the content must be a json string) with a provided json object
- */
-Cypress.Commands.add('assertComponentValueAsJson', (selector, expectedData) => {
-  cy.get(selector).then((div) => {
-    const data = JSON.parse(div[0].__vue__.value);
-    expect(data).to.eql(expectedData);
-  });
-});
-
-/**
  * Uploads a file to an input
  * @memberOf Cypress.Chainable#
  * @name uploadFile
@@ -141,16 +130,6 @@ Cypress.Commands.add('mockComponent', (componentName) => {
 Cypress.Commands.add('pickToday', { prevSubject: true }, (subject) => {
   cy.get(subject).find('input').click();
   cy.get(subject).find('.day.today').click();
-});
-
-Cypress.Commands.add('pickYesterday', { prevSubject: true }, (subject) => {
-  cy.get(subject).find('input').click();
-  cy.get(subject).find('.day.today').prev().click();
-});
-
-Cypress.Commands.add('pickTomorrow', { prevSubject: true }, (subject) => {
-  cy.get(subject).find('input').click();
-  cy.get(subject).find('.day.today').next().click();
 });
 
 Cypress.Commands.add('pickTodayWithTime', { prevSubject: true }, (subject, hour, minute, period='AM') => {

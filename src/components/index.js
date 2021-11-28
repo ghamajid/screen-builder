@@ -22,6 +22,14 @@ import FileDownload from './renderer/file-download.vue';
 import FormMaskedInput from './renderer/form-masked-input';
 import DefaultLoadingSpinner from './utils/default-loading-spinner';
 import DataProvider from '../DataProvider';
+import FormAgGrid from './renderer/form-ag-grid.vue';
+import FormMap from './renderer/form-map';
+import FormPersianDatePicker from './renderer/form-persian-date-picker';
+import FormPersianDatePickerBuilder from './renderer/form-persian-date-picker-builder';
+import FormMultiSelectOption from './renderer/form_multi_select_option';
+import FormJsTree from './renderer/form-vuejs-tree';
+import FormRecaptcha from './renderer/form-recaptcha';
+import FormHelp from './renderer/form-help';
 
 const rendererComponents = {
   ...renderer,
@@ -69,7 +77,14 @@ export default {
     Vue.component('FormButton', FormButton);
     Vue.component('FileUpload', FileUpload);
     Vue.component('FileDownload', FileDownload);
-
+    Vue.component('FormAgGrid', FormAgGrid);
+    Vue.component('FormMap', FormMap);
+    Vue.component('FormPersianDatePicker', FormPersianDatePicker);
+    Vue.component('FormPersianDatePickerBuilder', FormPersianDatePickerBuilder);
+    Vue.component('FormMultiSelectOption', FormMultiSelectOption);
+    Vue.component('FormJsTree', FormJsTree);
+    Vue.component('FormRecaptcha', FormRecaptcha);
+    Vue.component('FormHelp', FormHelp);
     Vue.component('FormMaskedInput', FormMaskedInput);
     Vue.use(DataProvider);
   },

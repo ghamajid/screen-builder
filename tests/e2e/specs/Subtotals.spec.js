@@ -202,9 +202,9 @@ describe('Subtotals implementations', () => {
     // Check final result
     cy.assertPreviewData(
       {
-        'input_1': '',
-        'input_2': '',
-        'input_3': '',
+        'input_1': null,
+        'input_2': null,
+        'input_3': null,
         'cost_1': 3,
         'count_1': 4,
         'subtotal_1': 12,

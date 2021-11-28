@@ -56,7 +56,6 @@
         v-model="currentPage"
         :total-rows="tableData.total"
         :per-page="perPage"
-        :aria-label="$t('Pagination')"
         aria-controls="vuetable"
         @change="onChangePage"
       />
@@ -211,6 +210,7 @@ export default {
       }
       return parent;
     },
+    // eslint-disable-next-line vue/return-in-computed-property
     dataManager() {
       if (this.$refs.vuetable) {
         let pagination = this.$refs.vuetable.makePagination(this.value.length);
@@ -341,7 +341,7 @@ export default {
       // Reset edit to be a copy of our data model item
       this.editItem = JSON.parse(JSON.stringify(this.value[pageIndex]));
       this.editIndex = pageIndex;
-      // rebuild the edit screen to avoid
+      // rebuild the edit screen to avoid 
       this.editFormVersion++;
       this.$nextTick(() => {
         this.setUploadDataNamePrefix(pageIndex);

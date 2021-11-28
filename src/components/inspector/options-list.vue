@@ -45,7 +45,7 @@
           <draggable @update="updateSort" :element="'div'" v-model="optionsList" group="options" @start="drag=true" @end="drag=false" >
             <div v-for="(option, index) in optionsList" :key="option.value">
               <div v-if="removeIndex === index">
-                <div class="card mb-3 bg-danger text-white text-left mt-2">
+                <div class="card mb-3 bg-danger text-white text-right">
                   <div class="card-body p-2" v-html="currentItemToDelete"/>
                   <div class="card-footer text-right p-2">
                     <button type="button" class="btn btn-sm btn-light mr-2" @click="removeIndex=null" data-cy="inspector-options-remove-cancel">
@@ -117,6 +117,18 @@
         </div>
       </div>
     </div>
+    <div v-if="dataSource === dataSourceValues.dataObject">
+      <label for="value">{{ $t('url') }}</label>
+      <b-form-input id="data_url" v-model="dataUrl" placeholder="Url"/>
+      <small class="form-text text-muted mb-3">{{ $t('Enter the url of your json file.') }}</small>
+    </div>
+
+    <div v-if="dataSource === dataSourceValues.dataObject">
+      <label >{{ $t('Dependent Variable') }}</label>
+      <b-form-input id="data_url" v-model="dataDependentVariable" />
+      <small class="form-text text-muted mb-3">{{ $t('Enter the name of the variable that needs to be sent.') }}</small>
+    </div>
+
     <div v-if="dataSource === dataSourceValues.dataObject || dataSource === dataSourceValues.dataConnector">
       <label for="element-name">{{ $t('Options Variable') }}</label>
       <mustache-helper/>
@@ -150,14 +162,9 @@
         <button type="button" @click="expandEditor" class="btn-sm float-right" data-cy="inspector-monaco-json-expand"><i class="fas fa-expand"/></button>
       </div>
       <div class="small-editor-container">
-        <monaco-editor
-          :options="monacoOptions"
-          class="editor"
-          v-model="jsonData"
-          language="json"
+        <monaco-editor :options="monacoOptions" class="editor" v-model="jsonData" language="json"
           @change="jsonDataChange"
           data-cy="inspector-monaco-json"
-          @editorDidMount="monacoMounted"
         />
       </div>
 
@@ -196,7 +203,7 @@
       <label for="value">{{ $t('Content') }}</label>
       <mustache-helper/>
       <b-form-input id="value" v-model="value" @change="valueChanged" data-cy="inspector-datasource-content"/>
-      <small class="form-text text-muted mb-3">{{ $t('Content to display to the user in the select list.') }}</small>
+      <small class="form-text text-muted mb-3">{{ $t('Key name in the selected object to display to the user in the select list. Leave blank to show the entire selected value.') }}</small>
     </div>
 
     <div v-if="valueTypeReturned === 'single' && dataSource === dataSourceValues.dataObject">
@@ -276,6 +283,8 @@ export default {
       allowMultiSelect: false,
       defaultOptionKey: false,
       selectedOptions: [],
+      dataUrl:'',
+      dataDependentVariable:'',
       renderAsOptions: [
         {
           text: this.$t('Dropdown/Multiselect'),
@@ -289,9 +298,6 @@ export default {
       monacoOptions: {
         automaticLayout: true,
         fontSize: 8,
-        language: 'json',
-        formatOnPaste: true,
-        formatOnType: true,
       },
       monacoLargeOptions: {
         automaticLayout: true,
@@ -391,7 +397,7 @@ export default {
           && this.optionsList[this.removeIndex] !==
           undefined) {
         let itemName =  this.optionsList[this.removeIndex][this.valueField];
-        return this.$t('Are you sure you want to delete "{{item}}" option?', {item:itemName});
+        return this.$t('Are you sure you want to delete "{{item}}"?', {item:itemName});
       }
       return '';
     },
@@ -421,6 +427,8 @@ export default {
         editIndex: this.editIndex,
         removeIndex: this.removeIndex,
         valueTypeReturned: this.valueTypeReturned,
+        dataUrl: this.dataUrl,
+        dataDependentVariable: this.dataDependentVariable,
       };
     },
   },
@@ -428,8 +436,8 @@ export default {
     this.dataSource = this.options.dataSource;
     this.jsonData = this.options.jsonData;
     this.dataName = this.options.dataName;
-    this.selectedDataSource = this.options.selectedDataSource,
-    this.selectedEndPoint = this.options.selectedEndPoint,
+    this.selectedDataSource = this.options.selectedDataSource;
+    this.selectedEndPoint = this.options.selectedEndPoint;
     this.key = this.options.key;
     this.value = this.options.value;
     this.pmqlQuery = this.options.pmqlQuery;
@@ -443,9 +451,6 @@ export default {
     this.valueTypeReturned = this.options.valueTypeReturned;
   },
   methods: {
-    monacoMounted(editor) {
-      editor.getAction('editor.action.formatDocument').run();
-    },
     getDataSourceList() {
       this.$dataProvider
         .get('/data_sources')
@@ -547,7 +552,7 @@ export default {
           {
             [this.valueField]: this.optionContent,
             [this.keyField]: this.optionValue,
-          }
+          },
         );
       }
       else {

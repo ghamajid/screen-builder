@@ -1,7 +1,6 @@
 import { validators } from './mixins/ValidationRules';
 import DataProvider from './DataProvider';
 import { get, set } from 'lodash';
-import { Parser } from 'expr-eval';
 
 let globalObject = typeof window === 'undefined'
   ? global
@@ -9,7 +8,6 @@ let globalObject = typeof window === 'undefined'
 class Validations {
   screen = null;
   firstPage = 0;
-  data = {};
   constructor(element, options) {
     this.element = element;
     Object.assign(this, options);
@@ -27,22 +25,6 @@ class Validations {
   async addValidations(validations) {
     throw 'Abstract method addValidations not implemented', validations;
   }
-
-  /**
-   * Check if element/container is visible.
-   */
-  isVisible() {
-    // Disable validations if field is hidden
-    let visible = true;
-    if (this.element.config.conditionalHide) {
-      try {
-        visible = !!Parser.evaluate(this.element.config.conditionalHide, this.data);
-      } catch (error) {
-        visible = false;
-      }
-    }
-    return visible;
-  }    
 }
 
 /**
@@ -51,7 +33,7 @@ class Validations {
 class ArrayOfFieldsValidations extends Validations {
   async addValidations(validations) {
     for (const item of this.element) {
-      await ValidationsFactory(item, { screen: this.screen, data: this.data }).addValidations(validations);
+      await ValidationsFactory(item, { screen: this.screen }).addValidations(validations);
     }
   }
 }
@@ -64,7 +46,7 @@ class ScreenValidations extends Validations {
     // add validations for page 1
     if (this.element.config[this.firstPage]) {
       this.element.pagesValidated = [this.firstPage];
-      const screenValidations = ValidationsFactory(this.element.config[this.firstPage].items, { screen: this.element, data: this.data });
+      const screenValidations = ValidationsFactory(this.element.config[this.firstPage].items, { screen: this.element });
       await screenValidations.addValidations(validations);
       delete this.element.pagesValidated;
     }
@@ -76,13 +58,9 @@ class ScreenValidations extends Validations {
  */
 class FormNestedScreenValidations extends Validations {
   async addValidations(validations) {
-    // Disable validations if field is hidden
-    if (!this.isVisible()) {
-      return;
-    }
     const definition = await this.loadScreen(this.element.config.screen);
     if (definition && definition[0] && definition[0].items) {
-      await ValidationsFactory(definition[0].items, { screen: this.screen, data: this.data }).addValidations(validations);
+      await ValidationsFactory(definition[0].items, { screen: this.screen }).addValidations(validations);
     }
   }
 
@@ -105,15 +83,10 @@ class FormNestedScreenValidations extends Validations {
  */
 class FormLoopValidations extends Validations {
   async addValidations(validations) {
-    // Disable validations if field is hidden
-    if (!this.isVisible()) {
-      return;
-    }
     set(validations, this.element.config.name, {});
     const loopField = get(validations, this.element.config.name);
-    loopField['$each'] = {};
-    const firstRow = (get(this.data, this.element.config.name) || [{}])[0];
-    await ValidationsFactory(this.element.items, { screen: this.screen, data: {_parent: this.data, ...firstRow } }).addValidations(loopField['$each']);
+    loopField['$each'] = [];
+    await ValidationsFactory(this.element.items, { screen: this.screen }).addValidations(loopField['$each']);
   }
 }
 
@@ -122,11 +95,7 @@ class FormLoopValidations extends Validations {
  */
 class FormMultiColumnValidations extends Validations {
   async addValidations(validations) {
-    // Disable validations if field is hidden
-    if (!this.isVisible()) {
-      return;
-    }
-    await ValidationsFactory(this.element.items, { screen: this.screen, data: this.data }).addValidations(validations);
+    await ValidationsFactory(this.element.items, { screen: this.screen }).addValidations(validations);
   }
 }
 
@@ -135,14 +104,10 @@ class FormMultiColumnValidations extends Validations {
  */
 class PageNavigateValidations extends Validations {
   async addValidations(validations) {
-    // Disable validations if field is hidden
-    if (!this.isVisible()) {
-      return;
-    }
-    if (this.screen.pagesValidated && !this.screen.pagesValidated.includes(parseInt(this.element.config.eventData))) {
+    if (!this.screen.pagesValidated.includes(parseInt(this.element.config.eventData))) {
       this.screen.pagesValidated.push(parseInt(this.element.config.eventData));
       if (this.screen.config[this.element.config.eventData] && this.screen.config[this.element.config.eventData].items) {
-        await ValidationsFactory(this.screen.config[this.element.config.eventData].items, { screen: this.screen, data: this.data }).addValidations(validations);
+        await ValidationsFactory(this.screen.config[this.element.config.eventData].items, { screen: this.screen }).addValidations(validations);
       }
     }
   }
@@ -153,33 +118,12 @@ class PageNavigateValidations extends Validations {
  */
 class FormElementValidations extends Validations {
   async addValidations(validations) {
-    if (this.element.config && this.element.config.readonly) {
-      //readonly elements do not need validation
-      return;
-    }
-    if (this.element.config && this.element.config.disabled) {
-      //disabled elements do not need validation
-      return;
-    }
     if (!(this.element.config && this.element.config.name && typeof this.element.config.name === 'string' && this.element.config.name.match(/^[a-zA-Z_][0-9a-zA-Z_.]*$/))) {
       //element invalid
       return;
     }
     const fieldName = this.element.config.name;
     const validationConfig = this.element.config.validation;
-
-    // Disable validations if field is hidden
-    if (this.element.config.conditionalHide) {
-      let visible = true;
-      try {
-        visible = !!Parser.evaluate(this.element.config.conditionalHide, this.data);
-      } catch (error) {
-        visible = false;
-      }
-      if (!visible) {
-        return;
-      }
-    }
 
     set(validations, fieldName, get(validations, fieldName, {}));
     const fieldValidation = get(validations, fieldName);
@@ -200,7 +144,6 @@ class FormElementValidations extends Validations {
           validation.configs.forEach((cnf) => {
             params.push(cnf.value);
           });
-          params.push(fieldName);
           validationFn = validationFn(...params);
         }
         fieldValidation[rule] = validationFn;
@@ -215,7 +158,7 @@ class FormElementValidations extends Validations {
       fieldValidation[validationConfig] = validationFn;
     }
     if (this.element.items) {
-      ValidationsFactory(this.element.items, { screen: this.screen, data: this.data }).addValidations(validations);
+      ValidationsFactory(this.element.items, { screen: this.screen }).addValidations(validations);
     }
   }
   camelCase(name) {

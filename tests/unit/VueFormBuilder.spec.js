@@ -45,7 +45,7 @@ describe('App', () => {
       richTextConfig.rendererComponent,
       richTextConfig.rendererBinding,
       richTextConfig.builderComponent,
-      richTextConfig.builderBinding
+      richTextConfig.builderBinding,
     );
 
     expect(wrapper.vm.controls).toHaveLength(1);
@@ -62,7 +62,7 @@ describe('App', () => {
       checkboxConfig.rendererBinding,
       checkboxConfig.builderComponent,
       checkboxConfig.builderBinding,
-      checkboxConfig.inspector
+      checkboxConfig.inspector,
     );
 
     checkboxConfig.control.inspector.forEach(item => {
@@ -81,7 +81,7 @@ describe('App', () => {
       checkboxConfig.rendererBinding,
       checkboxConfig.builderComponent,
       checkboxConfig.builderBinding,
-      checkboxConfig.inspector
+      checkboxConfig.inspector,
     );
 
     checkboxConfig.control.inspector.forEach(item => {
