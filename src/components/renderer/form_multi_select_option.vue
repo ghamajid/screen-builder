@@ -15,6 +15,8 @@
                 :emit-objects="options.valueTypeReturned === 'object'"
                 :emit-array="options.allowMultiSelect"
                 v-bind="$attrs"
+                :fillSelectListOptions="fillSelectListOptions"
+
         />
         <div v-if="options.renderAs === 'checkbox' && options.allowMultiSelect">
             <checkbox-view
@@ -91,6 +93,7 @@
         ],
         data() {
             return {
+                fillSelectListOptionscount: 1,
                 info: [],
                 lastRequest: {},
                 // apiClient: window.ProcessMaker.apiClient.create(),
@@ -150,38 +153,40 @@
                 this.filter = filter;
                 this.optionsFromDataSource();
             },
-            fillSelectListOptions() {
-                if (this.options.dataSource && this.options.dataSource === 'provideData') {
-                    // console.log(this.options.optionsList,'1');
-                    this.selectListOptions = this.options && this.options.optionsList ? this.options.optionsList : [];
-                }
-                if (this.options.dataSource && this.options.dataSource === 'dataObject') {
-                    let requestOptions = [];
-                    //console.log(this.validationData, this.options.dataName,'66666666');
-                    try {
-                        requestOptions = get(this.validationData, this.options.dataName);
+            fillSelectListOptions(val) {
+                if (this.fillSelectListOptionscount === 1) {
+                    this.fillSelectListOptionscount++
+                    if (this.options.dataSource && this.options.dataSource === 'provideData') {
+                        // console.log(this.options.optionsList,'1');
+                        this.selectListOptions = this.options && this.options.optionsList ? this.options.optionsList : [];
                     }
-                    catch (e) {
-                        // eslint-disable-next-line no-unused-vars
-                        requestOptions = [];
+                    if (this.options.dataSource && this.options.dataSource === 'dataObject') {
+                        let requestOptions = [];
+                        //console.log(this.validationData, this.options.dataName,'66666666');
+                        try {
+                            requestOptions = get(this.validationData, this.options.dataName);
+                        } catch (e) {
+                            // eslint-disable-next-line no-unused-vars
+                            requestOptions = [];
+                        }
+                        if (this.options.dataUrl) {
+                            var data_get = (this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
+                            window.ProcessMaker.apiClient
+                                .post(this.options.dataUrl, {var_id: data_get , search: val})
+                                .then((response) => {
+                                    // eslint-disable-next-line no-unused-vars
+                                    var self = this;
+                                    // eslint-disable-next-line no-unused-vars
+                                    var number = 0;
+                                    this.selectListOptions = response.data;
+                                })
+                                .finally(() => {
+                                });
+                        }
                     }
-                    if (this.options.dataUrl) {
-                        var data_get = (this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable])?this.transientData[this.options.dataDependentVariable]:'';
-                        window.ProcessMaker.apiClient
-                            .post(this.options.dataUrl, { var_id: data_get})
-                            .then((response) => {
-                                // eslint-disable-next-line no-unused-vars
-                                var self = this;
-                                // eslint-disable-next-line no-unused-vars
-                                var number = 0;
-                                this.selectListOptions = response.data;
-                            })
-                            .finally(() => {
-                            });
+                    if (this.options.dataSource && this.options.dataSource === 'dataConnector') {
+                        this.doDebounce(this.sourceConfig);
                     }
-                }
-                if (this.options.dataSource && this.options.dataSource === 'dataConnector') {
-                    this.doDebounce(this.sourceConfig);
                 }
             },
             /**
@@ -206,8 +211,7 @@
                     parsedOption[this.optionsValue] = itemContent;
                     if (this.options.valueTypeReturned === 'object') {
                         resultList.push(eval(suffix.length > 0 ? 'item.' + suffix : 'item'));
-                    }
-                    else {
+                    } else {
                         resultList.push(parsedOption);
                     }
                 });

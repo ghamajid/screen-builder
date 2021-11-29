@@ -11,6 +11,7 @@
       :class="classList"
       :placeholder="placeholder ? placeholder : $t('type here to search')"
       v-bind="$attrs"
+      @search-change="fillSelectList"
     >
       <template slot="noResult">
         {{ $t('No elements found. Consider changing the search query.') }}
@@ -33,6 +34,7 @@
 import Multiselect from 'vue-multiselect';
 import {createUniqIdsMixin} from 'vue-uniq-ids';
 import ValidationMixin from '../mixins/validation';
+
 
 const uniqIdsMixin = createUniqIdsMixin();
 
@@ -60,6 +62,8 @@ export default {
     'placeholder',
     'emitObjects',
     'emitArray',
+    'fillSelectListOptions'
+
   ],
   computed: {
     valueProxy: {
@@ -80,6 +84,13 @@ export default {
     },
   },
   methods: {
+
+    fillSelectList(val) {
+    this.fillSelectListOptions(val)
+    },
+
+
+
     convertForEmit(value, keyField, asArray, asObject) {
       // MultiSelect always uses objects so no conversion is needed,
       if (asArray && asObject) { return value ? value : []; }
