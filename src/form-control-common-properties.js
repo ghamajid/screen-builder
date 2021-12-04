@@ -229,7 +229,7 @@ export const defaultValueProperty = {
 };
 
 export const jsonurlProperty = {
-  type: FormInput,
+  type: 'FormInput',
   field: 'jsonurl',
   config: {
     label: 'Json Url',
