@@ -2,10 +2,29 @@ import { get, isEqual, set } from 'lodash';
 import Mustache from 'mustache';
 import { ValidationMsg } from './ValidationRules';
 
+const stringFormats = ['string', 'datetime', 'date', 'password'];
+
 export default {
+  schema: [
+    function() {
+      if (window.ProcessMaker && window.ProcessMaker.packages && window.ProcessMaker.packages.includes('package-vocabularies')) {
+        if (window.ProcessMaker.VocabulariesSchemaUrl) {
+          let response = window.ProcessMaker.apiClient.get(window.ProcessMaker.VocabulariesSchemaUrl);
+          return response.then(response => {
+            return response.data;
+          });
+        }
+        if (window.ProcessMaker.VocabulariesPreview) {
+          return window.ProcessMaker.VocabulariesPreview;
+        }
+      }
+      return {};
+    },
+  ],
   data() {
     return {
       ValidationRules__: {},
+      hiddenFields__: [],
     };
   },
   props: {
@@ -24,6 +43,50 @@ export default {
     },
   },
   methods: {
+    getDataAccordingToFieldLevel(dataWithParent, level) {
+      if (level === 0 || !dataWithParent) {
+        return dataWithParent;
+      }
+      return this.getDataAccordingToFieldLevel(dataWithParent._parent, level - 1);
+    },
+    addReferenceToParents(data) {
+      if (!data) {
+        return;
+      }
+      const parent = this.addReferenceToParents(this.findParent(data));
+      return {
+        _parent: parent,
+        ...data,
+      };
+    },
+    findParent(child, data = this.vdata, parent = this._parent) {
+      if (child === data) {
+        return parent;
+      }
+      for (const key in data) {
+        if (data[key] instanceof Array) {
+          for (const item of data[key]) {
+            const result = this.findParent(child, item, data);
+            if (result) {
+              return result;
+            }
+          }
+        } else if (data[key] instanceof Object) {
+          const found = this.findParent(child, data[key], data);
+          if (found) {
+            return found;
+          }
+        } else {
+          if (child === data[key]) {
+            return parent;
+          }
+        }
+      }
+    },
+    getRootScreen(screen = this) {
+      const parentScreen = screen.$parent.$parent;
+      return parentScreen && parentScreen.getRootScreen instanceof Function ? parentScreen.getRootScreen(parentScreen) : screen;
+    },
     tryFormField(variableName, callback, defaultValue = null) {
       try {
         return callback();
@@ -56,6 +119,19 @@ export default {
           if (name === '_parent') return screen._parent === undefined ? this._parent : screen._parent;
         },
       });
+    },
+    initialValue(component, dataFormat) {
+      let value = null;
+      if (component === 'FormInput') {
+        if (stringFormats.includes(dataFormat)) {
+          value = '';
+        } else if (dataFormat === 'currency') {
+          value = 0;
+        }
+      } else if (component === 'FormTextArea') {
+        value = '';
+      }
+      return value;
     },
     getValue(name, object = this) {
       return object ? get(object, name) : undefined;
@@ -98,9 +174,10 @@ export default {
           this.$set(
             object,
             attr,
-            setValue,
+            setValue
           );
           object = get(object, attr);
+          defaults = get(defaults, attr);
         });
       }
     },
@@ -109,6 +186,11 @@ export default {
       Object.keys(ValidationMsg).forEach(key => {
         if (validation[key]!==undefined && !validation[key]) {
           message.push(this.$t(ValidationMsg[key]).replace(/\{(.+?)\}/g,(match,p1)=>{return validation.$params[key][p1];}));
+        }
+        // JSON Schema use to start with 'schema'
+        const keyForSchema = 'schema' + key.charAt(0).toUpperCase() + key.slice(1);
+        if (validation[keyForSchema]!==undefined && !validation[keyForSchema]) {
+          message.push(this.$t(ValidationMsg[key]).replace(/\{(.+?)\}/g,(match,p1)=>{return validation.$params[keyForSchema][p1];}));
         }
       });
       return message.join('.\n');

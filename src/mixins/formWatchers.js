@@ -155,7 +155,7 @@ export default {
     cleanEchoListeners() {
       this.echoListeners.forEach(element => {
         globalObject.window.Echo.private(
-          element.channel,
+          element.channel
         ).stopListening(element.event);
       });
     },

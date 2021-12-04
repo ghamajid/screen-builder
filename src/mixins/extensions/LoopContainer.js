@@ -25,6 +25,7 @@ export default {
             items: element.items,
           },
         ],
+        watchers: definition.watchers,
       };
 
       let loopContext = '';
@@ -54,7 +55,7 @@ export default {
       this.registerNestedVariable(
         element.config.settings.varname,
         element.config.settings.varname + '.index.',
-        nested,
+        nested
       );
     },
   },

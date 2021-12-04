@@ -53,7 +53,7 @@ describe('Task component', () => {
           id: 1,
           name: 'Process Name',
         },
-      },
+      }
     );
 
     cy.visit('/?scenario=TaskAssigned', {
@@ -112,7 +112,7 @@ describe('Task component', () => {
           firstname: 'John',
           lastname: 'Doe',
         },
-      },
+      }
     );
 
     cy.visit('/?scenario=TaskAssigned', {
@@ -147,7 +147,7 @@ describe('Task component', () => {
               id: 1,
               advanceStatus: 'completed',
               status: 'CLOSED',
-            },
+            }
           );  
           cy.reload();
         });
@@ -189,7 +189,7 @@ describe('Task component', () => {
           firstname: 'John',
           lastname: 'Doe',
         },
-      },
+      }
     );
     cy.visit('/?scenario=TaskAssigned', {
       onBeforeLoad(win) {
@@ -249,7 +249,7 @@ describe('Task component', () => {
                 firstname: 'John',
                 lastname: 'Doe',
               },
-            },
+            }
           );  
           cy.reload();
         });

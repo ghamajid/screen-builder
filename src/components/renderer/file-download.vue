@@ -4,21 +4,23 @@
     <b-card v-if="inPreviewMode" class="mb-2">
       {{ messageForPreview }}
     </b-card>
+    <b-card v-else-if="donwloadingNotAvailable" class="mb-2">
+      {{ messageForNotAvailable }}
+    </b-card>
     <div v-else>
-      <div v-if="loading">
-        <i class="fas fa-cog fa-spin text-muted"/>
-        {{ $t('Loading...') }}
-      </div>
-      <div v-else>
-        <template v-if="!loading && fileInfo">
-          <b-btn v-show="!isReadOnly" class="mb-2 d-print-none" variant="primary" @click="onClick(fileInfo)" :aria-label="$attrs['aria-label']">
+      <template v-if="filesInfo.length > 0">
+        <div v-for="(file, idx) in filesInfo" :key="idx" :data-cy="file.id + '-' + file.name.replace(/[^0-9a-zA-Z\-]/g, '-')">
+          <b-btn v-show="!isReadOnly"
+            class="mb-2 d-print-none" variant="primary" :aria-label="$attrs['aria-label']"
+            @click="downloadFile(file)"
+          >
             <i class="fas fa-file-download"/> {{ $t('Download') }}
           </b-btn>
-          {{ fileInfo.file_name }}
-        </template>
-        <div v-else>
-          {{ $t('No files available for download') }}
+          {{ file.name }}
         </div>
+      </template>
+      <div v-else>
+        {{ $t('No files available for download') }}
       </div>
     </div>
   </div>
@@ -32,69 +34,74 @@ export default {
   inheritAttrs: false,
   data() {
     return {
-      fileType: null,
-      loading: true,
-      fileInfo: null,
-      fileName: null,
-      requestId: null,
-      collectionId: null,
-      recordId: null,
+      filesInfo: [],
       prefix: '',
+      rowId: null,
     };
   },
   props: ['name', 'value', 'endpoint', 'requestFiles', 'label'],
-  beforeMount() {
-    this.getFileType();
-
-    if (this.fileType == 'request') {
-      this.getRequestId();
-    }
-
-    if (this.fileType == 'collection') {
-      this.getCollectionInfo();
-    }
-  },
   mounted() {
     this.$root.$on('set-upload-data-name',
       (recordList, index, id) => this.listenRecordList(recordList, index, id));
 
-    if (!this.fileType) {
+    if (this.donwloadingNotAvailable) {
       // Not somewhere we can download anything (like web entry start event)
-      this.loading = false;
       return;
     }
 
+    this.checkIfInRecordList();
     this.setPrefix();
-
-    if (this.fileType == 'request') {
-      this.getRequestFiles();
-    }
-
-    if (this.fileType == 'collection') {
-      this.getCollectionFiles();
-    }
+    this.setFilesInfo();
   },
   watch: {
-    value(value) {
-      this.fileName = value;
-      this.getRequestFiles();
+    value: {
+      handler() {
+        this.setFilesInfo();
+      },
+      deep: true,
+    },
+    fileDataName() {
+      this.setFilesInfo();
     },
   },
   computed: {
+    donwloadingNotAvailable() {
+      return !this.collection && !this.requestId;
+    },
     inPreviewMode() {
       return this.mode === 'preview' && !window.exampleScreens;
     },
     messageForPreview() {
       return this.$t(
         'Download button for {{fileName}} will appear here.',
-        { fileName: this.name },
+        { fileName: this.name }
       );
+    },
+    messageForNotAvailable() {
+      return this.$t('Downloading files is not available.');
     },
     mode() {
       return this.$root.$children[0].mode;
     },
     isReadOnly() {
       return this.$attrs.readonly ? this.$attrs.readonly : false;
+    },
+    fileDataName() {
+      return this.prefix + this.name + (this.rowId ? '.' + this.rowId : '');
+    },
+    requestId() {
+      let node = document.head.querySelector('meta[name="request-id"]');
+      if (node === null) {
+        return null;
+      }
+      return node.content;
+    },
+    collection() {
+      const collectionIdNode = document.head.querySelector('meta[name="collection-id"]');
+      if (collectionIdNode) {
+        return collectionIdNode.content;
+      }
+      return false;
     },
   },
   methods: {
@@ -109,35 +116,30 @@ export default {
     },
     listenRecordList(recordList, index, id) {
       const parent = this.parentRecordList(this);
-      if (_.has(window, 'PM4ConfigOverrides.requestFiles') && parent === recordList) {
-        const prefix = (this.parentRecordList(this) === null) ? '' : recordList.name + '.';
-        const fileDataName = prefix + this.name + (id ? '.' + id : '');
-        this.fileInfo = window.PM4ConfigOverrides.requestFiles[fileDataName];
-        this.loading  = false;
+      if (parent !== recordList) {
+        return;
+      }
+      this.rowId = (parent !== null) ? id : null;
+    },
+    downloadFile(file) {
+      if (this.collection) {
+        this.downloadCollectionFile(file);
+      } else {
+        this.downloadRequestFile(file);
       }
     },
-    onClick() {
-      if (this.fileType == 'request') {
-        this.downloadRequestFile();
-      }
-
-      if (this.fileType == 'collection') {
-        this.downloadCollectionFile();
-      }
-    },
-    requestEndpoint() {
+    requestEndpoint(file) {
       let endpoint = this.endpoint;
 
       if (_.has(window, 'PM4ConfigOverrides.getFileEndpoint')) {
         endpoint = window.PM4ConfigOverrides.getFileEndpoint;
       }
 
-      if (endpoint && this.fileInfo) {
-        const query = '?name=' + encodeURIComponent(this.prefix + this.name) + '&token=' + this.fileInfo.token;
-        return endpoint + query;
+      if (endpoint && file.token) {
+        return `${endpoint}/${file.id}?&token=${file.token}`;
       }
 
-      return '/request/' + this.requestId + '/files/' + this.fileInfo.id;
+      return `/files/${file.id}/contents`;
     },
     setPrefix() {
       let parent = this.$parent;
@@ -160,141 +162,108 @@ export default {
         this.prefix = parent.loopContext + '.';
       }
     },
-    downloadRequestFile() {
-      window.ProcessMaker.apiClient({
-        baseURL: '/',
-        url: this.requestEndpoint(),
-        method: 'GET',
-        responseType: 'blob', // important
-      }).then(response => {
-        //axios needs to be told to open the file
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', this.fileInfo.file_name);
-        document.body.appendChild(link);
-        link.click();
+    downloadRequestFile(file) {
+      this.$dataProvider.download(this.requestEndpoint(file)).then(response => {
+        this.sendToBrowser(response, file);
       });
     },
-    downloadCollectionFile() {
-      window.ProcessMaker.apiClient({
-        url: '/files/' + this.fileInfo.id + '/contents',
-        method: 'GET',
-        responseType: 'blob', // important
-      }).then(response => {
-        //axios needs to be told to open the file
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', this.fileInfo.file_name);
-        document.body.appendChild(link);
-        link.click();
+    downloadCollectionFile(file) {
+      this.$dataProvider.download('/files/' + file.id + '/contents').then(response => {
+        this.sendToBrowser(response, file);
       });
     },
-    getFileType() {
-      const requestIdNode = document.head.querySelector('meta[name="request-id"]');
-      if (requestIdNode && requestIdNode.content) {
-        this.fileType = 'request';
-      }
-
-      if (document.head.querySelector('meta[name="collection-id"]')) {
-        this.fileType = 'collection';
+    sendToBrowser(response, file) {
+      //axios needs to be told to open the file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', file.name);
+      document.body.appendChild(link);
+      link.click();
+    },
+    setFilesInfo() {
+      if (this.collection) {
+        this.setFilesInfoFromCollectionValue();
+      } else {
+        this.setFilesInfoFromRequest();
       }
     },
-    getRequestId() {
-      let node = document.head.querySelector('meta[name="request-id"]');
-      if (node === null) {
-        this.loading = false;
+    setFilesInfoFromRequest() {
+      if (!this.value) {
         return;
       }
-      this.requestId = node.content;
-    },
-    getCollectionInfo() {
-      let collectionNode = document.head.querySelector('meta[name="collection-id"]');
-      if (collectionNode === null) {
-        this.loading = false;
-        return;
-      }
-      this.collectionId = collectionNode.content;
 
-      let recordNode = document.head.querySelector('meta[name="record-id"]');
-      if (recordNode === null) {
-        this.loading = false;
-        return;
-      }
-      this.recordId = recordNode.content;
-    },
-    getRequestFiles() {
-      let requestFiles = this.requestFiles;
+      let requestFiles = _.get(
+        window,
+        `PM4ConfigOverrides.requestFiles["${this.fileDataName}"]`,
+        []
+      );
 
-      if (_.has(window, 'PM4ConfigOverrides.requestFiles')) {
-        requestFiles = window.PM4ConfigOverrides.requestFiles;
-      }
-
-      if (this.fileType && requestFiles && requestFiles[this.prefix + this.name]) {
-        this.loading = false;
-        if (Array.isArray(requestFiles[this.prefix + this.name])) {
-          this.fileInfo = requestFiles[this.prefix + this.name].find(
-            item =>
-              item.file_name === this.fileName
-              || item.id === this.fileName,
-          );
+      requestFiles = requestFiles.filter(file => {
+        // Filter any requestFiles that don't exist in this component's value. This can happen if
+        // a file is uploaded but the task is not saved.
+        if (Array.isArray(this.value)) {
+          return this.value.some(valueFile => valueFile.file === file.id);
         } else {
-          this.fileInfo = requestFiles[this.prefix + this.name];
+          return file.id === this.value;
         }
-        return;
-      }
-
-      if (this.requestId === null) {
-        this.loading = false;
-        return;
-      }
-
-      //do not preload files if the control is inside a record list because
-      // we don't know the row to which the control is associated
-      if (this.parentRecordList(this) === null) {
-        let endpoint = 'requests/' + this.requestId + '/files?name=' + this.prefix + this.name;
-        if (_.has(window, 'PM4ConfigOverrides.getFileEndpoint')) {
-          endpoint = window.PM4ConfigOverrides.getFileEndpoint;
-        }
-        if (endpoint && this.fileInfo && this.fileInfo.token) {
-          const query = '?name=' + encodeURIComponent(this.prefix + this.name) + '&token=' + this.fileInfo.token;
-          return endpoint + query;
-        }
-        window.ProcessMaker.apiClient
-          .get(endpoint)
-          .then(response => {
-            this.fileInfo = _.get(response, 'data.data.0', null);
-            this.loading = false;
-          });
-      }
-    },
-    setFileInfoFromCache() {
-      const info = _.get(window.ProcessMaker.CollectionData, this.prefix + this.name, null);
-      if (info) {
-        this.fileInfo = { ...info, file_name: info.name };
-      }
-    },
-    getCollectionFiles() {
-      if (this.collectionId === null || this.recordId === null) {
-        this.loading = false;
-        return;
-      }
-
-      window.ProcessMaker.EventBus.$on('got-collection-data', () => {
-        this.setFileInfoFromCache();
-        this.loading = false;
       });
 
-      if (!window.ProcessMaker.CollectionData) {
-        window.ProcessMaker.CollectionData = {};
-        window.ProcessMaker.apiClient
-          .get('collections/' + this.collectionId + '/records/' + this.recordId)
-          .then(response => {
-            window.ProcessMaker.CollectionData = response.data.data;
-            window.ProcessMaker.EventBus.$emit('got-collection-data');
-          });
+      // Might be accessing individual files from inside a loop
+      if (requestFiles.length === 0 && this.fileDataName.endsWith('.file')) {
+        requestFiles = this.requestFileInsideALoop();
       }
+
+      this.filesInfo = requestFiles.map(file => {
+        const info = { id: file.id, name: file.file_name };
+        if (file.token) {
+          // web entry
+          info.token = file.token;
+        }
+        return info;
+      });
+    },
+    requestFileInsideALoop() {
+      const path = this.fileDataName.slice(0, -5);
+      const loopFile = _.get(
+        window,
+        `PM4ConfigOverrides.requestFiles.${path}`,
+        null
+      );
+      if (loopFile) {
+        return [loopFile]; // Treat as single file download
+      }
+      return [];
+    },
+    setFilesInfoFromCollectionValue() {
+      if (!this.value) {
+        this.filesInfo = [];
+        return;
+      }
+      if (Array.isArray(this.value)) {
+        // multi file upload
+        this.filesInfo = this.value.map(value => value.file);
+      } else {
+        this.filesInfo = [this.value];
+      }
+
+    },
+    checkIfInRecordList() {
+      const parent = this.parentRecordList(this);
+      if (parent !== null) {
+        const recordList = parent;
+        const prefix = recordList.name + '.';
+        this.setFileUploadNameForChildren(recordList.$children, prefix);
+      }
+    },
+    setFileUploadNameForChildren(children, prefix) {
+      children.forEach(child => {
+        if (_.get(child, '$options.name') === 'FileDownload') {
+          child.prefix = prefix;
+        } else if (_.get(child, '$children', []).length > 0) {
+          this.setFileUploadNameForChildren(child.$children, prefix);
+        }
+      });
     },
   },
 };

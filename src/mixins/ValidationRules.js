@@ -42,9 +42,9 @@ export const ValidationMsg = {
   numeric: 'Accepts only numerics',
   integer: 'Must be a positive or negative integer',
   decimal: 'Must be a positive or negative decimal number',
-  email: 'Must be a valid email addresses',
-  ipAddress: 'Must be a valid IPv4 addresses',
-  macAddress: 'Must be a valid MAC addresses',
+  email: 'Must be a valid email address',
+  ipAddress: 'Must be a valid IPv4 address',
+  macAddress: 'Must be a valid MAC address',
   sameAs: 'Must be same as {field}',
   same: 'Must be same as {field}',
   url: 'Must be a valid URL',
@@ -67,53 +67,64 @@ export const custom_date = (date) => {
   return checkDate.isValid();
 };
   
-export const after = (after) => helpers.withParams({after}, (date, data) => {
-  // checks if incoming 'params' is a date or a key reference.
-  let checkDate = moment(after);
+export const after = (after, fieldName) => helpers.withParams({after}, function(date, data) {
+  // Get check date
+  const level = fieldName.split('.').length - 1;
+  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
+  dataWithParent.today = moment().format('YYYY-MM-DD');
+  const checkDate = moment(get(dataWithParent, after, after));
   if (!checkDate.isValid()) {
-    after = get(data, after);
+    return false;
   }
 
   const inputDate = moment(date).toISOString();
-  const afterDate = moment(after).toISOString();
+  const afterDate = checkDate.toISOString();
 
   return inputDate > afterDate;
 });
 
-export const after_or_equal = (after_or_equal) => helpers.withParams({after_or_equal}, (date, data) => {
-  // checks if incoming 'after_or_equal' is a date or a key reference.
-  let checkDate = moment(after_or_equal);
+export const after_or_equal = (after_or_equal, fieldName) => helpers.withParams({after_or_equal}, function(date, data) {
+  // Get check date
+  const level = fieldName.split('.').length - 1;
+  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
+  dataWithParent.today = moment().format('YYYY-MM-DD');
+  const checkDate = moment(get(dataWithParent, after_or_equal, after_or_equal));
   if (!checkDate.isValid()) {
-    after_or_equal = get(data, after_or_equal);
+    return false;
   }
 
   const inputDate = moment(date).toISOString();
-  const equalOrAfterDate = moment(after_or_equal).toISOString();
-    
+  const equalOrAfterDate = checkDate.toISOString();
   return inputDate >= equalOrAfterDate;
 });
 
-export const before = (before) => helpers.withParams({before}, (date, data) => {
-  // checks if incoming 'before' is a date or a key reference.
-  let checkDate = moment(before);
+export const before = (before, fieldName) => helpers.withParams({before}, function(date, data) {
+  // Get check date
+  const level = fieldName.split('.').length - 1;
+  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
+  dataWithParent.today = moment().format('YYYY-MM-DD');
+  const checkDate = moment(get(dataWithParent, before, before));
   if (!checkDate.isValid()) {
-    before = get(data, before);
+    return false;
   }
 
   const inputDate = moment(date).toISOString();
-  const beforeDate = moment(before).toISOString();
+  const beforeDate = checkDate.toISOString();
   return inputDate < beforeDate;
 });
 
-export const before_or_equal = (before_or_equal) => helpers.withParams({before_or_equal}, (date, data) => {
-  // checks if incoming 'before_or_equal' is a date or a key reference.
-  let checkDate = moment(before_or_equal);
+export const before_or_equal = (before_or_equal, fieldName) => helpers.withParams({before_or_equal}, function(date, data) {
+  // Get check date
+  const level = fieldName.split('.').length - 1;
+  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
+  dataWithParent.today = moment().format('YYYY-MM-DD');
+  const checkDate = moment(get(dataWithParent, before_or_equal, before_or_equal));
   if (!checkDate.isValid()) {
-    before_or_equal = get(data, before_or_equal);
+    return false;
   }
     
   const inputDate = moment(date).toISOString();
-  const beforeDate = moment(before_or_equal).toISOString();
+  const beforeDate = checkDate.toISOString();
     
   return inputDate <= beforeDate;
 });
@@ -147,18 +158,36 @@ export const required = (value) => {
   return value instanceof Array ? value.length > 0 : !!value;
 };
 
-export const requiredIf = (variable, expected) => function(value) {
-  if (get(this.vdata, variable) != expected) return true;
+export const requiredIf = (variable, expected, fieldName) => helpers.withParams({variable, expected}, function(value, data) {
+  const level = fieldName.split('.').length - 1;
+  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
+  const variableValue = get(dataWithParent, variable);
+  const isBoolean = (variableValue === true || variableValue === false);
+  let expectedValue = expected;
+  if (isBoolean) {
+    expectedValue = expected === 'true' || expected === '1';
+  }
+  if (variableValue != expectedValue) return true;
   return value instanceof Array ? value.length > 0 : !!value;
-};
+});
 
-export const requiredUnless = (variable, expected) => function(value) {
-  if (get(this.vdata, variable) == expected) return true;
+export const requiredUnless = (variable, expected, fieldName) => helpers.withParams({variable, expected}, function(value, data) {
+  const level = fieldName.split('.').length - 1;
+  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
+  const variableValue = get(dataWithParent, variable);
+  const isBoolean = (variableValue === true || variableValue === false);
+  let expectedValue = expected;
+  if (isBoolean) {
+    expectedValue = expected === 'true' || expected === '1';
+  }
+  if (variableValue == expectedValue) return true;
   return value instanceof Array ? value.length > 0 : !!value;
-};
+});
   
-export const sameAs = (field) => helpers.withParams({field}, function(value) {
-  const valueSameAs = get(this.vdata, field);
+export const sameAs = (field, fieldName) => helpers.withParams({field}, function(value, data) {
+  const level = fieldName.split('.').length - 1;
+  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
+  const valueSameAs = get(dataWithParent, field);
   return value == valueSameAs;
 });
 
