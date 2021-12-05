@@ -94,7 +94,7 @@ export function ValidatorFactory(config, data) {
         if (itemLoop.component === 'FormLoop') {
           validate.ruleFormLoop(
             loopName + '.*.' + itemLoop.config.name,
-            itemLoop.items
+            itemLoop.items,
           );
         } else {
           validate.ruleFormLoop(loopName, itemLoop.items);
@@ -134,7 +134,7 @@ export function ValidatorFactory(config, data) {
 
         validate.addRule(
           loopName + '.*.' + itemLoop.config.name,
-          itemLoop.config.validation
+          itemLoop.config.validation,
         );
       }
 
@@ -147,7 +147,7 @@ export function ValidatorFactory(config, data) {
       ) {
         validate.addRuleFormat(
           loopName + '.*.' + itemLoop.config.name,
-          itemLoop.config.dataFormat
+          itemLoop.config.dataFormat,
         );
       }
     });

@@ -184,6 +184,13 @@
                                 });
                         }
                     }
+                    if (this.options.dataSource && this.options.dataSource === 'dataVariable') {
+                       // console.log(this.transientData[this.name].length,'this.transientData[this.name]');
+                        if(this.transientData && this.transientData[this.name] && this.transientData[this.name].length){
+                            this.selectListOptions = this.transientData[this.name];
+                        }
+                    }
+
                     if (this.options.dataSource && this.options.dataSource === 'dataConnector') {
                         this.doDebounce(this.sourceConfig);
                     }
@@ -355,6 +362,9 @@
                 if (this.options.dataSource && this.options.dataSource === 'dataObject') {
                     return this.options.key;
                 }
+                if (this.options.dataSource && this.options.dataSource === 'dataVariable') {
+                    return this.options.key;
+                }
                 const fieldName = this.options.key || 'value';
                 return this.stripMustache(fieldName);
             },
@@ -363,6 +373,10 @@
                     return 'content';
                 }
                 if (this.options.dataSource && this.options.dataSource === 'dataObject') {
+                    // console.log(this.options.value,'this.options.value');
+                    return this.options.value;
+                }
+                if (this.options.dataSource && this.options.dataSource === 'dataVariable') {
                     // console.log(this.options.value,'this.options.value');
                     return this.options.value;
                 }

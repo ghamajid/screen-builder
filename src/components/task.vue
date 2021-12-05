@@ -38,7 +38,7 @@
         </div>
       </div>
       <div v-if="shouldAddSubmitButton" class="card-footer">
-        <button type="button" class="btn btn-primary" @click="submit(null)">
+        <button type="button" class="btn btn-primary" @click="submit">
           {{ $t('Complete Task') }}
         </button>
       </div>
@@ -226,11 +226,6 @@ export default {
     },
     loadTask() {
       const url = `/${this.taskId}?include=data,user,requestor,processRequest,component,screen,requestData,bpmnTagName,interstitial,definition,nested`;
-      // For Vocabularies
-      if (window.ProcessMaker && window.ProcessMaker.packages && window.ProcessMaker.packages.includes('package-vocabularies')) {
-        window.ProcessMaker.VocabulariesSchemaUrl = `vocabularies/task_schema/${this.taskId}`;
-      }
-
       return this.beforeLoadTask(this.taskId, this.nodeId).then(() => {
         this.$dataProvider
           .getTasks(url)
@@ -363,7 +358,7 @@ export default {
         '.ProcessCompleted',
         (data) => {
           this.processCompleted(data);
-        }
+        },
       );
 
       this.addSocketListener(
@@ -371,7 +366,7 @@ export default {
         '.ProcessUpdated',
         (data) => {
           this.processUpdated(data);
-        }
+        },
       );
 
       // We might have missed an event before initSocketListeners

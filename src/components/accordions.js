@@ -12,7 +12,6 @@ export default [
       'disabled',
       'initiallyChecked',
       'screen',
-      'multipleUpload',
     ],
     open: true,
   },

@@ -1,8 +1,6 @@
 import extensions from './extensions';
 import ScreenBase from './ScreenBase';
-import CountElements from '../CountElements';
 import ValidationsFactory from '../ValidationsFactory';
-import _ from 'lodash';
 
 let screenRenderer;
 
@@ -49,10 +47,6 @@ export default {
     };
   },
   methods: {
-    // Convert foo.0.bar to foo[0].bar
-    dot2bracket(str) {
-      return str.replace(/\.\d/g, match => `[${match.substr(1)}]`);
-    },
     submit() {
       this.$emit('submit', this.value);
     },
@@ -216,15 +210,14 @@ export default {
     isComputedVariable(name, definition) {
       return definition.computed && definition.computed.find(c => c.property === name);
     },
-    registerVariable(name, element = {}) {
+    registerVariable(name, config = {}) {
       if (!this.validVariableName(name)) {
         return;
       }
-      const config = _.get(element, 'config', {});
       const find = this.variables.find(v => v.name === name);
       if (!find) {
-        this.variables.push({ name, config, element });
-        this.variablesTree.push({ name, config, element });
+        this.variables.push({ name, config });
+        this.variablesTree.push({ name, config });
       }
     },
     registerNestedVariable(name, prefix, definition) {
@@ -339,27 +332,11 @@ export default {
       component.methods.loadValidationRules = function() {
         // Asynchronous loading of validations
         const validations = {};
-        ValidationsFactory(definition, { screen: definition, firstPage, data: {_parent: this._parent, ...this.vdata} }).addValidations(validations).then(() => {
-          if (_.isEqual(this.ValidationRules__, validations)) {
-            return;
-          }
+        ValidationsFactory(definition, { screen: definition, firstPage }).addValidations(validations).then(() => {
           this.ValidationRules__ = validations;
-          this.$nextTick(() => {
-            if (this.$v) {
-              this.$v.$touch();
-            }
-          });
         });
       };
       component.mounted.push('this.loadValidationRules()');
-    },
-    countElements(definition) {
-      return new Promise(( resolve ) => {
-        const allElements = [];
-        CountElements(definition, { screen: definition }).countItems(allElements).then(() => {
-          resolve(allElements);
-        });
-      });
     },
   },
   mounted() {

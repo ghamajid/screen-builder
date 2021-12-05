@@ -33,11 +33,11 @@ export default {
       //verify if component is defined in popup
       if (!this.popups.includes(formIndex)) {
         if (componentName === 'FormImage') {
-          this.registerVariable(element.config.variableName, element);
+          this.registerVariable(element.config.variableName, element.config);
           delete properties.image;
           properties[':image'] = this.byRef(element.config.image);
         } else if (this.validVariableName(element.config.name)) {
-          this.registerVariable(element.config.name, element);
+          this.registerVariable(element.config.name, element.config);
           properties['v-model'] = `${element.config.name}`;
         }
       }
@@ -56,10 +56,6 @@ export default {
       properties[':form-config'] = this.byRef(this.configRef || definition.config);
       properties[':form-computed'] = JSON.stringify(definition.computed);
       properties[':form-watchers'] = JSON.stringify(definition.watchers);
-      // Check if control is assigned to a calculated property
-      const isCalcProp = definition.computed && !!definition.computed.find(computed => computed.property == element.config.name);
-      properties[':readonly'] = isCalcProp || element.config.readonly;
-      properties[':disabled'] = isCalcProp || element.config.disabled;
       // Events
       properties['@submit'] = 'submitForm';
     },

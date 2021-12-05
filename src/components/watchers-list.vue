@@ -60,7 +60,9 @@ import { FormInput, FormTextArea } from '@processmaker/vue-form-elements';
 export default {
   components: {
     BasicSearch,
+    // eslint-disable-next-line vue/no-unused-components
     FormInput,
+    // eslint-disable-next-line vue/no-unused-components
     FormTextArea,
   },
   props: {

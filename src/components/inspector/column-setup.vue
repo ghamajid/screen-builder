@@ -416,7 +416,7 @@ export default {
           {
             [this.valueField]: this.optionContent,
             [this.keyField]: this.optionValue,
-          }
+          },
         );
       }
       else {

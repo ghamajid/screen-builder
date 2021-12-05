@@ -23,6 +23,7 @@ import MonacoEditor from 'vue-monaco';
 import Screens from '../e2e/fixtures/webentry.json';
 
 export default {
+  // eslint-disable-next-line vue/no-unused-components
   components: {MonacoEditor},
   data() {
     return {
