@@ -15,32 +15,32 @@
     <!--    <small v-if="helper" class="form-text text-muted" v-html="helper"/>-->
     <pre id="json" class="url-sample"><small>sample: {{ JSON.stringify(helper, undefined, 2) }}</small></pre>
     <hr>
-
-    <label>Show Pagination</label>
-    <b-form-checkbox
-      id="option-pagination"
-      v-model="optionPagination"
-      value="1"
-      unchecked-value="0"
-      @change="handlerChangeSelect('pagination',optionPagination)"
-    />
-
-    <label>Page Size Selection</label>
-    <b-form-checkbox
-      id="option-pageSize"
-      v-model="optionPageSize"
-      value="1"
-      unchecked-value="0"
-      @change="handlerChangeSelect('pageSize',optionPageSize)"
-    />
-    <!-- <label>column row</label>
+<ul style="list-style-type: none; padding: 0" id="url-checkbox-list">
+    <li>
+        <label>Show Pagination</label>
         <b-form-checkbox
-                id="option-pageSize"
-                v-model="optionPageColumnRow"
-                value="1"
-                unchecked-value="0"
-                @change="handlerChangeSelect('pageColumnRow',optionPageColumnRow)"
-        />-->
+            id="option-pagination"
+            v-model="optionPagination"
+            value="1"
+            unchecked-value="0"
+            @change="handlerChangeSelect('pagination',optionPagination)"
+        />
+    </li>
+    <li>
+        <label>Page Size Selection</label>
+        <b-form-checkbox
+            id="option-pageSize"
+            v-model="optionPageSize"
+            value="1"
+            unchecked-value="0"
+            @change="handlerChangeSelect('pageSize',optionPageSize)"
+        />
+    </li>
+</ul>
+
+
+
+
   </div>
 </template>
 

@@ -13,9 +13,9 @@ export default Vue.extend({
        <button
          v-if="this.params.optionDelete == 1"
           type="button"
-          class="action-button btn btn-danger delete fas fa-trash-alt"
+          class="action-button btn btn-sm btn-rounded btn-danger delete "
           data-action="delete"
-       >
+       ><i class="fas fa-trash-alt"></i>
        </button>
     </div>
 <!--        </span>-->
