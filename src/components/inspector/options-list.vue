@@ -126,6 +126,10 @@
       <b-form-input id="data_url" v-model="dataDependentVariable" />
       <small class="form-text text-muted mb-3">{{ $t('Enter the name of the variable that needs to be sent.') }}</small>
     </div>
+    <div v-if="dataSource === dataSourceValues.dataVariable">
+      <label >{{ $t('Variable Name') }}</label>
+      <b-form-input id="data_url" v-model="dataVariableName" />
+    </div>
 
     <div v-if="dataSource === dataSourceValues.dataObject || dataSource === dataSourceValues.dataConnector">
       <label for="element-name">{{ $t('Options Variable') }}</label>
@@ -283,6 +287,7 @@ export default {
       selectedOptions: [],
       dataUrl:'',
       dataDependentVariable:'',
+      dataVariableName:'',
       renderAsOptions: [
         {
           text: this.$t('Dropdown/Multiselect'),
@@ -431,6 +436,7 @@ export default {
         valueTypeReturned: this.valueTypeReturned,
         dataUrl: this.dataUrl,
         dataDependentVariable: this.dataDependentVariable,
+        dataVariableName: this.dataVariableName,
       };
     },
   },
