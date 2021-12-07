@@ -154,6 +154,18 @@ export default {
           ],
         },
         {
+            value: 'custom_meli_code',
+            field: 'custom_meli_code:',
+            content: this.$t('Meli Code'),
+            helper: '',
+        },
+        {
+            value: 'custom_shenase_meli_hoghoghi',
+            field: 'custom_shenase_meli_hoghoghi:',
+            content: this.$t('Shenase Meli'),
+            helper: '',
+        },
+        {
           value: '',
           field: 'max:',
           content: this.$t('Max Length'),

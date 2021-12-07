@@ -72,7 +72,7 @@ export default {
     },
     value: {
       handler() {
-        //console.log(this.value, 'value')
+        //console.log(this.validator, 'value')
         //console.log((this.dataFormat == 'datetime'), 'minDate')
       },
       deep: true,
@@ -90,7 +90,6 @@ export default {
   },
   data() {
     return {
-      validator: null,
       date: '',
       minDateChange: '',
       maxDateChange: '',

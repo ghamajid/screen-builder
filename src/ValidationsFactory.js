@@ -127,9 +127,12 @@ class FormElementValidations extends Validations {
 
     set(validations, fieldName, get(validations, fieldName, {}));
     const fieldValidation = get(validations, fieldName);
+
     if (validationConfig instanceof Array) {
       validationConfig.forEach((validation) => {
+          //console.log(validation);
         const rule = this.camelCase(validation.value.split(':')[0]);
+
         if (!rule) {
           return;
         }

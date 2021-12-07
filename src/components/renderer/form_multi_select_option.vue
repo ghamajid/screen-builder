@@ -185,7 +185,7 @@
                         }
                     }
                     if (this.options.dataSource && this.options.dataSource === 'dataVariable') {
-                       // console.log(this.transientData[this.name].length,'this.transientData[this.name]');
+                      // console.log(this.transientData[this.options.dataVariableName],'this.transientData[this.name]');
                         if(this.transientData && this.transientData[this.options.dataVariableName] && this.transientData[this.options.dataVariableName].length){
                             this.selectListOptions = this.transientData[this.options.dataVariableName];
                         }
@@ -311,6 +311,15 @@
                 handler() {
                     this.fillSelectListOptions();
                 },
+            },
+            value: {
+                handler() {
+                    console.log(this.error, 'value')
+                    //console.log((this.dataFormat == 'datetime'), 'minDate')
+                },
+                deep: true,
+                immediate: true,
+
             },
             // React to a parent data scope
             'validationData._parent': {

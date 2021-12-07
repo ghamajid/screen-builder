@@ -55,6 +55,8 @@ export const ValidationMsg = {
   invalid_default_value: 'Invalid default value',
   customDate: 'Must be a valid Date',
   regex: 'Invalid value',
+  customMeliCode: 'Invalid code meli',
+  customShenaseMeliHoghoghi: 'Invalid shenase meli',
 };
 
 export const custom_date = (date) => {
@@ -65,6 +67,42 @@ export const custom_date = (date) => {
 
   let checkDate = moment(date, [format, moment.ISO_8601], true);
   return checkDate.isValid();
+};
+
+export const custom_meli_code = (code) => {
+  if(code){
+      var L=code.length;
+      if(L<8 || parseInt(code,10)==0) return false;
+      code=('0000'+code).substr(L+4-10);
+      if(parseInt(code.substr(3,6),10)==0) return false;
+      var c=parseInt(code.substr(9,1),10);
+      var s=0;
+      for(var i=0;i<9;i++)
+          s+=parseInt(code.substr(i,1),10)*(10-i);
+      s=s%11;
+      if((s<2 && c==s) || (s>=2 && c==(11-s))){
+          return true
+      }
+      return false;
+  }
+};
+
+export const custom_shenase_meli_hoghoghi = (code) => {
+    if(code){
+        var L=code.length;
+
+        if(L<11 || parseInt(code,10)==0) return false;
+
+        if(parseInt(code.substr(3,6),10)==0) return false;
+        var c=parseInt(code.substr(10,1),10);
+        var d=parseInt(code.substr(9,1),10)+2;
+        var z=new Array(29,27,23,19,17);
+        var s=0;
+        for(var i=0;i<10;i++)
+            s+=(d+parseInt(code.substr(i,1),10))*z[i%5];
+        s=s%11;if(s==10) s=0;
+        return (c==s);
+    }
 };
   
 export const after = (after) => helpers.withParams({after}, (date, data) => {
@@ -188,6 +226,8 @@ export const validators = {
   or,
   and,
   customDate: custom_date,
+  customMeliCode: custom_meli_code,
+  customShenaseMeliHoghoghi: custom_shenase_meli_hoghoghi,
   before,
   after,
   beforeOrEqual: before_or_equal,
