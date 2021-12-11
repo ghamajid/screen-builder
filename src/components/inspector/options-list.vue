@@ -123,12 +123,12 @@
     </div>
     <div v-if="dataSource === dataSourceValues.dataObject">
       <label >{{ $t('Dependent Variable') }}</label>
-      <b-form-input id="data_url" v-model="dataDependentVariable" />
+      <b-form-input id="data_depend" v-model="dataDependentVariable" />
       <small class="form-text text-muted mb-3">{{ $t('Enter the name of the variable that needs to be sent.') }}</small>
     </div>
     <div v-if="dataSource === dataSourceValues.dataVariable">
       <label >{{ $t('Variable Name') }}</label>
-      <b-form-input id="data_url" v-model="dataVariableName" />
+      <b-form-input id="data_var" v-model="dataVariableName" />
     </div>
 
     <div v-if="dataSource === dataSourceValues.dataObject || dataSource === dataSourceValues.dataConnector">
