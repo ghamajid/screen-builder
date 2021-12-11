@@ -22,7 +22,7 @@
                     <b-form-input id="option-content" v-model="optionContent"/>
                     <label>{{ $t('Value') }}</label>
                     <b-form-input id="option-value" v-model="optionValue" :classs="optionKeyClass"/>
-                    <ul id="column-checkbox-list" style="list-style-type: none; padding: 0">
+                    <ul class="column-checkbox-list" style="list-style-type: none; padding: 0">
                         <li>
                             <label>{{ $t('Sort') }}</label>
                             <b-form-checkbox
@@ -41,12 +41,20 @@
                                 unchecked-value="0"
                             />
                         </li>
-                        <li>
-                            <label v-if="optionValue === 'action'">{{ $t('action delete') }}</label>
+                        <li v-if="optionValue === 'action'">
+                            <label>{{ $t('Action Delete') }}</label>
                             <b-form-checkbox
-                                v-if="optionValue === 'action'"
                                 id="action-delete"
                                 v-model="optionDelete"
+                                value="1"
+                                unchecked-value="0"
+                            />
+                        </li>
+                        <li v-if="optionValue === 'action'">
+                            <label>{{ $t('Action Edit') }}</label>
+                            <b-form-checkbox
+                                id="action-edit"
+                                v-model="optionEdit"
                                 value="1"
                                 unchecked-value="0"
                             />
@@ -101,30 +109,45 @@
                                         <b-form-input id="option-content" v-model="optionContent"/>
                                         <label>{{ $t('Value') }}</label>
                                         <b-form-input id="option-value" v-model="optionValue" :classs="optionKeyClass"/>
-                                        <label>{{ $t('Sort') }}</label>
-                                        <b-form-checkbox
-                                            id="option-sort"
-                                            v-model="optionSort"
-                                            value="1"
-                                            unchecked-value="0"
-                                        />
-                                        
-                                        <label>{{ $t('Filter') }}</label>
-                                        <b-form-checkbox
-                                            id="option-filter"
-                                            v-model="optionFilter"
-                                            value="1"
-                                            unchecked-value="0"
-                                        />
-                                        <label v-if="optionValue === 'action'">{{ $t('action delete') }}</label>
-                                        <b-form-checkbox
-                                            v-if="optionValue === 'action'"
-                                            id="action-delete"
-                                            v-model="optionDelete"
-                                            value="1"
-                                            unchecked-value="0"
-                                        />
-                                        
+                                        <ul class="column-checkbox-list" style="list-style-type: none; padding: 0">
+                                            <li>
+                                                <label>{{ $t('Sort') }}</label>
+                                                <b-form-checkbox
+                                                    id="option-sort"
+                                                    v-model="optionSort"
+                                                    value="1"
+                                                    unchecked-value="0"
+                                                />
+                                            </li>
+                                            <li>
+                                                <label>{{ $t('Filter') }}</label>
+                                                <b-form-checkbox
+                                                    id="option-filter"
+                                                    v-model="optionFilter"
+                                                    value="1"
+                                                    unchecked-value="0"
+                                                />
+                                            </li>
+                                            <li v-if="optionValue === 'action'">
+                                                <label>{{ $t('Action Delete') }}</label>
+                                                <b-form-checkbox
+                                                    v-if="optionValue === 'action'"
+                                                    id="action-delete"
+                                                    v-model="optionDelete"
+                                                    value="1"
+                                                    unchecked-value="0"
+                                                />
+                                            </li>
+                                            <li v-if="optionValue === 'action'">
+                                                <label>{{ $t('Action Edit') }}</label>
+                                                <b-form-checkbox
+                                                    id="action-edit"
+                                                    v-model="optionEdit"
+                                                    value="1"
+                                                    unchecked-value="0"
+                                                />
+                                            </li>
+                                        </ul>
                                         <div v-if="optionError" class="invalid-feedback d-block text-right">
                                             <div>{{ optionError }}</div>
                                         </div>
@@ -274,6 +297,7 @@ export default {
             removeIndex: null,
             optionValue: '',
             optionDelete: 0,
+            optionEdit: 0,
             optionSort: 0,
             optionFilter: 0,
             optionContent: '',
@@ -450,6 +474,7 @@ export default {
             this.optionContent = this.optionsList[index][this.valueField];
             this.optionValue = this.optionsList[index][this.keyField];
             this.optionDelete = this.optionsList[index]['delete'];
+            this.optionEdit = this.optionsList[index]['edit'];
             this.optionSort = this.optionsList[index]['sort'];
             this.optionFilter = this.optionsList[index]['filter'];
             this.optionError = '';
@@ -459,6 +484,7 @@ export default {
             this.optionContent = '';
             this.optionValue = '';
             this.optionDelete = 0;
+            this.optionEdit = 0;
             this.optionSort = 0;
             this.optionFilter = 0;
             this.showOptionCard = true;
@@ -483,6 +509,7 @@ export default {
                         [this.valueField]: this.optionContent,
                         [this.keyField]: this.optionValue,
                         ['delete']: this.optionDelete,
+                        ['edit']: this.optionEdit,
                         ['sort']: this.optionSort,
                         ['filter']: this.optionFilter,
                     },
@@ -497,6 +524,7 @@ export default {
                 this.optionsList[this.editIndex][this.keyField] = this.optionValue;
                 this.optionsList[this.editIndex][this.valueField] = this.optionContent;
                 this.optionsList[this.editIndex]['delete'] = this.optionDelete;
+                this.optionsList[this.editIndex]['edit'] = this.optionEdit;
                 this.optionsList[this.editIndex]['sort'] = this.optionSort;
                 this.optionsList[this.editIndex]['filter'] = this.optionFilter;
             }
