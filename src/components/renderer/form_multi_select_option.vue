@@ -154,8 +154,10 @@
                 this.optionsFromDataSource();
             },
             fillSelectListOptions(val) {
+
                 if (this.fillSelectListOptionscount === 1) {
-                    this.fillSelectListOptionscount++
+                    //this.fillSelectListOptionscount++
+                    console.log("123");
                     if (this.options.dataSource && this.options.dataSource === 'provideData') {
                         // console.log(this.options.optionsList,'1');
                         this.selectListOptions = this.options && this.options.optionsList ? this.options.optionsList : [];
