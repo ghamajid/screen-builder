@@ -185,9 +185,10 @@
                         }
                     }
                     if (this.options.dataSource && this.options.dataSource === 'dataVariable') {
-                      // console.log(this.transientData[this.options.dataVariableName],'this.transientData[this.name]');
+                      console.log(this.transientData[this.options.dataVariableName],'this.transientData[this.name]');
                         if(this.transientData && this.transientData[this.options.dataVariableName] && this.transientData[this.options.dataVariableName].length){
                             this.selectListOptions = this.transientData[this.options.dataVariableName];
+                            this.transientData[this.name] = this.transientData[this.options.dataVariableName];
                         }
                     }
 
