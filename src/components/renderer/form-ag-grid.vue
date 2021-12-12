@@ -207,8 +207,22 @@ export default {
                     if (this.transientData && this.transientData['rowIndex']) {
                         this.transientData['rowIndex'] = params.rowIndex
                     }
+                    let recurse = function (obj) {
+                        for (var property in obj) {
+                            if (obj.hasOwnProperty(property)) {
+                                if (obj[property] != null && typeof obj[property] === "object")
+                                    recurse(obj[property]);
+                                else
+                                    obj[property] = property in params.node.data ? params.node.data[property] : obj[property];
+                            }
+                        }
+                    }
+    
+                    recurse(this.transientData);
                     
-                    let recurse = function (data) {
+                    
+                    //old function
+                    /*let recurse = function (data) {
                         let tempObject = {};
                         if (Array.isArray(data)){
                             tempObject = [];
@@ -224,7 +238,8 @@ export default {
                     };
                     if (this.transientData['loop_1']) {
                         this.transientData['loop_1'] = recurse(this.transientData['loop_1'])
-                    }
+                        console.log(recurse(this.transientData['loop_1']), 'this is old')
+                    }*/
                 }
             }
         },
