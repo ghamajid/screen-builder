@@ -10,6 +10,10 @@ module.exports = {
   rules: {
     'no-debugger': 'off',
     'no-var': 'off',
+    "eqeqeq": "off",
+    "curly": "off",
+    "quotes": "off",
+    'no-console': 'off'
   },
   parserOptions: {
     parser: 'babel-eslint',
