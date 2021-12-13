@@ -153,7 +153,7 @@
                 this.filter = filter;
                 this.optionsFromDataSource();
             },
-            fillSelectListOptions(val) {
+            fillSelectListOptions(val='') {
                 if (this.fillSelectListOptionscount === 1) {
                     this.fillSelectListOptionscount++
                     if (this.options.dataSource && this.options.dataSource === 'provideData') {
@@ -161,6 +161,7 @@
                         this.selectListOptions = this.options && this.options.optionsList ? this.options.optionsList : [];
                     }
                     if (this.options.dataSource && this.options.dataSource === 'dataObject') {
+                        // eslint-disable-next-line no-unused-vars
                         let requestOptions = [];
                         //console.log(this.validationData, this.options.dataName,'66666666');
                         try {
@@ -171,14 +172,16 @@
                         }
                         if (this.options.dataUrl) {
                             var data_get = (this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
+
                             window.ProcessMaker.apiClient
-                                .post(this.options.dataUrl, {var_id: data_get , search: val})
+                                .post(this.options.dataUrl, {var_id: data_get , select_content: val})
                                 .then((response) => {
                                     // eslint-disable-next-line no-unused-vars
                                     var self = this;
                                     // eslint-disable-next-line no-unused-vars
                                     var number = 0;
                                     this.selectListOptions = response.data;
+                                    console.log(response);
                                 })
                                 .finally(() => {
                                 });
