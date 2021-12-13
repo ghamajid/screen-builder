@@ -185,10 +185,28 @@
                         }
                     }
                     if (this.options.dataSource && this.options.dataSource === 'dataVariable') {
-                      // console.log(this.transientData[this.options.dataVariableName],'this.transientData[this.name]');
-                        if(this.transientData && this.transientData[this.options.dataVariableName] && this.transientData[this.options.dataVariableName].length){
-                            this.selectListOptions = this.transientData[this.options.dataVariableName];
+                        //console.log(this.options,'123');
+                      //console.log(this.transientData[this.options.dataVariableName],'this.transientData[this.name]');
+                        let recurse = function (obj,options) {
+                            for (var property in obj) {
+                                //console.log(obj.hasOwnProperty(property),'9999')
+                                if (obj.hasOwnProperty(property)) {
+                                    if (obj[property] != null && typeof obj[property] === "object"){
+                                        if(options.dataVariableName == property){
+                                            return obj[property];
+                                        }else{
+                                            recurse(obj[property],options);
+                                        }
+                                    }
+                                }
+                            }
                         }
+                        //console.log( recurse(this.transientData,this.options),"456")
+                        this.selectListOptions = (recurse(this.transientData,this.options))?recurse(this.transientData,this.options):[];
+                        /*if(this.transientData && this.transientData[this.options.dataVariableName] && this.transientData[this.options.dataVariableName].length){
+                            this.selectListOptions = this.transientData[this.options.dataVariableName];
+                           // this.transientData[this.name] = this.transientData[this.options.dataVariableName];
+                        }*/
                     }
 
                     if (this.options.dataSource && this.options.dataSource === 'dataConnector') {
