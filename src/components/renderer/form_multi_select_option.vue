@@ -147,7 +147,7 @@
             };
         },
         created() {
-            //console.log(this.transientData,'transient-data')
+
         },
         methods: {
             searchChange(filter) {
@@ -160,13 +160,13 @@
                     this.fillSelectListOptionscount++
 
                     if (this.options.dataSource && this.options.dataSource === 'provideData') {
-                        // console.log(this.options.optionsList,'1');
+
                         this.selectListOptions = this.options && this.options.optionsList ? this.options.optionsList : [];
                     }
                     if (this.options.dataSource && this.options.dataSource === 'dataObject') {
                         // eslint-disable-next-line no-unused-vars
                         let requestOptions = [];
-                        //console.log(this.validationData, this.options.dataName,'66666666');
+
                         try {
                             requestOptions = get(this.validationData, this.options.dataName);
                         } catch (e) {
@@ -184,18 +184,17 @@
                                     // eslint-disable-next-line no-unused-vars
                                     var number = 0;
                                     this.selectListOptions = response.data;
-                                    console.log(response);
+
                                 })
                                 .finally(() => {
                                 });
                         }
                     }
                     if (this.options.dataSource && this.options.dataSource === 'dataVariable') {
-                        //console.log(this.options,'123');
-                      //console.log(this.transientData[this.options.dataVariableName],'this.transientData[this.name]');
+
                         let recurse = function (obj,options) {
                             for (var property in obj) {
-                                //console.log(obj.hasOwnProperty(property),'9999')
+
                                 if (obj.hasOwnProperty(property)) {
                                     if (obj[property] != null && typeof obj[property] === "object"){
                                         if(options.dataVariableName == property){
@@ -207,7 +206,7 @@
                                 }
                             }
                         }
-                        //console.log( recurse(this.transientData,this.options),"456")
+
                         this.selectListOptions = (recurse(this.transientData,this.options))?recurse(this.transientData,this.options):[];
                         /*if(this.transientData && this.transientData[this.options.dataVariableName] && this.transientData[this.options.dataVariableName].length){
                             this.selectListOptions = this.transientData[this.options.dataVariableName];
@@ -338,9 +337,7 @@
             },
             value: {
                 handler() {
-                    console.log(this.error, 'value')
-                    //console.log((this.dataFormat == 'datetime'), 'minDate')
-                },
+                              },
                 deep: true,
                 immediate: true,
 
@@ -406,11 +403,11 @@
                     return 'content';
                 }
                 if (this.options.dataSource && this.options.dataSource === 'dataObject') {
-                    // console.log(this.options.value,'this.options.value');
+
                     return this.options.value;
                 }
                 if (this.options.dataSource && this.options.dataSource === 'dataVariable') {
-                    // console.log(this.options.value,'this.options.value');
+
                     return this.options.value;
                 }
                 const fieldName = this.options.value || 'content';
