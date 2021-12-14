@@ -57,7 +57,7 @@ export default {
             defaultColDef: {
                 flex: 1,
                 minWidth: 100,
-                editable: true,
+                editable: false,
             },
             skipHeaderOnAutoSize: true,
             paginationPageSize: null,
@@ -134,7 +134,42 @@ export default {
     mounted() {
         this.gridApi = this.gridOptions.api;
     },
+    
+    computed: {
+        editButton: function () {
+            
+            // `this` points to the vm instance
+            // return 1
+            
+            // reversedMessage: function () {
+            //     eslint-disable-next-line no-unused-vars
+            let options = this.transientData['edit'];
+            return (options == null ? "" : options);
+        }
+    },
+    
     watch: {
+        editButton: {
+            immediate: true,              // so this runs initially
+            deep: true,                   // so it detects changes to properties only
+            handler() {
+                this.defaultColDef.editable = true
+                this.updateDataGrid(this.transientData[this.name]);
+                console.log(this.transientData[this.name], 'edit_btn')
+                this.defaultColDef.editable = false
+                /*let recurse = function (obj, tdata) {
+                    for (var property in obj) {
+                        if (obj.hasOwnProperty(property)) {
+                            if (obj[property] != null && typeof obj[property] === "object")
+                                recurse(obj[property], tdata);
+                            else
+                                obj[property] = property in tdata ? "" : obj[property];
+                        }
+                    }
+                }
+                recurse(this.transientData, this.transientData[this.name][0]);*/
+            }
+        },
         fields: {
             handler() {
                 this.columnDefs = [];
@@ -184,7 +219,7 @@ export default {
             handler() {
                 if (this.url_grid == undefined) {
                     if (this.transientData['edit'] == "1") {
-                        this.defaultColDef.editable = true
+                        /*this.defaultColDef.editable = true
                         this.updateDataGrid(this.transientData[this.name]);
                         console.log(this.transientData[this.name], 'edit_btn')
                         this.defaultColDef.editable = false
@@ -198,7 +233,7 @@ export default {
                                 }
                             }
                         }
-                        recurse(this.transientData, this.transientData[this.name][0]);
+                        recurse(this.transientData, this.transientData[this.name][0]);*/
                         this.transientData['edit'] = null
                     }
                 }
