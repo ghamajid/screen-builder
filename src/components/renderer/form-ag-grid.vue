@@ -57,7 +57,7 @@ export default {
             defaultColDef: {
                 flex: 1,
                 minWidth: 100,
-                editable: false,
+                editable: true,
             },
             skipHeaderOnAutoSize: true,
             paginationPageSize: null,
@@ -135,39 +135,33 @@ export default {
         this.gridApi = this.gridOptions.api;
     },
     
-    computed: {
+/*    computed: {
         editButton: function () {
-            
-            // `this` points to the vm instance
-            // return 1
-            
-            // reversedMessage: function () {
-            //     eslint-disable-next-line no-unused-vars
-            let options = this.transientData['edit'];
-            return (options == null ? "" : options);
+            console.log(this.transientData[this.name],'123');
+            return this.transientData[this.name];
         }
-    },
-    
+    },*/
     watch: {
-        editButton: {
-            immediate: true,              // so this runs initially
-            deep: true,                   // so it detects changes to properties only
+        rowData: {
             handler() {
-                this.defaultColDef.editable = true
-                this.updateDataGrid(this.transientData[this.name]);
-                console.log(this.transientData[this.name], 'edit_btn')
-                this.defaultColDef.editable = false
-                /*let recurse = function (obj, tdata) {
+                console.log('hell')
+                // this.updateDataGrid(this.transientData[this.name]);
+                var self = this;
+                let recurse = function (obj) {
                     for (var property in obj) {
                         if (obj.hasOwnProperty(property)) {
                             if (obj[property] != null && typeof obj[property] === "object")
-                                recurse(obj[property], tdata);
+                                recurse(obj[property]);
                             else
-                                obj[property] = property in tdata ? "" : obj[property];
+                                obj[property] = property in self.transientData[self.name] ? "" : obj[property];
+                                // console.log(property, self.transientData[self.name], 'porpRow')
                         }
                     }
                 }
-                recurse(this.transientData, this.transientData[this.name][0]);*/
+    
+                recurse(this.transientData);
+                // recurse(this.transientData, this.transientData[this.name]);
+                // console.log(this.transientData, 'prop123123')
             }
         },
         fields: {
@@ -218,24 +212,7 @@ export default {
             deep: true,
             handler() {
                 if (this.url_grid == undefined) {
-                    if (this.transientData['edit'] == "1") {
-                        /*this.defaultColDef.editable = true
-                        this.updateDataGrid(this.transientData[this.name]);
-                        console.log(this.transientData[this.name], 'edit_btn')
-                        this.defaultColDef.editable = false
-                        let recurse = function (obj, tdata) {
-                            for (var property in obj) {
-                                if (obj.hasOwnProperty(property)) {
-                                    if (obj[property] != null && typeof obj[property] === "object")
-                                        recurse(obj[property], tdata);
-                                    else
-                                        obj[property] = property in tdata ? "" : obj[property];
-                                }
-                            }
-                        }
-                        recurse(this.transientData, this.transientData[this.name][0]);*/
-                        this.transientData['edit'] = null
-                    }
+                    this.updateDataGrid(this.transientData[this.name]);
                 }
             },
         },
@@ -263,7 +240,6 @@ export default {
                     if (this.transientData && this.transientData['rowIndex']) {
                         this.transientData['rowIndex'] = params.rowIndex
                     }
-                    
                     let recurse = function (obj) {
                         for (var property in obj) {
                             if (obj.hasOwnProperty(property)) {
@@ -274,7 +250,9 @@ export default {
                             }
                         }
                     }
+                    
                     recurse(this.transientData);
+                    
                     
                     //old function
                     /*let recurse = function (data) {
@@ -316,11 +294,10 @@ export default {
                 }
             }
             
-            
         },
         updateDataGrid(data) {
             this.rowData = data;
-            /*this.columnDefs.map(param => {
+            this.columnDefs.map(param => {
                 if (param.date == true) {
                     this.rowData.forEach(row => {
                         if (row[param.field]) {
@@ -328,7 +305,9 @@ export default {
                         }
                     })
                 }
-            });*/
+            });
+            
+            // this.transientData['edit'] = null
         },
         onPageSizeChanged(event) {
             this.gridApi.paginationSetPageSize(Number(event.target.value));
