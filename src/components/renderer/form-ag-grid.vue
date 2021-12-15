@@ -46,6 +46,7 @@ export default {
     },
     data() {
         return {
+            trans_option: this.transientData[this.name],
             self: this,
             gridApi: null,
             columnApi: null,
@@ -135,35 +136,15 @@ export default {
         this.gridApi = this.gridOptions.api;
     },
     
-/*    computed: {
-        editButton: function () {
-            console.log(this.transientData[this.name],'123');
-            return this.transientData[this.name];
+    /*computed: {
+        data_x: {
+            get: function () {
+                console.log(this.trans_option,'aaaaaaaaaaa');
+                return new Data();
+            }
         }
     },*/
     watch: {
-        rowData: {
-            handler() {
-                console.log('hell')
-                // this.updateDataGrid(this.transientData[this.name]);
-                var self = this;
-                let recurse = function (obj) {
-                    for (var property in obj) {
-                        if (obj.hasOwnProperty(property)) {
-                            if (obj[property] != null && typeof obj[property] === "object")
-                                recurse(obj[property]);
-                            else
-                                obj[property] = property in self.transientData[self.name] ? "" : obj[property];
-                                // console.log(property, self.transientData[self.name], 'porpRow')
-                        }
-                    }
-                }
-    
-                recurse(this.transientData);
-                // recurse(this.transientData, this.transientData[this.name]);
-                // console.log(this.transientData, 'prop123123')
-            }
-        },
         fields: {
             handler() {
                 this.columnDefs = [];
@@ -212,8 +193,33 @@ export default {
             deep: true,
             handler() {
                 if (this.url_grid == undefined) {
+                    this.trans_option = this.transientData[this.name];
+                    //console.log(this.trans_option,'111111111111');
                     this.updateDataGrid(this.transientData[this.name]);
                 }
+            },
+        },
+        trans_option: {
+            deep: true,
+            handler() {
+                var self = this;
+                let recurse = function (obj) {
+                    for (var property in obj) {
+                        if (obj.hasOwnProperty(property)) {
+                            if (obj[property] != null && typeof obj[property] === "object"){
+                                if(property != self.name){
+                                    recurse(obj[property]);
+                                }
+                            }
+                            else{
+                                //console.log(property , self.transientData[self.name],'456');
+                                obj[property] = property in self.transientData[self.name][0] ? "" : obj[property];
+                            }
+                        }
+                    }
+                }
+                recurse(this.transientData);
+                //console.log(this.transientData[this.name],'9999999999');
             },
         },
     },
