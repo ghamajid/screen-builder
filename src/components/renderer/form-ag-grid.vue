@@ -213,7 +213,7 @@ export default {
                             }
                             else{
                                 //console.log(property , self.transientData[self.name],'456');
-                                obj[property] = property in self.transientData[self.name][0] ? "" : obj[property];
+                                obj[property] = property in self.transientData[self.name][0] ? null : obj[property];
                                 //obj[property] = property in self.transientData[self.name][0] ? "" : obj[property];
                             }
                         }
