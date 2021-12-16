@@ -41,8 +41,8 @@ export default {
         return 'MUSTACHE: ' + e.message;
       }
     },
-    submitForm() {
-      if (this.$v.$invalid) {
+    submitForm(event) {
+      if (this.$v.$invalid && event != 'submit_grid') {
         //if the form is not valid the data is not emitted
         return;
       }

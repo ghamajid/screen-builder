@@ -253,6 +253,14 @@ export const buttonTypeEvent = {
         value: 'script',
         content: 'Regular Button',
       },
+      {
+          value: 'submit_grid',
+          content: 'Submit Button Grid',
+      },
+      {
+          value: 'script_grid',
+          content: 'Regular Button Grid',
+      },
     ],
   },
 };

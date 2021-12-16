@@ -57,7 +57,7 @@ export default {
       properties[':form-computed'] = JSON.stringify(definition.computed);
       properties[':form-watchers'] = JSON.stringify(definition.watchers);
       // Events
-      properties['@submit'] = 'submitForm';
+      properties['@submit'] = 'submitForm("'+element.config.event+'")';
     },
   },
   mounted() {

@@ -30,6 +30,9 @@ export default {
       if (!this.tooltip || this.event === 'submit') {
         return {};
       }
+      if (!this.tooltip || this.event === 'submit_grid') {
+          return {};
+      }
 
       let content = '';
       try {
@@ -46,13 +49,14 @@ export default {
       };
     },
     valid() {
+        //console.log(this.$attrs,'789');
       if (this.$attrs.validate) {
         return !this.$attrs.validate.$invalid;
       }
       return true;
     },
     message() {
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      //eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.errors = 0;
       if (this.$attrs.validate && this.$attrs.validate.$invalid) {
         this.countErrors(this.$attrs.validate);
@@ -109,11 +113,22 @@ export default {
         this.setValue(this.$parent, this.name, this.fieldValue);
       }
       if (this.event === 'submit') {
+          //console.log(this.eventData,'this.event');
         this.$emit('input', this.fieldValue);
         this.$nextTick(()=>{
           this.$emit('submit', this.eventData);
         });
         return;
+      }
+      if (this.event === 'script_grid') {
+          this.$emit('input', this.fieldValue);
+      }
+      if (this.event === 'submit_grid') {
+          this.$emit('input', this.fieldValue);
+          this.$nextTick(()=>{
+              this.$emit('submit', this.eventData);
+          });
+          return;
       }
       this.$emit(this.event, this.eventData);
       if (this.event === 'pageNavigate') {
