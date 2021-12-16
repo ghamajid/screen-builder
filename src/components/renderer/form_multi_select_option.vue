@@ -93,8 +93,6 @@
         ],
         data() {
             return {
-
-                fillSelectListOptionscount: 1,
                 info: [],
                 lastRequest: {},
                 // apiClient: window.ProcessMaker.apiClient.create(),
@@ -156,8 +154,8 @@
             },
             fillSelectListOptions(val) {
 
-                if (this.fillSelectListOptionscount === 1 || val) {
-                    this.fillSelectListOptionscount++
+
+
 
                     if (this.options.dataSource && this.options.dataSource === 'provideData') {
 
@@ -217,7 +215,6 @@
                     if (this.options.dataSource && this.options.dataSource === 'dataConnector') {
                         this.doDebounce(this.sourceConfig);
                     }
-                }
             },
             /**
              * @param {*|*[]} list, array of objects
