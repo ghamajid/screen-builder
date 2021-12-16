@@ -121,7 +121,9 @@ export default {
         return;
       }
       if (this.event === 'script_grid') {
-          this.$emit('input', this.fieldValue);
+          const trueValue = this.fieldValue || '1';
+          const value = (this.value == trueValue) ? null : trueValue;
+          this.$emit('input', value);
       }
       if (this.event === 'submit_grid') {
           this.$emit('input', this.fieldValue);
