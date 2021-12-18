@@ -151,12 +151,7 @@ import _ from 'lodash';
 import { dateUtils } from '@processmaker/vue-form-elements';
 //import ScreenRenderer from '../screen-renderer.vue';
 
-const jsonOptionsActionsColumn = {
-  key: '__actions',
-  label: 'Actions',
-  thClass: 'text-right',
-  tdClass: 'text-right',
-};
+
 
 export default {
   mixins: [mustacheEvaluation],
@@ -245,6 +240,12 @@ export default {
     },
     // The fields used for our vue table
     tableFields() {
+      const jsonOptionsActionsColumn = {
+          key: '__actions',
+          label: this.$t("Actions"),
+          thClass: 'text-right',
+          tdClass: 'text-right',
+      };
       const fields = this.getTableFieldsFromDataSource();
 
       if (this.editable && !this.selfReferenced) {
