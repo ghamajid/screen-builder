@@ -2,7 +2,7 @@ export default {
   mounted() {
     this.extensions.push({
       onloadproperties({ element, properties }) {
-        console.log(element,'element');
+        //console.log(element,'element');
         if (element.component === 'FormButton' && element.config.event === 'submit') {
           properties[':validate'] = '$v.vdata';
         }

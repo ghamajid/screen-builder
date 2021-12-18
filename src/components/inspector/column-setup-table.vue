@@ -33,7 +33,7 @@
                             />
                         </li>
                         <li>
-                            <label>{{ $t('date') }}</label>
+                            <label>{{ $t('Date') }}</label>
                             <b-form-checkbox
                                     id="option-date"
                                     v-model="optionDate"

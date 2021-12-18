@@ -5,9 +5,9 @@
         <h4>{{ label }}</h4>
       </div>
       <div class="col text-right">
-        <button class="btn btn-primary" v-if="editable && !selfReferenced" @click="showAddForm" data-cy="add-row">
+        <!--<button class="btn btn-primary" v-if="editable && !selfReferenced" @click="showAddForm" data-cy="add-row">
           {{ $t('Add') }}
-        </button>
+        </button>-->
       </div>
     </div>
     <div v-if="!value">
