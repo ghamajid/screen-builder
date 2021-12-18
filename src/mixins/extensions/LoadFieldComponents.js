@@ -56,8 +56,10 @@ export default {
       properties[':form-config'] = this.byRef(this.configRef || definition.config);
       properties[':form-computed'] = JSON.stringify(definition.computed);
       properties[':form-watchers'] = JSON.stringify(definition.watchers);
+     // properties[':form-watchers'] = '($v.$invalid)?' + JSON.stringify(definition.watchers) + ':"[]"';;
       // Events
       properties['@submit'] = 'submitForm("'+element.config.event+'")';
+        //console.log(properties,'123456');
     },
   },
   mounted() {
