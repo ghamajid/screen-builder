@@ -65,6 +65,8 @@ Validator.register('custom_meli_code', function(code) {
             return true
         }
         return false;
+    }else{
+        return false;
     }
 }, 'Invalid code meli');
 
@@ -84,6 +86,8 @@ Validator.register('custom_shenase_meli_hoghoghi', function(code) {
             s+=(d+parseInt(code.substr(i,1),10))*z[i%5];
         s=s%11;if(s==10) s=0;
         return (c==s);
+    }else{
+        return false;
     }
 }, 'Invalid shenase meli');
 
@@ -113,6 +117,8 @@ Validator.register('custom_meli_code', function(code) {
             return true
         }
         return false;
+    }else{
+        return false;
     }
 }, 'Invalid code meli');
 
@@ -132,5 +138,7 @@ Validator.register('custom_shenase_meli_hoghoghi', function(code) {
             s+=(d+parseInt(code.substr(i,1),10))*z[i%5];
         s=s%11;if(s==10) s=0;
         return (c==s);
+    }else{
+        return false;
     }
 }, 'Invalid shenase meli');

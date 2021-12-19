@@ -84,6 +84,8 @@ export const custom_meli_code = (code) => {
           return true
       }
       return false;
+  }else{
+      return false;
   }
 };
 
@@ -102,6 +104,8 @@ export const custom_shenase_meli_hoghoghi = (code) => {
             s+=(d+parseInt(code.substr(i,1),10))*z[i%5];
         s=s%11;if(s==10) s=0;
         return (c==s);
+    }else{
+        return false;
     }
 };
   
