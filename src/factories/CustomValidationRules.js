@@ -87,7 +87,7 @@ Validator.register('custom_shenase_meli_hoghoghi', function(code) {
         s=s%11;if(s==10) s=0;
         return (c==s);
     }else{
-        return false;
+        return true;
     }
 }, 'Invalid shenase meli');
 
@@ -139,6 +139,6 @@ Validator.register('custom_shenase_meli_hoghoghi', function(code) {
         s=s%11;if(s==10) s=0;
         return (c==s);
     }else{
-        return false;
+        return true;
     }
 }, 'Invalid shenase meli');

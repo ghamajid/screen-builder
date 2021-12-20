@@ -105,7 +105,7 @@ export const custom_shenase_meli_hoghoghi = (code) => {
         s=s%11;if(s==10) s=0;
         return (c==s);
     }else{
-        return false;
+        return true;
     }
 };
   
