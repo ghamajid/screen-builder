@@ -174,7 +174,7 @@ export default {
               }
               return false;
           }else{
-              return false;
+              return true;
           }
       }, 'Invalid code meli');
 

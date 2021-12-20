@@ -85,7 +85,7 @@ export const custom_meli_code = (code) => {
       }
       return false;
   }else{
-      return false;
+      return true;
   }
 };
 

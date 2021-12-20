@@ -66,7 +66,7 @@ Validator.register('custom_meli_code', function(code) {
         }
         return false;
     }else{
-        return false;
+        return true;
     }
 }, 'Invalid code meli');
 
@@ -118,7 +118,7 @@ Validator.register('custom_meli_code', function(code) {
         }
         return false;
     }else{
-        return false;
+        return true;
     }
 }, 'Invalid code meli');
 
