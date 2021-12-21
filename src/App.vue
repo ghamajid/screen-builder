@@ -135,14 +135,17 @@
           <button type="button" class="btn btn-light btn-sm" data-cy="open-console">
             <i class="fas fa-angle-double-up"/>
             {{ $t('Open Console') }}
-            <span v-if="allErrors === 0" class="badge badge-success">
+            <span v-if="allErrors === 0 && allWarnings === 0" class="badge badge-success">
               <i class="fas fa-check-circle "/>
-              {{ $t(allErrors) }}
             </span>
 
-            <span v-else class="badge badge-danger">
+            <span v-if="allErrors > 0" class="badge badge-danger">
               <i class="fas fa-times-circle "/>
               {{ $t(allErrors) }}
+            </span>
+            <span v-if="allWarnings > 0" class="badge badge-warning">
+              <i class="fas fa-exclamation-triangle "/>
+              {{ $t(allWarnings) }}
             </span>
           </button>
         </div>
@@ -152,6 +155,18 @@
             <i class="fas fa-times-circle text-danger mr-3"/>
             {{ $t('Invalid JSON Data Object') }}
           </div>
+          <b-button variant="link" class="validation__message d-flex align-items-center p-3"
+            v-for="(validation,index) in warnings"
+            :key="index"
+            @click="focusInspector(validation)"
+            data-cy="focus-inspector"
+          >
+            <i class="fas fa-exclamation-triangle text-warning d-block mr-3"/>
+            <span class="ml-2 text-dark font-weight-bold text-left">
+              {{ validation.reference }}
+              <span class="d-block font-weight-normal">{{ validation.message }}</span>
+            </span>
+          </b-button>
           <b-button variant="link" class="validation__message d-flex align-items-center p-3"
             v-for="(validation,index) in validationErrors"
             :key="index"
@@ -164,7 +179,7 @@
               <span class="d-block font-weight-normal">{{ validation.message }}</span>
             </span>
           </b-button>
-          <span v-if="!allErrors" class="d-flex justify-content-center align-items-center h-100">{{ $t('No Errors') }}</span>
+          <span v-if="!allErrors && !allWarnings" class="d-flex justify-content-center align-items-center h-100">{{ $t('No Errors') }}</span>
         </div>
       </b-card-footer>
     </b-card>
@@ -188,7 +203,8 @@ import VueFormRenderer from './components/vue-form-renderer.vue';
 import VueJsonPretty from 'vue-json-pretty';
 import MonacoEditor from 'vue-monaco';
 import canOpenJsonFile from './mixins/canOpenJsonFile';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, debounce } from 'lodash';
+import 'vue-json-pretty/lib/styles.css';
 
 // Bring in our initial set of controls
 import controlConfig from './form-builder-controls';
@@ -239,6 +255,7 @@ export default {
   mixins: [canOpenJsonFile],
   data() {
     return {
+      numberOfElements: 0,
       preview: {
         config: [
           {
@@ -339,6 +356,9 @@ export default {
 
       return this.validationErrors.length + errorCount;
     },
+    allWarnings() {
+      return this.warnings.length;
+    },
     validationErrors() {
       if (!this.toggleValidation) {
         return [];
@@ -352,8 +372,27 @@ export default {
 
       return validationErrors;
     },
+    warnings() {
+      const warnings = [];
+      // Check if screen has watchers that use scripts
+      const watchersWithScripts = this.watchers
+        .filter(watcher => watcher.script.id.substr(0, 7) === 'script-').length;
+      if (watchersWithScripts > 0) {
+        warnings.push({
+          message: this.$t('Using watchers with Scripts can slow the performance of your screen.'),
+        });
+      }
+      // Count form elements
+      if (this.numberOfElements >= 25) {
+        warnings.push({
+          message: this.$t('We recommend using fewer than 25 form elements in your screen for optimal performance.'),
+        });
+      }
+      return warnings;
+    },
   },
   mounted() {
+    this.countElements = debounce(this.countElements, 2000);
     if (globalObject.ProcessMaker && globalObject.ProcessMaker.user && globalObject.ProcessMaker.user.lang) {
       Validator.useLang(globalObject.ProcessMaker.user.lang);
     }
@@ -366,18 +405,23 @@ export default {
         config.rendererComponent,
         config.rendererBinding,
         config.builderComponent,
-        config.builderBinding,
+        config.builderBinding
       );
     });
 
     this.loadFromLocalStorage();
   },
   methods: {
+    countElements() {
+      this.$refs.renderer.countElements(this.config).then(allElements => {
+        this.numberOfElements = allElements.length;
+      });
+    },
     changeMode(mode) {
       this.mode = mode;
       this.previewData = this.previewInputValid ? JSON.parse(this.previewInput) : {};
+      this.rendererKey++;
       if (mode == 'preview') {
-        this.rendererKey++;
         this.preview.config = cloneDeep(this.config);
         this.preview.computed = cloneDeep(this.computed);
         this.preview.customCSS = cloneDeep(this.customCSS);
@@ -448,7 +492,14 @@ export default {
         }
 
         // Validation will not run until you call passes/fails on it
-        if (!validator.passes()) {
+        let passes;
+        try {
+          passes = validator.passes();
+        } catch (err) {
+          // Prevent errors during validation break the screen builder loading
+          passes = false;
+        }
+        if (!passes) {
           Object.keys(validator.errors.errors).forEach(field => {
             validator.errors.errors[field].forEach(error => {
               validationErrors.push({
@@ -478,6 +529,8 @@ export default {
     },
     updateConfig(newConfig) {
       this.config = newConfig;
+      // Recount number of elements
+      this.countElements();
     },
     previewSubmit() {
       alert('Preview Form was Submitted');
@@ -499,7 +552,7 @@ export default {
     $validation-panel-bottom: 3.5rem;
     $validation-panel-right: 0;
     $validation-panel-height: 10rem;
-    $validation-panel-width: 21.35rem;
+    $validation-panel-width: 41rem;
     $primary-white: #f7f7f7;
 
     $preview-inspector-width: 265px;

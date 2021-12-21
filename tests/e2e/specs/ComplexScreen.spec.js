@@ -109,20 +109,20 @@ describe('Complex screen', () => {
           },
         ],
         'page1': null,
-        'form_input_5': null,
+        'form_input_5': '',
         'form_select_list_4': null,
         'form_date_picker_7': null,
         'form_record_list_3': null,
         'page2': null,
-        'form_text_area_4': null,
-        'form_checkbox_4': null,
+        'form_text_area_4': '',
+        'form_checkbox_4': false,
         'form_date_picker_8': null,
-        'form_input_4': null,
+        'form_input_4': '',
         'form_date_picker_5': null,
-        'form_text_area_3': null,
+        'form_text_area_3': '',
         'form_date_picker_6': null,
         'form_select_list_3': null,
-        'form_checkbox_3': null,
+        'form_checkbox_3': false,
       });
     });
 
@@ -451,8 +451,8 @@ describe('Complex screen', () => {
     cy.get('[data-cy=preview-content] [name=form_checkbox_5]').parent().click();
     cy.get('[data-cy=preview-content] [name=form_checkbox_6]').should('be.checked');
     cy.get('[data-cy=preview-content] [name=form_select_list_3]').eq(1).click();
-    cy.get('[data-cy=preview-content] [name=form_select_list_4]').eq(1).click();
-    cy.get('[data-cy=preview-content] [name=form_select_list_4]').eq(2).click();
+    cy.get('[data-cy=preview-content] [name=form_select_list_4]').eq(1).click(); // Select b
+    cy.get('[data-cy=preview-content] [name=form_select_list_4]').eq(2).click(); // Select c
     // record list - complete new fields
     cy.get('[data-cy=preview-content] [data-cy=screen-field-form_record_list_1] [data-cy=edit-row]').click();
     cy.get('[data-cy=preview-content] [data-cy=screen-field-form_record_list_1] [data-cy=modal-edit] [name=email]').clear().type('thomas@processmaker.com');
@@ -581,6 +581,7 @@ describe('Complex screen', () => {
         'page1': 1,
         'form_input_5': 123.45,
         'form_select_list_4': [
+          'b',
           'c',
         ],
         'form_date_picker_7': now.toISOString(),
@@ -597,7 +598,7 @@ describe('Complex screen', () => {
         'form_checkbox_3': true,
         'form_input_2': 123,
         'form_input_6': moment(now).format('YYYY-MM-DD HH:mm'),
-        'form_text_area_2': null,
+        'form_text_area_2': '',
         'form_select_list_2': [],
         'form_input_3': 12345,
         'form_input_7': moment(now).format('YYYY-MM-DD'),

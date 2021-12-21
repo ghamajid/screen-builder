@@ -98,7 +98,8 @@
       </div>
 
       <draggable
-        class="h-100 custom-css-scope"
+        data-cy="editor-content"
+        class="h-100"
         ghost-class="form-control-ghost"
         :value="config[currentPage].items"
         @input="updateConfig"
@@ -250,13 +251,16 @@
       header-close-content="&times;"
       data-cy="add-page-modal"
     >
+      <required />
       <form-input v-model="addPageName"
         :name="$t('Page Name')"
-        :label="$t('Page Name')"
+        :label="$t('Page Name') + ' *'"
         :helper="$t('The name of the new page to add')"
         validation="unique-page-name|required"
         ref="addPageInput"
         data-cy="add-page-name"
+        required
+        aria-required="true"
       />
     </b-modal>
 
@@ -269,11 +273,15 @@
       ok-variant="btn btn-secondary ml-2"
       header-close-content="&times;"
     >
+      <required />
       <form-input v-model="editPageName"
-        :label="$t('Page Name')"
+        :name="$t('Page Name')"
+        :label="$t('Page Name') + ' *'"
         :helper="$t('The new name of the page')"
         validation="unique-page-name|required"
         ref="editPageInput"
+        required
+        aria-required="true"
       />
     </b-modal>
 
@@ -334,7 +342,7 @@ Validator.register(
     }
     return false;
   },
-  'Columns must add to 12',
+  'Columns must add to 12'
 );
 
 import {
@@ -348,6 +356,7 @@ import {
 } from '@processmaker/vue-form-elements';
 
 import RequiredCheckbox from './utils/required-checkbox';
+import MultipleUploadsCheckbox from './utils/multiple-uploads-checkbox';
 
 import '@processmaker/vue-form-elements/dist/vue-form-elements.css';
 import { formTypes } from '@/global-properties';
@@ -388,6 +397,7 @@ export default {
     FormHtmlEditor,
     FormHtmlViewer,
     RequiredCheckbox,
+    MultipleUploadsCheckbox,
     ...inspector,
     ...renderer,
   },
@@ -434,10 +444,10 @@ export default {
       return this;
     },
     canUndo() {
-      return this.$store.getters[`page-${this.currentPage}/canUndo`];
+      return this.$store.getters['undoRedoModule/canUndo'];
     },
     canRedo() {
-      return this.$store.getters[`page-${this.currentPage}/canRedo`];
+      return this.$store.getters['undoRedoModule/canRedo'];
     },
     displayDelete() {
       return this.config.length > 1;
@@ -492,7 +502,7 @@ export default {
         if (e.inspector[i].config.options) {
           for (var io in e.inspector[i].config.options) {
             e.inspector[i].config.options[io].content = this.$t(
-              e.inspector[i].config.options[io].content,
+              e.inspector[i].config.options[io].content
             );
           }
         }
@@ -661,18 +671,19 @@ export default {
       });
     },
     updateState() {
-      const items = this.config[this.currentPage].items;
-      this.$store.dispatch(`page-${this.currentPage}/pushState`, JSON.stringify(items));
+      this.$store.dispatch('undoRedoModule/pushState', {'config': JSON.stringify(this.config), 'currentPage': this.currentPage});
     },
     undo() {
       this.inspect();
-      this.$store.dispatch(`page-${this.currentPage}/undo`);
-      this.config[this.currentPage].items = JSON.parse(this.$store.getters[`page-${this.currentPage}/currentState`]);
+      this.$store.dispatch('undoRedoModule/undo');
+      this.config = JSON.parse(this.$store.getters['undoRedoModule/currentState'].config);
+      this.currentPage = JSON.parse(this.$store.getters['undoRedoModule/currentState'].currentPage);
     },
     redo() {
       this.inspect();
-      this.$store.dispatch(`page-${this.currentPage}/redo`);
-      this.config[this.currentPage].items = JSON.parse(this.$store.getters[`page-${this.currentPage}/currentState`]);
+      this.$store.dispatch('undoRedoModule/redo');
+      this.config = JSON.parse(this.$store.getters['undoRedoModule/currentState'].config);
+      this.currentPage = JSON.parse(this.$store.getters['undoRedoModule/currentState'].currentPage);
     },
     updateConfig(items) {
       this.config[this.currentPage].items = items;
@@ -737,12 +748,12 @@ export default {
       this.config.push({ name: this.addPageName, items: [] });
       this.currentPage = this.config.length - 1;
       this.addPageName = '';
-      this.$store.registerModule(`page-${this.currentPage}`, undoRedoModule);
       this.updateState();
     },
     deletePage() {
-      this.currentPage = 0;
       this.config.splice(this.pageDelete, 1);
+      this.currentPage = (this.pageDelete - 1 >= 0 ? this.pageDelete - 1 : 0);
+      this.$store.dispatch('undoRedoModule/pushState', {'config': JSON.stringify(this.config), 'currentPage': this.currentPage, 'deletedPage': true});
     },
     inspect(element = {}) {
       this.inspection = element;
@@ -772,7 +783,7 @@ export default {
       if (Array.isArray(copy.config.options)) {
         for (var io in copy.config.options) {
           copy.config.options[io].content = this.$t(
-            copy.config.options[io].content,
+            copy.config.options[io].content
           );
         }
       }
@@ -810,13 +821,10 @@ export default {
           .filter(name => name !== this.originalPageName);
         return !pageNames.includes(value);
       },
-      this.$t('Must be unique'),
+      this.$t('Must be unique')
     );
-
-    this.config.forEach((config, index) => {
-      this.$store.registerModule(`page-${index}`, undoRedoModule);
-      this.$store.dispatch(`page-${index}/pushState`, JSON.stringify(config.items));
-    });
+    this.$store.registerModule('undoRedoModule', undoRedoModule);
+    this.$store.dispatch('undoRedoModule/pushState', {'config': JSON.stringify(this.config), 'currentPage': this.currentPage});
     this.initiateLanguageSupport();
   },
   mounted() {

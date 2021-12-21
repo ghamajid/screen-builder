@@ -56,6 +56,7 @@
         v-model="currentPage"
         :total-rows="tableData.total"
         :per-page="perPage"
+        :aria-label="$t('Pagination')"
         aria-controls="vuetable"
         @change="onChangePage"
       />
@@ -151,11 +152,16 @@ import _ from 'lodash';
 import { dateUtils } from '@processmaker/vue-form-elements';
 //import ScreenRenderer from '../screen-renderer.vue';
 
-
+const jsonOptionsActionsColumn = {
+  key: '__actions',
+  label: 'Actions',
+  thClass: 'text-right',
+  tdClass: 'text-right',
+};
 
 export default {
   mixins: [mustacheEvaluation],
-  props: ['name', 'label', 'fields', 'value', 'editable', '_config', 'form', 'validationData', 'formConfig', 'formComputed', 'formWatchers'],
+  props: ['transientData','name', 'label', 'fields', 'value', 'editable', '_config', 'form', 'validationData', 'formConfig', 'formComputed', 'formWatchers'],
   data() {
     return {
       editFormVersion: 0,
@@ -199,14 +205,12 @@ export default {
       };
     },
     parentObj() {
-        console.log('transientData','value');
       let parent = this.$parent;
       while ('transientData' in parent.$props) {
         parent = parent.$parent;
       }
       return parent;
     },
-    // eslint-disable-next-line vue/return-in-computed-property
     dataManager() {
       if (this.$refs.vuetable) {
         let pagination = this.$refs.vuetable.makePagination(this.value.length);
@@ -225,7 +229,6 @@ export default {
       let from = this.paginatorPage - 1;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.lastPage = Math.ceil(value.length / this.perPage);
-      console.log(value,'value');
       let data = {
         total: value.length,
         per_page: this.perPage,
@@ -241,12 +244,6 @@ export default {
     },
     // The fields used for our vue table
     tableFields() {
-      const jsonOptionsActionsColumn = {
-          key: '__actions',
-          label: this.$t("Actions"),
-          thClass: 'text-right',
-          tdClass: 'text-right',
-      };
       const fields = this.getTableFieldsFromDataSource();
 
       if (this.editable && !this.selfReferenced) {
@@ -259,6 +256,31 @@ export default {
     selfReferenced() {
       return this.form && this.form === this.$parent.currentPage;
     },
+  },
+  watch: {
+      value: {
+          deep: true,
+          handler() {
+              var self = this;
+              let recurse = function (obj) {
+                  for (var property in obj) {
+                      if (obj.hasOwnProperty(property)) {
+                          if (obj[property] != null && typeof obj[property] === "object"){
+                              if(property != self.name){
+                                  recurse(obj[property]);
+                              }
+                          }
+                          else{
+                              //console.log(property , self.transientData[self.name],'456');
+                              obj[property] = property in self.value[0] ? null : obj[property];
+                              //obj[property] = property in self.transientData[self.name][0] ? "" : obj[property];
+                          }
+                      }
+                  }
+              }
+              recurse(this.transientData);
+          },
+      },
   },
   methods: {
     formatIfDate(string) {
@@ -343,7 +365,7 @@ export default {
       // Reset edit to be a copy of our data model item
       this.editItem = JSON.parse(JSON.stringify(this.value[pageIndex]));
       this.editIndex = pageIndex;
-      // rebuild the edit screen to avoid 
+      // rebuild the edit screen to avoid
       this.editFormVersion++;
       this.$nextTick(() => {
         this.setUploadDataNamePrefix(pageIndex);
