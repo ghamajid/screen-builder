@@ -93,6 +93,7 @@
         ],
         data() {
             return {
+                isOk:0,
                 info: [],
                 lastRequest: {},
                 // apiClient: window.ProcessMaker.apiClient.create(),
@@ -167,8 +168,9 @@
                             // eslint-disable-next-line no-unused-vars
                             requestOptions = [];
                         }
-                        //console.log(val,'val');
-                        if (this.options.dataUrl && this.options.dataDependentVariable && val) {
+                        if (this.options.dataUrl && (val || this.isOk == 0)) {
+
+                            this.isOk++;
                             var data_get = (this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
                             window.ProcessMaker.apiClient
                                 .post(this.options.dataUrl, {select_content: val  ,var_id: data_get })
