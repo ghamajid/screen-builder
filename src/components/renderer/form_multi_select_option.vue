@@ -167,7 +167,8 @@
                             // eslint-disable-next-line no-unused-vars
                             requestOptions = [];
                         }
-                        if (this.options.dataUrl && this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) {
+                        //console.log(val,'val');
+                        if (this.options.dataUrl && this.options.dataDependentVariable && val) {
                             var data_get = (this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
                             window.ProcessMaker.apiClient
                                 .post(this.options.dataUrl, {select_content: val  ,var_id: data_get })
