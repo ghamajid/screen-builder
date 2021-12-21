@@ -153,10 +153,6 @@
                 this.optionsFromDataSource();
             },
             fillSelectListOptions(val) {
-
-
-
-
                     if (this.options.dataSource && this.options.dataSource === 'provideData') {
 
                         this.selectListOptions = this.options && this.options.optionsList ? this.options.optionsList : [];
@@ -171,9 +167,8 @@
                             // eslint-disable-next-line no-unused-vars
                             requestOptions = [];
                         }
-                        if (this.options.dataUrl) {
+                        if (this.options.dataUrl && this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) {
                             var data_get = (this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
-
                             window.ProcessMaker.apiClient
                                 .post(this.options.dataUrl, {select_content: val  ,var_id: data_get })
                                 .then((response) => {
@@ -189,10 +184,8 @@
                         }
                     }
                     if (this.options.dataSource && this.options.dataSource === 'dataVariable') {
-
                         let recurse = function (obj,options) {
                             for (var property in obj) {
-
                                 if (obj.hasOwnProperty(property)) {
                                     if (obj[property] != null && typeof obj[property] === "object"){
                                         if(options.dataVariableName == property){
@@ -206,12 +199,7 @@
                         }
 
                         this.selectListOptions = (recurse(this.transientData,this.options))?recurse(this.transientData,this.options):[];
-                        /*if(this.transientData && this.transientData[this.options.dataVariableName] && this.transientData[this.options.dataVariableName].length){
-                            this.selectListOptions = this.transientData[this.options.dataVariableName];
-                           // this.transientData[this.name] = this.transientData[this.options.dataVariableName];
-                        }*/
                     }
-
                     if (this.options.dataSource && this.options.dataSource === 'dataConnector') {
                         this.doDebounce(this.sourceConfig);
                     }
