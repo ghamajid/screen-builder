@@ -161,7 +161,7 @@ const jsonOptionsActionsColumn = {
 
 export default {
   mixins: [mustacheEvaluation],
-  props: ['name', 'label', 'fields', 'value', 'editable', '_config', 'form', 'validationData', 'formConfig', 'formComputed', 'formWatchers'],
+  props: ['transientData','name', 'label', 'fields', 'value', 'editable', '_config', 'form', 'validationData', 'formConfig', 'formComputed', 'formWatchers'],
   data() {
     return {
       editFormVersion: 0,
@@ -229,7 +229,6 @@ export default {
       let from = this.paginatorPage - 1;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.lastPage = Math.ceil(value.length / this.perPage);
-
       let data = {
         total: value.length,
         per_page: this.perPage,
@@ -257,6 +256,31 @@ export default {
     selfReferenced() {
       return this.form && this.form === this.$parent.currentPage;
     },
+  },
+  watch: {
+      value: {
+          deep: true,
+          handler() {
+              var self = this;
+              let recurse = function (obj) {
+                  for (var property in obj) {
+                      if (obj.hasOwnProperty(property)) {
+                          if (obj[property] != null && typeof obj[property] === "object"){
+                              if(property != self.name){
+                                  recurse(obj[property]);
+                              }
+                          }
+                          else{
+                              //console.log(property , self.transientData[self.name],'456');
+                              obj[property] = property in self.value[0] ? null : obj[property];
+                              //obj[property] = property in self.transientData[self.name][0] ? "" : obj[property];
+                          }
+                      }
+                  }
+              }
+              recurse(this.transientData);
+          },
+      },
   },
   methods: {
     formatIfDate(string) {
