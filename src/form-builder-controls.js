@@ -178,9 +178,9 @@ export default [
     rendererBinding: 'FormMultiSelectOption',
     control: {
       label: 'Select List',
-      component: 'FormSelectList',
-      'editor-component': 'FormSelectList',
-      'editor-control': 'FormSelectList',
+      component: 'FormMultiSelectOption',
+      'editor-component': 'FormMultiSelectOption',
+      'editor-control': 'FormMultiSelectOption',
       config: {
         icon: 'fas fa-angle-double-down',
         label: 'New Select List',
