@@ -5,7 +5,7 @@
       type="text"
       :class="(error || (validator && validator.errorCount)? 'form-control form-control-lg is-invalid': 'form-control form-control-lg')"
       v-model="value"
-      :id="name"
+      :id="num_element_id"
       placeholder="select date"
     >
     <date-picker
@@ -16,7 +16,7 @@
       :disabled="readonly"
       :max="maxDateChange"
       :min="minDateChange"
-      :element="name"
+      :element="num_element_id"
     />
     <display-errors v-if="error || (validator && validator.errorCount)" :name="name" :error="error" :validator="validator" class="invalid-feedback d-block"/>
     <small v-if="helper" class="form-text text-muted" v-html="helper"/>
@@ -93,6 +93,7 @@ export default {
       date: '',
       minDateChange: '',
       maxDateChange: '',
+      num_element_id: this.name + new Date().getUTCMilliseconds()
     };
   },
 };

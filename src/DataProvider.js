@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 export default {
   screensCache: [],
+  cachedScreenPromises: [],
 
   install(Vue) {
     Vue.prototype.$dataProvider = this;
@@ -45,15 +46,18 @@ export default {
   post(...args) {
     return this.apiInstance().post(...args);
   },
+  delete(...args) {
+    return this.apiInstance().delete(...args);
+  },
   token() {
     return localStorage.getItem('token');
   },
   baseURL() {
     return localStorage.getItem('baseURL');
   },
-  
+
   // Methods below are used in the components
-  
+
   getTasks(params) {
     const endpoint = _.get(window, 'PM4ConfigOverrides.getTasksEndpoint', '/tasks');
     return this.get(endpoint + params).then(response => {
@@ -65,6 +69,10 @@ export default {
   },
   addNestedScreenCache(nested) {
     nested.forEach(screen => {
+      if (screen.screen_id) {
+        // It's from a screen version, so reference it by it's parent id
+        screen.id = screen.screen_id;
+      }
       const index = this.screensCache.findIndex(s => s.id == screen.id);
       if (index > -1) {
         this.screensCache.splice(index, 1, screen);
@@ -73,35 +81,41 @@ export default {
       }
     });
   },
-  getScreen(id, query = '') {
-    const endpoint = _.get(window, 'PM4ConfigOverrides.getScreenEndpoint', '/screens');
-    return new Promise((resolve, reject) => {
-      const cache = this.screensCache.find(screen => screen.id == id);
-      if (cache) {
-        resolve({data: cache});
-      } else {
-        const request = this.get(endpoint + `/${id}${query}`);
-        request.then(response => {
-          if (response.data.nested) {
-            this.addNestedScreenCache(response.data.nested);
-          }
-          resolve(response);
-        }).catch(response => reject(response));
-      }
-    });
+  getScreen(id, query='') {
+    let cachedPromise = this.cachedScreenPromises.find(item => item.id === id && item.query === query);
+    if (cachedPromise) {
+      return cachedPromise.screenPromise;
+    }
+    else {
+      const endpoint = _.get(window, 'PM4ConfigOverrides.getScreenEndpoint', '/screens');
+      const request = this.get(endpoint + `/${id}${query}`);
+
+      let screenPromise = new Promise((resolve, reject) => {
+        request
+          .then(response => {
+            if (response.data.nested) {
+              this.addNestedScreenCache(response.data.nested);
+            }
+            resolve(response);
+          })
+          .catch(response => reject(response));
+      });
+      this.cachedScreenPromises.push({id, query, screenPromise});
+      return screenPromise;
+    }
   },
-  
+
   postScript(id, params, options = {}) {
     let endpoint = _.get(
       window,
       'PM4ConfigOverrides.postScriptEndpoint',
-      '/scripts/execute/{id}',
+      '/scripts/execute/{id}'
     );
 
     return this.post(
       endpoint.replace('{id}', id) + this.authQueryString(),
       params,
-      options,
+      options
     );
   },
 
@@ -121,7 +135,7 @@ export default {
     const authParams = _.get(
       window,
       'PM4ConfigOverrides.authParams',
-      null,
+      null
     );
 
     let query = '';
@@ -130,5 +144,17 @@ export default {
     }
 
     return query;
+  },
+
+  deleteFile(id, token = null) {
+    let url = `files/${id}`;
+    if (token) {
+      url += `?token=${token}`;
+    }
+    return this.delete(url);
+  },
+
+  download(url) {
+    return this.apiInstance().get(url, {responseType: 'blob'});
   },
 };

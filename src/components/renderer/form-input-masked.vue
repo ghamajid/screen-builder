@@ -48,7 +48,7 @@ export default {
     },
     currencyValue() {
       this.unformattedValue = parseFloat(
-        this.currencyInput.inputmask.unmaskedvalue().replace(',', '.'),
+        this.currencyInput.inputmask.unmaskedvalue().replace(',', '.')
       );
       this.$emit('input', this.unformattedValue || 0);
     },

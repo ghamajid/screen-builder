@@ -25,6 +25,7 @@ export default {
             items: element.items,
           },
         ],
+        watchers: definition.watchers,
       };
 
       let loopContext = '';
@@ -41,11 +42,12 @@ export default {
         ':_parent': 'getValidationData()',
         ':components': this.byRef(this.components),
         ':config-ref': this.byRef(this.configRef || definition.config),
-        '@submit': 'submitForm',
+        '@submit': 'submitForm("'+element.config.event+'")',
       });
       const addLoopRow = this.createComponent('AddLoopRow', {
         ':value': element.config.settings.varname,
         ':config': this.byValue(element.config),
+        ':error': `${this.checkVariableExists('$v.vdata.' + element.config.name)} && validationMessage($v.vdata.${element.config.name}) || ${this.checkVariableExists('$v.schema.' + element.config.name)} && validationMessage($v.schema.${element.config.name})`,
       });
       loop.appendChild(child);
       node.appendChild(loop);
@@ -54,7 +56,7 @@ export default {
       this.registerNestedVariable(
         element.config.settings.varname,
         element.config.settings.varname + '.index.',
-        nested,
+        nested
       );
     },
   },

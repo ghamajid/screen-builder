@@ -56,6 +56,7 @@
         v-model="currentPage"
         :total-rows="tableData.total"
         :per-page="perPage"
+        :aria-label="$t('Pagination')"
         aria-controls="vuetable"
         @change="onChangePage"
       />
@@ -151,7 +152,12 @@ import _ from 'lodash';
 import { dateUtils } from '@processmaker/vue-form-elements';
 //import ScreenRenderer from '../screen-renderer.vue';
 
-
+const jsonOptionsActionsColumn = {
+  key: '__actions',
+  label: 'Actions',
+  thClass: 'text-right',
+  tdClass: 'text-right',
+};
 
 export default {
   mixins: [mustacheEvaluation],
@@ -205,7 +211,6 @@ export default {
       }
       return parent;
     },
-    // eslint-disable-next-line vue/return-in-computed-property
     dataManager() {
       if (this.$refs.vuetable) {
         let pagination = this.$refs.vuetable.makePagination(this.value.length);
@@ -240,12 +245,6 @@ export default {
     },
     // The fields used for our vue table
     tableFields() {
-      const jsonOptionsActionsColumn = {
-          key: '__actions',
-          label: this.$t("Actions"),
-          thClass: 'text-right',
-          tdClass: 'text-right',
-      };
       const fields = this.getTableFieldsFromDataSource();
 
       if (this.editable && !this.selfReferenced) {
@@ -342,7 +341,7 @@ export default {
       // Reset edit to be a copy of our data model item
       this.editItem = JSON.parse(JSON.stringify(this.value[pageIndex]));
       this.editIndex = pageIndex;
-      // rebuild the edit screen to avoid 
+      // rebuild the edit screen to avoid
       this.editFormVersion++;
       this.$nextTick(() => {
         this.setUploadDataNamePrefix(pageIndex);
