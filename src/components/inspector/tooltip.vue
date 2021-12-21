@@ -1,5 +1,5 @@
 <template>
-  <div v-if="buttonType !== 'submit'">
+  <div>
     <label class="typo__label">{{ label }}</label>
     <br >
     <label class="typo__label">{{ $t("Position") }}</label>
@@ -11,16 +11,6 @@
       :options="options.map((option) => option.value)"
       :custom-label="getLabelFromValuePosition"
     />
-    <label class="typo__label">{{ $t("Variant") }}</label>
-    <multiselect
-      v-model="variant"
-      :placeholder="$t('Select...')"
-      :show-labels="false"
-      class="mb-3"
-      :options="optionsVariant.map((option) => option.value)"
-      :custom-label="getLabelFromValueVariant"
-    />
-
     <form-text-area
       v-model="content"
       :label="$t('Tooltip Contains')"
@@ -34,7 +24,6 @@
 </template>
 
 <script>
-import _ from 'lodash';
 
 export default {
   inheritAttrs: false,
@@ -130,11 +119,6 @@ export default {
       variant: '',
     };
   },
-  computed: {
-    buttonType() {
-      return _.get(this.$attrs, 'selectedControl.config.event');
-    },
-  },
   watch: {
     value: {
       handler() {
@@ -165,13 +149,13 @@ export default {
   methods: {
     getLabelFromValuePosition(value) {
       const selectedOption = this.options.find(
-        (option) => option.value == value
+        (option) => option.value == value,
       );
       return selectedOption ? selectedOption.content : null;
     },
     getLabelFromValueVariant(value) {
       const selectedOption = this.optionsVariant.find(
-        (option) => option.value == value
+        (option) => option.value == value,
       );
       return selectedOption ? selectedOption.content : null;
     },

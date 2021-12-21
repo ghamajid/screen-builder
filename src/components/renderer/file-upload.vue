@@ -20,37 +20,22 @@
 
       <uploader-drop class="form-control-file">
         <p>{{ $t('Drop a file here to upload or') }}</p>
-        <uploader-btn
-          :attrs="nativeButtonAttrs"
-          :class="{disabled: disabled}"
-          tabindex="0"
-          v-on:keyup.native="browse"
-          :aria-label="$attrs['aria-label']"
+        <uploader-btn tabindex="0" v-on:keyup.native="browse" :aria-label="$attrs['aria-label']"
           class="btn btn-secondary text-white"
-        >
-          {{ $t('select file') }}
+        >{{ $t('select file') }}
         </uploader-btn>
         <span v-if="validation === 'required' && !value" class="required">{{ $t('Required') }}</span>
       </uploader-drop>
       <uploader-list>
-        <template>
+        <template slot-scope="{ fileList }">
           <ul>
-            <li v-for="(file, i) in files " :key="i" :data-cy="file.id">
-              <div class="">
-                <div class="" style="display:flex; background:rgb(226 238 255)">
-                  <div v-if="nativeFiles[file.id]" style="flex: 1" :data-cy="file.file_name.replace(/[^0-9a-zA-Z\-]/g, '-')">
-                    <uploader-file :file="nativeFiles[file.id]" :list="true" />
-                  </div>
-                  <div v-else style="flex: 1">
-                    <i class="fas fa-paperclip"/> {{ file.file_name }}
-                  </div>
-                  <div class="pt-1">
-                    <b-btn variant="outline" @click="removeFile(file)" v-b-tooltip.hover :title="$t('Delete')">
-                      <i class="fas fa-trash-alt"/>
-                    </b-btn>
-                  </div>
-                </div>
+            <li v-if="fileList.length === 0 && value">
+              <div class="border-bottom py-2">
+                <i class="fas fa-paperclip"/> {{ displayName }}
               </div>
+            </li>
+            <li v-for="file in fileList" :key="file.id">
+              <uploader-file :file="file" :list="true"/>
             </li>
           </ul>
         </template>
@@ -66,28 +51,20 @@
 </template>
 
 <script>
-import { createUniqIdsMixin } from 'vue-uniq-ids';
+import {createUniqIdsMixin} from 'vue-uniq-ids';
 import uploader from 'vue-simple-uploader';
 import _ from 'lodash';
 
 // Create the mixin
 const uniqIdsMixin = createUniqIdsMixin();
 
-// vue-simple-uploader tries to call these after the component has
-// been destroyed since it does it in nextTick(). It has no effect
-// on functionality because a new copy is created.
-// TODO: Why is this component being recreated when used in a loop?
-const ignoreErrors = [
-  'Cannot read property \'assignBrowse\' of null',
-  'Cannot read property \'assignDrop\' of null',
-  'Cannot read properties of null (reading \'assignBrowse\')',
-  'Cannot read properties of null (reading \'assignDrop\')',
-];
-
 export default {
   components: uploader,
   mixins: [uniqIdsMixin],
-  props: ['label', 'error', 'helper', 'name', 'value', 'controlClass', 'endpoint', 'accept', 'validation', 'parent', 'config', 'multipleUpload'],
+  props: ['label', 'error', 'helper', 'name', 'value', 'controlClass', 'endpoint', 'accept', 'validation', 'parent', 'config'],
+  beforeMount() {
+    this.getFileType();
+  },
   updated() {
     this.removeDefaultClasses();
   },
@@ -109,59 +86,8 @@ export default {
     if (this.$refs['uploader']) {
       this.$refs['uploader'].$forceUpdate();
     }
-
-    this.disabled = _.get(window, 'ProcessMaker.isSelfService', false);
-  },
-  errorCaptured(err) {
-    if (ignoreErrors.includes(err.message)) {
-      return false;
-    }
   },
   computed: {
-    filesFromGlobalRequestFiles() {
-      if (!this.value) {
-        return [];
-      }
-      return _.get(window, `PM4ConfigOverrides.requestFiles["${this.fileDataName}"]`, []).filter(file => {
-        // Filter any requestFiles that don't exist in this component's value. This can happen if
-        // a file is uploaded but the task is not saved.
-        if (this.multipleUpload) {
-          return this.value.some(valueFile => valueFile.file === file.id);
-        } else {
-          return file.id === this.value;
-        }
-      });
-    },
-    filesFromCollection() {
-      if (!this.value) {
-        return [];
-      }
-      return this.filesFromCollectionValue(this.value);
-    },
-    collection() {
-      const collectionIdNode = document.head.querySelector('meta[name="collection-id"]');
-      if (collectionIdNode) {
-        return collectionIdNode.content;
-      }
-      return false;
-    },
-    filesData() {
-      if (this.collection) {
-        return this.filesFromCollection;
-      } else {
-        return this.filesFromGlobalRequestFiles;
-      }
-    },
-    fileIds() {
-      return this.files.map(f => f.id);
-    },
-    nativeButtonAttrs() {
-      const attrs = { 'data-cy':'file-upload-button' };
-      if (this.disabled) {
-        attrs.disabled = true;
-      }
-      return attrs;
-    },
     required() {
       if (this.config && this.config.validation) {
         return this.config.validation === 'required';
@@ -171,6 +97,15 @@ export default {
     },
     inPreviewMode() {
       return ((this.mode === 'preview' && !window.exampleScreens) || this.mode === 'editor');
+    },
+    displayName() {
+      const requestFiles = _.get(window, 'PM4ConfigOverrides.requestFiles', {});
+      const fileInfo = requestFiles[this.fileDataName];
+      let id = this.uploaderId;
+      if (fileInfo && id >= 0) {
+        return fileInfo.file_name;
+      }
+      return this.value.name ? this.value.name : this.value;
     },
     mode() {
       return this.$root.$children[0].mode;
@@ -201,22 +136,6 @@ export default {
     },
   },
   watch: {
-    filesData: {
-      handler() {
-        this.setFiles();
-      },
-      immediate: true,
-      deep: true,
-    },
-    files: {
-      handler() {
-        if (!this.collection) {
-          this.setRequestFiles();
-        }
-        this.$emit('input', this.valueToSend());
-      },
-      deep: true,
-    },
     name: {
       handler() {
         this.options.query.data_name = this.fileDataName;
@@ -242,18 +161,12 @@ export default {
       },
       immediate: true,
     },
-    multipleUpload: {
-      handler() {
-        // Add the multiple parameter for the endpoint call that will be executed by vue-simple-uploader
-        this.options.query.multiple = this.multipleUpload;
-      },
-      immediate: true,
-    },
   },
   data() {
     return {
       uploaderId: 1,
       content: '',
+      fileType: null,
       validator: {
         errorCount: 0,
         errors: [],
@@ -276,72 +189,14 @@ export default {
           'X-Requested-With': 'XMLHttpRequest',
           'X-CSRF-TOKEN': window.ProcessMaker.apiClient.defaults.headers.common['X-CSRF-TOKEN'],
         },
-        singleFile: !this.multipleUpload,
+        singleFile: true,
       },
       attrs: {
         accept: this.accept,
       },
-      disabled: false,
-      files: [],
-      nativeFiles: {},
     };
   },
   methods: {
-    setFiles() {
-      if (_.isEqual(this.filesData, this.files)) {
-        return;
-      }
-      this.files = this.filesData;
-    },
-    filesFromCollectionValue(value) {
-      if (!value) {
-        return [];
-      }
-      if (this.multipleUpload) {
-        return this.filesFromCollectionMulti(value);
-      } else {
-        return this.filesFromCollectionSingle(value);
-      }
-    },
-    filesFromCollectionSingle(value) {
-      return [{ id: value.id, file_name: value.name }];
-    },
-    filesFromCollectionMulti(value) {
-      return value.map(v => {
-        return { id: v.file.id, file_name: v.file.name };
-      });
-    },
-    setRequestFiles() {
-      _.set(window, `PM4ConfigOverrides.requestFiles["${this.fileDataName}"]`, this.files);
-      this.$emit('input', this.valueToSend());
-    },
-    valueToSend() {
-      if (this.multipleUpload) {
-        return this.valueForMulti();
-      } else {
-        return this.valueForSingle();
-      }
-    },
-    valueForMulti() {
-      return this.files.map(file => {
-        return { file: this.formatForType(file) };
-      });
-    },
-    valueForSingle() {
-      if (this.files.length > 0) {
-        return this.formatForType(this.files[0]);
-      }
-      return null;
-    },
-    formatForType(file) {
-      if (this.collection) {
-        return { id: file.id, name: file.file_name };
-      }
-      return file.id;
-    },
-    hasFileId(id) {
-      return this.fileIds.includes(id);
-    },
     listenRemovedLoop(loop, removed) {
       this.deleteAssociatedFiles(removed);
     },
@@ -352,62 +207,25 @@ export default {
       }
       this.deleteAssociatedFiles(record);
     },
-    async deleteAssociatedFiles(object) {
+    deleteAssociatedFiles(object) {
       for (const prop in object) {
-        if (prop === this.name && object[prop]) {
-          const idsInRemoved = this.idsFromValue(object[prop]);
-
-          for (const id of idsInRemoved) {
-            if (this.hasFileId(id)) {
-              // In record lists, delete can be called twice on the same file.
-              // Catch and igore the error.
-              // eslint-disable-next-line no-unused-vars
-              await this.$dataProvider.deleteFile(id).catch(e => {});
-              this.removeFromFiles(id);
-            }
+        if (prop === this.name) {
+          this.deleteFile(object[prop]);
+        }
+        if (Array.isArray(object[prop])) {
+          for (const item of object[prop]) {
+            this.deleteAssociatedFiles(item);
           }
         }
       }
     },
-    idsFromValue(value) {
-      if (this.collection) {
-        return this.filesFromCollectionValue(value).map(f => f.id);
-      } else {
-        if (this.multipleUpload) {
-          return value.map(v => v.file);
-        } else {
-          return [value];
-        }
-      }
-    },
-    async removeFile(file) { 
-      const id = file.id;
-      const token = file.token ? file.token : null;
-
-      // If it's not a web entry start event
-      if (!isNaN(id)) {
-        await this.$dataProvider.deleteFile(id, token);
-      }
-      
-      this.removeFromFiles(id);
-    },
-    removeFromFiles(id) {
-      const idx = this.files.findIndex(f => f.id === id);
-      this.$delete(this.files, idx);
-      
-      if (this.nativeFiles[id]) {
-        if (this.$refs.uploader) {
-          this.$refs.uploader.uploader.removeFile(this.nativeFiles[id]);
-        }
-        this.$delete(this.nativeFiles, id);
-      }
-
-    },
-    addToFiles(fileInfo) {
-      if (this.multipleUpload) {
-        this.files.push(fileInfo);
-      } else {
-        this.files = [fileInfo];
+    deleteFile(fileId) {
+      if (fileId) {
+        window.ProcessMaker.apiClient
+          .delete(`files/${fileId}`)
+          .catch(() => {
+            /** ignore exception **/
+          });
       }
     },
     listenRecordList(recordList, index, id) {
@@ -416,6 +234,15 @@ export default {
         return;
       }
       this.row_id = (parent !== null) ? id : null;
+      //update id to refresh computed values
+      this.uploaderId = new Date().getTime();
+      if (this.$refs.uploader) {
+        this.$refs.uploader.files = [];
+        this.$refs.uploader.fileList = [];
+        this.$refs.uploader.uploader.files = [];
+        this.$refs.uploader.uploader.fileList = [];
+      }
+      this.$forceUpdate();
     },
     setPrefix() {
       let parent = this.$parent;
@@ -448,11 +275,6 @@ export default {
       });
     },
     addFile(file) {
-      if (this.disabled) {
-        file.ignored = true;
-        return false;
-      }
-
       if (this.filesAccept) {
         file.ignored = true;
         if (this.filesAccept.indexOf(file.fileType) !== -1) {
@@ -480,26 +302,36 @@ export default {
         e.target.click();
       }
     },
-    fileUploaded(rootFile, file, message) {
-      let name = file.name;
-      if (message) {
-        const msg = JSON.parse(message);
-
-        let id = msg.fileUploadId;
-        if (this.collection) {
-          id = msg.id;
-        }
-        
-        const fileInfo = {
-          id,
-          file_name: name,
-          mime_type: rootFile.fileType,
-        };
-       
-        this.$set(this.nativeFiles, id, rootFile);
-        this.addToFiles(fileInfo);
+    getFileType() {
+      if (document.head.querySelector('meta[name="collection-id"]')) {
+        this.fileType = 'collection';
       } else {
-        this.$emit('input', name);
+        this.fileType = 'request';
+      }
+    },
+    fileUploaded(rootFile, file, message) {
+      if (this.fileType == 'request') {
+        let id = '';
+        if (message) {
+          const msg = JSON.parse(message);
+          if (!_.has(window, 'PM4ConfigOverrides')) {
+            window.PM4ConfigOverrides = {};
+          }
+          if (!_.has(window, 'PM4ConfigOverrides.requestFiles')) {
+            window.PM4ConfigOverrides.requestFiles = {};
+          }
+          window.PM4ConfigOverrides.requestFiles[this.fileDataName] = {id: msg.fileUploadId, file_name: file.name};
+          id = msg.fileUploadId;
+        }
+        this.$emit('input', id);
+      }
+
+      if (this.fileType == 'collection') {
+        message = JSON.parse(message);
+        this.$emit('input', {
+          id: message.id,
+          name: message.file_name,
+        });
       }
     },
     removed() {
@@ -510,11 +342,12 @@ export default {
     complete() {
       // Unblock submit
       this.validator.errorCount = 0;
-      window.onbeforeunload = function() {};
+      window.onbeforeunload = function() {
+      };
     },
     parentRecordList(node) {
       if (node.$parent && node.$parent.$options) {
-        if (node.$parent.$options._componentTag ===  'form-record-list') {
+        if (node.$parent.$options._componentTag === 'form-record-list') {
           return node.$parent;
         }
         return this.parentRecordList(node.$parent);
@@ -541,18 +374,25 @@ export default {
         return this.endpoint;
       }
 
-      if (this.collection) {
-        return '/api/1.0/files' +
+      if (this.fileType == 'request') {
+        const requestIDNode = document.head.querySelector('meta[name="request-id"]');
+
+        return requestIDNode
+          ? `/api/1.0/requests/${requestIDNode.content}/files`
+          : null;
+      }
+
+      if (this.fileType == 'collection') {
+        const collectionIdNode = document.head.querySelector('meta[name="collection-id"]');
+
+        return collectionIdNode
+          ? '/api/1.0/files' +
             '?model=' +
             'ProcessMaker\\Plugins\\Collections\\Models\\Collection' +
             '&model_id=' +
-            this.collection +
+            collectionIdNode.content +
             '&collection=' +
-            'collection';
-      } else {
-        const requestIDNode = document.head.querySelector('meta[name="request-id"]');
-        return requestIDNode
-          ? `/api/1.0/requests/${requestIDNode.content}/files`
+            'collection'
           : null;
       }
     },

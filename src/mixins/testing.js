@@ -19,12 +19,12 @@ window.testing = {
   showControlsTypes() {
     const types = this.builder.controls.map(control => control.component);
     // eslint-disable-next-line no-console
-    console.log(types);
+    //console.log(types);
   },
   showControlsLabels() {
     const labels = this.builder.controls.map(control => control.label);
     // eslint-disable-next-line no-console
-    console.log(labels);
+    //console.log(labels);
   },
 };
 

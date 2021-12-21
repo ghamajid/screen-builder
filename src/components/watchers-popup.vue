@@ -14,7 +14,6 @@
       <watchers-list v-model="current" @display-form="displayForm" @edit-form="edit" @delete-form="confirmRemoval"/>
     </template>
     <template v-else>
-      <required />
       <watchers-form refs="form" :config="add" @display-list="displayList" @save-form="save"/>
     </template>
   </b-modal>
@@ -31,8 +30,11 @@ const globalObject = typeof window === 'undefined' ? global : window;
 
 export default {
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     FormInput,
+    // eslint-disable-next-line vue/no-unused-components
     FormTextArea,
+    // eslint-disable-next-line vue/no-unused-components
     MonacoEditor,
     WatchersList,
     WatchersForm,
@@ -101,7 +103,7 @@ export default {
         '',
         () => {
           this.remove(item);
-        }
+        },
       );
     },
     remove(item) {

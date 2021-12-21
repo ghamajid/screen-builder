@@ -4,7 +4,7 @@
       <div class="card card-overflow">
         <div class="card-header p-0">
           <div class="mb-0">
-            <button class="p-3 btn btn-link d-flex w-100 text-capitalize text-reset justify-content-between" type="button" data-toggle="collapse" data-target="#watcherConfig" ref="watcherConfigButton" data-cy="watchers-accordion-configuration">
+            <button class="p-3 btn btn-link d-flex w-100 text-capitalize text-reset justify-content-between" type="button" data-toggle="collapse" data-target="#watcherConfig" data-cy="watchers-accordion-configuration">
               <div><i class="fas fa-fw fa-cog"/> Configuration</div>
               <div><i class="fas fa-angle-down arrow-open mr-2"/> <i class="fas fa-angle-right arrow-closed mr-2"/></div>
             </button>
@@ -20,13 +20,11 @@
               :validation="ruleWatcherName"
               :helper="$t('A name to describe this Watcher')"
               data-cy="watchers-watcher-name"
-              required
-              aria-required="true"
             />
 
             <form-multi-select
-              :name="$t('Variable to Watch')"
-              :label="$t('Variable to Watch') + ' *'"
+              :name="$t('Variable to Watch') + ' *'"
+              :label="$t('Variable to Watch')"
               :options="variables"
               :taggable="true"
               v-model="config.watching"
@@ -40,8 +38,10 @@
               @tag="addTag"
               :tag-placeholder="$t('Press enter to use this variable')"
               data-cy="watchers-watcher-variable"
-              ref="watching"
             />
+            <div v-if="ruleWatcherVariable && !config.watching" class="mt-n2 mb-3 invalid-feedback d-block">
+              <div>{{ $t('The Variable to Watch field is required') }}</div>
+            </div>
 
             <form-checkbox
               :name="$t('Run Synchronously')"
@@ -74,7 +74,7 @@
       <div class="card" style="overflow:visible">
         <div class="card-header p-0">
           <div class="mb-0">
-            <button class="p-3 btn btn-link collapsed d-flex w-100 text-capitalize text-reset justify-content-between" type="button" data-toggle="collapse" data-target="#watcherSource" ref="watcherSourceButton" data-cy="watchers-accordion-source">
+            <button class="p-3 btn btn-link collapsed d-flex w-100 text-capitalize text-reset justify-content-between" type="button" data-toggle="collapse" data-target="#watcherSource" data-cy="watchers-accordion-source">
               <div><i class="fas fa-fw fa-file-upload"/> Source</div>
               <div><i class="fas fa-angle-down arrow-open mr-2"/> <i class="fas fa-angle-right arrow-closed mr-2"/></div>
             </button>
@@ -99,14 +99,12 @@
               @open="loadSources"
               :helper="$t('The source to access when this Watcher runs')"
               data-cy="watchers-watcher-source"
-              ref="script"
             />
+            <div v-if="ruleWatcherScript && !config.script" class="invalid-feedback d-block mt-n2 mb-3">
+              <div>{{ $t('The Source field is required') }}</div>
+            </div>
 
             <div v-if="isScript">
-              <b-alert v-if="config.script" show variant="warning">
-                <i class="fas fa-exclamation-triangle" />
-                {{ $t('Using watchers with Scripts can slow the performance of your screen.') }}
-              </b-alert>
               <div class="form-group">
                 <label>{{ $t('Input Data') }}</label>
                 <div class="form-border" :class="{'is-invalid': !jsonIsValid('input_data')}">
@@ -116,8 +114,6 @@
                     v-model="config.input_data"
                     language="json"
                     data-cy="watchers-watcher-input_data"
-                    ref="input_data"
-                    @editorDidMount="inputDataEditorMounted"
                   />
                 </div>
                 <small class="form-text text-muted">{{ $t('Data to pass to the script (valid JSON object, variables supported)') }}</small>
@@ -137,8 +133,6 @@
                     v-model="config.script_configuration"
                     language="json"
                     data-cy="watchers-watcher-script_configuration"
-                    ref="script_configuration"
-                    @editorDidMount="scriptConfigEditorMounted"
                   />
                 </div>
                 <small class="form-text text-muted">{{ $t('Configuration data for the script (valid JSON object, variables supported)') }}</small>
@@ -166,7 +160,6 @@
                   @open="loadEndpoints()"
                   :helper="$t('The Data Connector resource to access when this Watcher runs')"
                   data-cy="watchers-watcher-endpoint"
-                  ref="endpoint"
                 />
                 <div v-if="endpointError" class="invalid-feedback d-block">
                   <div>{{ endpointError }}</div>
@@ -215,7 +208,7 @@
       <div class="card" style="overflow:visible">
         <div class="card-header p-0">
           <div class="mb-0">
-            <button class="p-3 btn btn-link collapsed d-flex w-100 text-capitalize text-reset justify-content-between" type="button" data-toggle="collapse" data-target="#watcherOutput" ref="watcherOutputButton" data-cy="watchers-accordion-output">
+            <button class="p-3 btn btn-link collapsed d-flex w-100 text-capitalize text-reset justify-content-between" type="button" data-toggle="collapse" data-target="#watcherOutput" data-cy="watchers-accordion-output">
               <div><i class="fas fa-fw fa-file-download"/> Output</div>
               <div><i class="fas fa-angle-down arrow-open mr-2"/> <i class="fas fa-angle-right arrow-closed mr-2"/></div>
             </button>
@@ -227,13 +220,11 @@
               ref="propOutputVariableName"
               v-if="hasInputData || isScript"
               v-model="config.output_variable"
-              :label="outputVarLabel"
+              :label="$t('Output Variable') + ' *'"
               :name="$t('Output Variable')"
               :helper="$t('The variable that will store the output of the Watcher')"
               :validation="ruleWatcherOutputVariable"
               data-cy="watchers-watcher-output_variable"
-              :required="ruleWatcherOutputVariable == 'required' ? true : false"
-              :aria-required="ruleWatcherOutputVariable == 'required' ? true : false"
             />
             <data-mapping v-if="isDatasource" v-model="scriptConfig"/>
           </div>
@@ -266,7 +257,6 @@ import {
 import MonacoEditor from 'vue-monaco';
 import DataMapping from './inspector/data-mapping';
 import OutboundConfig from './inspector/outbound-config';
-import FocusErrors from '../mixins/focusErrors';
 
 import _ from 'lodash';
 
@@ -275,9 +265,9 @@ const globalObject = typeof window === 'undefined'
   : window;
 
 export default {
-  mixins: [FocusErrors],
   components: {
     FormInput,
+    // eslint-disable-next-line vue/no-unused-components
     FormTextArea,
     FormMultiSelect,
     FormCheckbox,
@@ -328,19 +318,13 @@ export default {
         minimap: { enabled: false },
       },
       endpointError: null,
-      inputDataEditor: null,
-      scriptConfigEditor: null,
     };
   },
   watch: {
     scriptConfig(value) {
-      try {
-        const currentConf = JSON.parse(this.config.script_configuration);
-        const newConf = JSON.parse(value);
-        this.config.script_configuration = JSON.stringify({...currentConf, ...newConf});
-      } catch {
-        // Invalid json will get caught by the validator
-      }
+      const currentConf = JSON.parse(this.config.script_configuration);
+      const newConf = JSON.parse(value);
+      this.config.script_configuration = JSON.stringify({...currentConf, ...newConf});
     },
     endpoint(endpoint) {
       this.setConfig('endpoint', endpoint);
@@ -440,21 +424,11 @@ export default {
     },
     hasInputData(){
       // just old versions of watchers have input data
-      let config;
-      try {
-        config = JSON.parse(this.config.script_configuration);
-      } catch {
-        return false;
-      }
-
+      const config = JSON.parse(this.config.script_configuration);
       if (typeof config.input_data === 'undefined' || config.input_data == null) {
         return false;
       }
       return Object.keys(config.input_data).length === 0 && config.input_data.constructor === Object;
-    },
-    outputVarLabel() {
-      const required = this.ruleWatcherOutputVariable == 'required' ? ' *' : '';
-      return this.$t('Output Variable') + required;
     },
   },
   methods: {
@@ -594,7 +568,6 @@ export default {
 
         if (!this.isFormValid()) {
           globalObject.ProcessMaker.alert(this.$t('An error occurred. Check the form for errors in red text.'), 'danger');
-          this.focusFirstWatcherError();
           return;
         }
 
@@ -607,12 +580,6 @@ export default {
     },
     save() {
       this.$emit('save-form');
-    },
-    inputDataEditorMounted(editor) {
-      this.inputDataEditor = editor;
-    },
-    scriptConfigEditorMounted(editor) {
-      this.scriptConfigEditor = editor;
     },
   },
 };

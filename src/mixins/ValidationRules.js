@@ -21,8 +21,6 @@ import {
   not,
   or,
   and,
-  maxItems,
-  minItems,
 } from 'vuelidate/lib/validators';
 
 export const ValidationMsg = {
@@ -44,9 +42,9 @@ export const ValidationMsg = {
   numeric: 'Accepts only numerics',
   integer: 'Must be a positive or negative integer',
   decimal: 'Must be a positive or negative decimal number',
-  email: 'Must be a valid email address',
-  ipAddress: 'Must be a valid IPv4 address',
-  macAddress: 'Must be a valid MAC address',
+  email: 'Must be a valid email addresses',
+  ipAddress: 'Must be a valid IPv4 addresses',
+  macAddress: 'Must be a valid MAC addresses',
   sameAs: 'Must be same as {field}',
   same: 'Must be same as {field}',
   url: 'Must be a valid URL',
@@ -57,8 +55,6 @@ export const ValidationMsg = {
   invalid_default_value: 'Invalid default value',
   customDate: 'Must be a valid Date',
   regex: 'Invalid value',
-  maxItems: 'Should NOT have more than {max} items',
-  minItems: 'Must have at least {min}',
   customMeliCode: 'Invalid code meli',
   customShenaseMeliHoghoghi: 'Invalid shenase meli',
 };
@@ -72,65 +68,94 @@ export const custom_date = (date) => {
   let checkDate = moment(date, [format, moment.ISO_8601], true);
   return checkDate.isValid();
 };
+
+export const custom_meli_code = (code) => {
+  if(code){
+      var L=code.length;
+      if(L<8 || parseInt(code,10)==0) return false;
+      code=('0000'+code).substr(L+4-10);
+      if(parseInt(code.substr(3,6),10)==0) return false;
+      var c=parseInt(code.substr(9,1),10);
+      var s=0;
+      for(var i=0;i<9;i++)
+          s+=parseInt(code.substr(i,1),10)*(10-i);
+      s=s%11;
+      if((s<2 && c==s) || (s>=2 && c==(11-s))){
+          return true
+      }
+      return false;
+  }else{
+      return true;
+  }
+};
+
+export const custom_shenase_meli_hoghoghi = (code) => {
+    if(code){
+        var L=code.length;
+
+        if(L<11 || parseInt(code,10)==0) return false;
+
+        if(parseInt(code.substr(3,6),10)==0) return false;
+        var c=parseInt(code.substr(10,1),10);
+        var d=parseInt(code.substr(9,1),10)+2;
+        var z=new Array(29,27,23,19,17);
+        var s=0;
+        for(var i=0;i<10;i++)
+            s+=(d+parseInt(code.substr(i,1),10))*z[i%5];
+        s=s%11;if(s==10) s=0;
+        return (c==s);
+    }else{
+        return true;
+    }
+};
   
-export const after = (after, fieldName) => helpers.withParams({after}, function(date, data) {
-  // Get check date
-  const level = fieldName.split('.').length - 1;
-  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
-  dataWithParent.today = moment().format('YYYY-MM-DD');
-  const checkDate = moment(get(dataWithParent, after, after));
+export const after = (after) => helpers.withParams({after}, (date, data) => {
+  // checks if incoming 'params' is a date or a key reference.
+  let checkDate = moment(after);
   if (!checkDate.isValid()) {
-    return false;
+    after = get(data, after);
   }
 
   const inputDate = moment(date).toISOString();
-  const afterDate = checkDate.toISOString();
+  const afterDate = moment(after).toISOString();
 
   return inputDate > afterDate;
 });
 
-export const after_or_equal = (after_or_equal, fieldName) => helpers.withParams({after_or_equal}, function(date, data) {
-  // Get check date
-  const level = fieldName.split('.').length - 1;
-  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
-  dataWithParent.today = moment().format('YYYY-MM-DD');
-  const checkDate = moment(get(dataWithParent, after_or_equal, after_or_equal));
+export const after_or_equal = (after_or_equal) => helpers.withParams({after_or_equal}, (date, data) => {
+  // checks if incoming 'after_or_equal' is a date or a key reference.
+  let checkDate = moment(after_or_equal);
   if (!checkDate.isValid()) {
-    return false;
+    after_or_equal = get(data, after_or_equal);
   }
 
   const inputDate = moment(date).toISOString();
-  const equalOrAfterDate = checkDate.toISOString();
+  const equalOrAfterDate = moment(after_or_equal).toISOString();
+    
   return inputDate >= equalOrAfterDate;
 });
 
-export const before = (before, fieldName) => helpers.withParams({before}, function(date, data) {
-  // Get check date
-  const level = fieldName.split('.').length - 1;
-  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
-  dataWithParent.today = moment().format('YYYY-MM-DD');
-  const checkDate = moment(get(dataWithParent, before, before));
+export const before = (before) => helpers.withParams({before}, (date, data) => {
+  // checks if incoming 'before' is a date or a key reference.
+  let checkDate = moment(before);
   if (!checkDate.isValid()) {
-    return false;
+    before = get(data, before);
   }
 
   const inputDate = moment(date).toISOString();
-  const beforeDate = checkDate.toISOString();
+  const beforeDate = moment(before).toISOString();
   return inputDate < beforeDate;
 });
 
-export const before_or_equal = (before_or_equal, fieldName) => helpers.withParams({before_or_equal}, function(date, data) {
-  // Get check date
-  const level = fieldName.split('.').length - 1;
-  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
-  dataWithParent.today = moment().format('YYYY-MM-DD');
-  const checkDate = moment(get(dataWithParent, before_or_equal, before_or_equal));
+export const before_or_equal = (before_or_equal) => helpers.withParams({before_or_equal}, (date, data) => {
+  // checks if incoming 'before_or_equal' is a date or a key reference.
+  let checkDate = moment(before_or_equal);
   if (!checkDate.isValid()) {
-    return false;
+    before_or_equal = get(data, before_or_equal);
   }
     
   const inputDate = moment(date).toISOString();
-  const beforeDate = checkDate.toISOString();
+  const beforeDate = moment(before_or_equal).toISOString();
     
   return inputDate <= beforeDate;
 });
@@ -164,78 +189,20 @@ export const required = (value) => {
   return value instanceof Array ? value.length > 0 : !!value;
 };
 
-export const requiredIf = (variable, expected, fieldName) => helpers.withParams({variable, expected}, function(value, data) {
-  const level = fieldName.split('.').length - 1;
-  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
-  const variableValue = get(dataWithParent, variable);
-  const isBoolean = (variableValue === true || variableValue === false);
-  let expectedValue = expected;
-  if (isBoolean) {
-    expectedValue = expected === 'true' || expected === '1';
-  }
-  if (variableValue != expectedValue) return true;
+export const requiredIf = (variable, expected) => function(value) {
+  if (get(this.vdata, variable) != expected) return true;
   return value instanceof Array ? value.length > 0 : !!value;
-});
+};
 
-export const requiredUnless = (variable, expected, fieldName) => helpers.withParams({variable, expected}, function(value, data) {
-  const level = fieldName.split('.').length - 1;
-  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
-  const variableValue = get(dataWithParent, variable);
-  const isBoolean = (variableValue === true || variableValue === false);
-  let expectedValue = expected;
-  if (isBoolean) {
-    expectedValue = expected === 'true' || expected === '1';
-  }
-  if (variableValue == expectedValue) return true;
+export const requiredUnless = (variable, expected) => function(value) {
+  if (get(this.vdata, variable) == expected) return true;
   return value instanceof Array ? value.length > 0 : !!value;
-});
+};
   
-export const sameAs = (field, fieldName) => helpers.withParams({field}, function(value, data) {
-  const level = fieldName.split('.').length - 1;
-  const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
-  const valueSameAs = get(dataWithParent, field);
+export const sameAs = (field) => helpers.withParams({field}, function(value) {
+  const valueSameAs = get(this.vdata, field);
   return value == valueSameAs;
 });
-
-export const custom_meli_code = (code) => {
-    if(code){
-        var L=code.length;
-        if(L<8 || parseInt(code,10)==0) return false;
-        code=('0000'+code).substr(L+4-10);
-        if(parseInt(code.substr(3,6),10)==0) return false;
-        var c=parseInt(code.substr(9,1),10);
-        var s=0;
-        for(var i=0;i<9;i++)
-            s+=parseInt(code.substr(i,1),10)*(10-i);
-        s=s%11;
-        if((s<2 && c==s) || (s>=2 && c==(11-s))){
-            return true
-        }
-        return false;
-    }else{
-        return true;
-    }
-};
-
-export const custom_shenase_meli_hoghoghi = (code) => {
-    if(code){
-        var L=code.length;
-
-        if(L<11 || parseInt(code,10)==0) return false;
-
-        if(parseInt(code.substr(3,6),10)==0) return false;
-        var c=parseInt(code.substr(10,1),10);
-        var d=parseInt(code.substr(9,1),10)+2;
-        var z=new Array(29,27,23,19,17);
-        var s=0;
-        for(var i=0;i<10;i++)
-            s+=(d+parseInt(code.substr(i,1),10))*z[i%5];
-        s=s%11;if(s==10) s=0;
-        return (c==s);
-    }else{
-        return true;
-    }
-};
 
 export const validators = {
   required,
@@ -263,6 +230,8 @@ export const validators = {
   or,
   and,
   customDate: custom_date,
+  customMeliCode: custom_meli_code,
+  customShenaseMeliHoghoghi: custom_shenase_meli_hoghoghi,
   before,
   after,
   beforeOrEqual: before_or_equal,
@@ -271,8 +240,4 @@ export const validators = {
   notIn,
   regex,
   afterOrEqual: after_or_equal,
-  maxItems,
-  minItems,
-  customMeliCode: custom_meli_code,
-  customShenaseMeliHoghoghi: custom_shenase_meli_hoghoghi,
 };

@@ -49,6 +49,48 @@ Validator.register('before_or_equal', function(date, params) {
   return inputDate <= beforeDate;
 }, 'The :attribute must be equal or before :before_or_equal.');
 
+Validator.register('custom_meli_code', function(code) {
+    // checks if incoming 'params' is a date or a key reference.
+    if(code){
+        var L=code.length;
+        if(L<8 || parseInt(code,10)==0) return false;
+        code=('0000'+code).substr(L+4-10);
+        if(parseInt(code.substr(3,6),10)==0) return false;
+        var c=parseInt(code.substr(9,1),10);
+        var s=0;
+        for(var i=0;i<9;i++)
+            s+=parseInt(code.substr(i,1),10)*(10-i);
+        s=s%11;
+        if((s<2 && c==s) || (s>=2 && c==(11-s))){
+            return true
+        }
+        return false;
+    }else{
+        return true;
+    }
+}, 'Invalid code meli');
+
+Validator.register('custom_shenase_meli_hoghoghi', function(code) {
+    // checks if incoming 'params' is a date or a key reference.
+    if(code){
+        var L=code.length;
+
+        if(L<11 || parseInt(code,10)==0) return false;
+
+        if(parseInt(code.substr(3,6),10)==0) return false;
+        var c=parseInt(code.substr(10,1),10);
+        var d=parseInt(code.substr(9,1),10)+2;
+        var z=new Array(29,27,23,19,17);
+        var s=0;
+        for(var i=0;i<10;i++)
+            s+=(d+parseInt(code.substr(i,1),10))*z[i%5];
+        s=s%11;if(s==10) s=0;
+        return (c==s);
+    }else{
+        return true;
+    }
+}, 'Invalid shenase meli');
+
 Validator.register('custom_date', function(date) {
   let format = 'MM/DD/YYYY';
   if (typeof window.ProcessMaker !== 'undefined' && window.ProcessMaker.user && window.ProcessMaker.user.datetime_format) {

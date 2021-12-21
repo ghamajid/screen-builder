@@ -184,7 +184,7 @@ export default {
         '',
         () => {
           this.remove();
-        }
+        },
       );
     },
     setMatrixValue(i, v) {

@@ -1,6 +1,6 @@
 <template>
   <b-input-group>
-    <b-form-input v-bind="$attrs" v-model="localValue" @focus="focus" @input="input" @blur="blur" @change="change"/>
+    <b-form-input v-model="localValue" @focus="focus" @input="input" @blur="blur" @change="change" />
     <template v-slot:append>
       <b-dropdown
         ref="dropdown"
@@ -61,7 +61,7 @@ export default {
       const regexp = new RegExp(
         this.localValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
           .replace(/\.\d+/g, '.index'),
-        'g'
+        'g',
       );
       return this.allOptions.filter(option => option.match(regexp))
         .splice(0, 5)

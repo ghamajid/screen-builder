@@ -7,7 +7,6 @@
     </div>
     <div v-if="mode === 'basic'">
       <b-form-input v-model="basicValue" data-cy="inspector-defaultValue-basicValue"/>
-      <small v-if="helper" class="form-text text-muted">{{ $t(helper) }}</small>
     </div>
     <div v-if="mode === 'js'">
       <MonacoEditor
@@ -17,7 +16,6 @@
         language="javascript"
         data-cy="inspector-defaultValue-jsValue"
       />
-      <small v-if="helper" class="form-text text-muted mt-2">{{ $t(helper) }}</small>
     </div>
   </div>
 </template>
@@ -27,7 +25,7 @@ import MonacoEditor from 'vue-monaco';
 import _ from 'lodash';
 
 export default {
-  props: ['value', 'helper'],
+  props: ['value'],
   components: {
     MonacoEditor,
   },    

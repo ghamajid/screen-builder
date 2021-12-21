@@ -15,21 +15,20 @@ export default {
             this.setupDefaultValue(screen, name, `(function() {${config.defaultValue.value}}).bind(this.vdata)()`);
           }
         }
-        if ('initiallyChecked' in config) {
-          this.setupDefaultValue(screen, name, config.initiallyChecked ? 'true' : 'false');
+        if (config.initiallyChecked) {
+          this.setupDefaultValue(screen, name, 'true');
         }
         // Update vdata
         this.addMounted(screen, `
-          this.setValue(${JSON.stringify(name)}, this.getValue(${JSON.stringify(name)}), this.vdata, this);
+          this.setValue(${JSON.stringify(name)}, this.${name}, this.vdata, this);
         `);
       });
     },
     setupDefaultValue(screen, name, value) {
-      const splittedName = name.split('.').join('_DOT_'); 
-      const defaultComputedName = `default_${splittedName}__`;
-      this.addData(screen, `${name}_was_filled__`, `!!this.getValue(${JSON.stringify(name)}, this.vdata) || !!this.getValue(${JSON.stringify(name)}, data)`);
+      const defaultComputedName = `default_${name}__`;
+      this.addData(screen, `${name}_was_filled__`, `!!this.getValue(${JSON.stringify(name)}, this.vdata)`);
       this.addMounted(screen, `if (!this.${name}) {
-        this.tryFormField(${JSON.stringify(name)}, () => {this.${this.dot2bracket(name)} = ${value};});
+        this.tryFormField(${JSON.stringify(name)}, () => {this.${name} = ${value};});
       }`);
       screen.computed[defaultComputedName] = {
         get: new Function(`return this.tryFormField(${JSON.stringify(name)}, () => ${value});`),
@@ -47,8 +46,7 @@ export default {
         const name = element.config.name;
         if (this.isComputedVariable(name, definition)) return;
         if (element.config.defaultValue || element.config.initiallyChecked) {
-          const splittedName = name.split('.').join('_DOT_'); 
-          const event = `${name}_was_filled__ |= !!$event; !${name}_was_filled__ && (vdata.${this.dot2bracket(name)} = default_${splittedName}__)`;
+          const event = `${name}_was_filled__ |= !!$event; !${name}_was_filled__ && (vdata.${name} = default_${name}__)`;
           this.addEvent(properties, 'input', event);
         }
       },

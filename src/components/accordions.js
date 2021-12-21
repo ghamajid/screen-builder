@@ -12,7 +12,6 @@ export default [
       'disabled',
       'initiallyChecked',
       'screen',
-      'multipleUpload',
     ],
     open: true,
   },
@@ -33,6 +32,8 @@ export default [
       { name: 'options', showFor: 'FormMultiColumn' },
       'form',
       'editable',
+      'height_ag_grid',
+      'help_editor',
     ],
     open: false,
   },
@@ -40,13 +41,14 @@ export default [
     name: (control) => control.component === 'FormRecordList' ? 'Columns' : 'Data Source',
     fields: [
       'fields',
+      'options_jstree',
       { name: 'options', hideFor: 'FormMultiColumn' },
     ],
     open: false,
   },
   {
     name: 'Design',
-    fields: ['color', 'bgcolor', 'variant', 'toggle', 'height', 'width'],
+    fields: ['color', 'bgcolor', 'variant', 'toggle', 'height', 'width', 'thcolor'],
     open: false,
   },
   {

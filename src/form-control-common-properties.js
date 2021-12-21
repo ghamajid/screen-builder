@@ -1,5 +1,6 @@
 import defaultValueEditor from './components/inspector/default-value-editor';
 import Tooltip from './components/inspector/tooltip';
+import {FormInput} from '@processmaker/vue-form-elements/src/components';
 
 export const bgcolorProperty = {
   type: 'ColorSelect',
@@ -224,7 +225,16 @@ export const defaultValueProperty = {
   field: 'defaultValue',
   config: {
     label: 'Default Value',
-    helper: 'The default value is pre populated using the existing request data. This feature will allow you to modify the value displayed on screen load if needed.',
+    helper: 'Takes precedence over value set in data.',
+  },
+};
+
+export const jsonurlProperty = {
+  type: FormInput,
+  field: 'jsonurl',
+  config: {
+    label: 'Json Url',
+    helper: 'Put your json url',
   },
 };
 
@@ -245,11 +255,11 @@ export const buttonTypeEvent = {
       },
       {
           value: 'submit_grid',
-          content: 'Submit Button With Grid',
+          content: 'Submit Button Grid',
       },
       {
           value: 'script_grid',
-          content: 'Regular Button With Grid',
+          content: 'Regular Button Grid',
       },
     ],
   },
@@ -264,44 +274,44 @@ export const tooltipProperty = {
 };
 
 export const colorTheme = {
-    type: 'ColorSelect',
-    field: 'thcolor',
-    config: {
-        label: 'Theme Color',
-        helper: 'Set the element\'s theme color',
-        options: [
-            {
-                value: '#007bff-primary',
-                content: 'primary',
-            },
-            {
-                value: '#6c757d-secondary',
-                content: 'secondary',
-            },
-            {
-                value: '#28a745-success',
-                content: 'success',
-            },
-            {
-                value: '#dc3545-danger',
-                content: 'danger',
-            },
-            {
-                value: '#ffc107-warning',
-                content: 'warning',
-            },
-            {
-                value: '#17a2b8-info',
-                content: 'info',
-            },
-            {
-                value: '#fff-light',
-                content: 'light',
-            },
-            {
-                value: '#343a40-dark',
-                content: 'dark',
-            },
-        ],
-    },
+  type: 'ColorSelect',
+  field: 'thcolor',
+  config: {
+    label: 'Theme Color',
+    helper: 'Set the element\'s theme color',
+    options: [
+      {
+        value: '#007bff-primary',
+        content: 'primary',
+      },
+      {
+        value: '#6c757d-secondary',
+        content: 'secondary',
+      },
+      {
+        value: '#28a745-success',
+        content: 'success',
+      },
+      {
+        value: '#dc3545-danger',
+        content: 'danger',
+      },
+      {
+        value: '#ffc107-warning',
+        content: 'warning',
+      },
+      {
+        value: '#17a2b8-info',
+        content: 'info',
+      },
+      {
+        value: '#fff-light',
+        content: 'light',
+      },
+      {
+        value: '#343a40-dark',
+        content: 'dark',
+      },
+    ],
+  },
 };

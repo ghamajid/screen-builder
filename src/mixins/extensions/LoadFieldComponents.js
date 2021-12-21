@@ -26,31 +26,19 @@ export default {
         }
       });
     },
-    loadFieldProperties({ properties, element, componentName, definition , formIndex, screen}) {
+    loadFieldProperties({ properties, element, componentName, definition , formIndex}) {
       properties.class = this.elementCssClass(element);
       properties[':validation-data'] = 'getValidationData()';
 
       //verify if component is defined in popup
       if (!this.popups.includes(formIndex)) {
         if (componentName === 'FormImage') {
-          this.registerVariable(element.config.variableName, element);
+          this.registerVariable(element.config.variableName, element.config);
           delete properties.image;
           properties[':image'] = this.byRef(element.config.image);
         } else if (this.validVariableName(element.config.name)) {
-          this.registerVariable(element.config.name, element);
-          // v-model are not assigned directly to the field name, to prevent invalid references like:
-          // `person.content` when `person`=null
-          const computed_property = `computedProxy__${element.config.name.split('.').join('_DOT_')}`;
-          properties['v-model'] = computed_property;
-          screen.computed[computed_property] = {
-            get() {
-              return this.getValue(element.config.name);
-            },
-            set(value) {
-              this.setValue(element.config.name, value);
-              return true;
-            },
-          };
+          this.registerVariable(element.config.name, element.config);
+          properties['v-model'] = `${element.config.name}`;
         }
       }
       // Do not replace mustache in RichText control, it is replaced by the control
@@ -68,12 +56,10 @@ export default {
       properties[':form-config'] = this.byRef(this.configRef || definition.config);
       properties[':form-computed'] = JSON.stringify(definition.computed);
       properties[':form-watchers'] = JSON.stringify(definition.watchers);
-      // Check if control is assigned to a calculated property
-      const isCalcProp = definition.computed && !!definition.computed.find(computed => computed.property == element.config.name);
-      properties[':readonly'] = isCalcProp || element.config.readonly;
-      properties[':disabled'] = isCalcProp || element.config.disabled;
+     // properties[':form-watchers'] = '($v.$invalid)?' + JSON.stringify(definition.watchers) + ':"[]"';;
       // Events
       properties['@submit'] = 'submitForm("'+element.config.event+'")';
+        //console.log(properties,'123456');
     },
   },
   mounted() {

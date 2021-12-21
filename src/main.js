@@ -25,9 +25,6 @@ Vue.use(Vuex);
 Vue.use(ScreenBuilder);
 Vue.component('Multiselect', Multiselect);
 
-// Stub for standalone. Real one is in core.
-Vue.component('required', { template: '<div class="text-right"><small>* = Required</small></div>'});
-
 const store = new Vuex.Store({ modules: {} });
 
 window.axios = axios.create({
@@ -152,7 +149,7 @@ window.ProcessMaker = {
                 {value: 2, content: 'John'},
                 {value: 3, content: 'Mary'},
                 {value: 4, content: 'Patricia'},
-              ], 
+              ],
             }});
             break;
           default:
@@ -163,13 +160,6 @@ window.ProcessMaker = {
       });
     },
     put() {
-      return new Promise((resolve) => {
-        resolve({data: {
-          response: [],
-        }});
-      });
-    },
-    delete() {
       return new Promise((resolve) => {
         resolve({data: {
           response: [],
@@ -194,7 +184,7 @@ window.Echo = {
     this.listeners.forEach((listener) => {
       setTimeout(() => {
         listener.callback({
-          type: '.ProcessMaker\\Events\\ScriptResponseEvent',
+          type: 'ProcessMaker\\Notifications\\ScriptResponseNotification',
           watcher: body.watcher,
           response,
         });
@@ -210,7 +200,8 @@ window.Echo = {
         window.Echo.listeners.splice(0);
       },
       listen(event, callback) {
-        window.Echo.listeners.push({ event, callback });
+        event;
+        callback;
       },
     };
   },
