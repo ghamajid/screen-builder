@@ -25,6 +25,7 @@ import DataProvider from '../DataProvider';
 import FormPersianDatePicker from './renderer/form-persian-date-picker';
 import FormPersianDatePickerBuilder from './renderer/form-persian-date-picker-builder';
 import FormMultiSelectOption from './renderer/form_multi_select_option';
+import Pelak from './renderer/pelak';
 
 const rendererComponents = {
   ...renderer,
@@ -76,6 +77,7 @@ export default {
     Vue.component('FormPersianDatePickerBuilder', FormPersianDatePickerBuilder);
     Vue.component('FormMultiSelectOption', FormMultiSelectOption);
     Vue.component('FormMaskedInput', FormMaskedInput);
+    Vue.component('Pelak', Pelak);
     Vue.use(DataProvider);
   },
 };

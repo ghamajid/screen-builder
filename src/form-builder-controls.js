@@ -12,6 +12,7 @@ import {DataTypeProperty, DataFormatProperty, DataTypeDateTimeProperty} from './
 import FormPersianDatePicker from './components/renderer/form-persian-date-picker';
 import FormPersianDatePickerBuilder from './components/renderer/form-persian-date-picker-builder';
 import FormMultiSelectOption from './components/renderer/form_multi_select_option';
+import Pelak from './components/renderer/pelak';
 import {
   FormInput,
   FormTextArea,
@@ -42,6 +43,33 @@ import {
 } from './form-control-common-properties';
 
 export default [
+    {
+        editorComponent: Pelak,
+        editorBinding: 'Pelak',
+        rendererComponent: Pelak,
+        rendererBinding: 'Pelak',
+        control: {
+            label: 'Pelak',
+            component: 'Pelak',
+            'editor-component': 'Pelak',
+            'editor-control': 'Pelak',
+            config: {
+                icon: 'fas fa-car',
+                label: 'pelak',
+            },
+            inspector: [
+                keyNameProperty,
+                labelProperty,
+                validationRulesProperty,
+                placeholderProperty,
+                helperTextProperty,
+                colorProperty,
+                bgcolorProperty,
+                disabledProperty,
+                defaultValueProperty,
+            ],
+        },
+    },
   {
     editorComponent: FormHtmlEditor,
     editorBinding: 'FormHtmlEditor',
