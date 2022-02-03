@@ -55,7 +55,7 @@
     import ValidationMixin from './mixins/validation';
     import DataFormatMixin from './mixins/DataFormat';
     import DisplayErrors from './common/DisplayErrors';
-    import image from './../../assets/pelak.jpg';
+    import image from './../../assets/pelak2.jpg';
 
     const uniqIdsMixin = createUniqIdsMixin();
 
@@ -203,12 +203,14 @@
                 maxDateChange: '',
                 num_element_id: this.name + new Date().getUTCMilliseconds(),
                 cssProps: {
-                    backgroundImage: `url(${require('./../../assets/pelak2.jpg')})`,
+                    backgroundImage: `url(${image})`,
                     backgroundRepeat: `no-repeat`,
                     width: `225px`,
                     backgroundSize: `contain`,
                     paddingLeft:'22px',
-                    textAlign:'center'
+                    textAlign:'center',
+                    direction: 'ltr',
+                    margin: '0px'
                 },
                 selected: '',
                 arrValue: [],
