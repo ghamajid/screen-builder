@@ -39,7 +39,7 @@
                     maxlength="2"
                     :disabled="disabled"
                     v-model="value4"
-                    style="width: 40px;padding: 7px;margin-top:12px;margin-left:3px;height: 35px;font-weight: bold;"
+                    style="width: 40px;padding: 7px;margin-top:12px;margin-left:1px;height: 35px;font-weight: bold;"
                     placeholder=""
             >
         </div>
