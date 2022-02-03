@@ -203,7 +203,7 @@
                 maxDateChange: '',
                 num_element_id: this.name + new Date().getUTCMilliseconds(),
                 cssProps: {
-                    backgroundImage: `url(${image})`,
+                    backgroundImage: `url('https://irngv.hamahang-co.ir/pelak2.jpg')`,
                     backgroundRepeat: `no-repeat`,
                     width: `225px`,
                     backgroundSize: `contain`,
