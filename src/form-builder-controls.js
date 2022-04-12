@@ -462,6 +462,7 @@ export default [
         icon: 'fas fa-th-list',
         label: 'New Record List',
         editable: false,
+        selectable:false,
         fields: {
           dataSource: dataSourceValues.provideData,
           jsonData: '',
@@ -484,6 +485,14 @@ export default [
           config: {
             label: 'Editable?',
             helper: 'Should records be editable/removable and can new records be added',
+          },
+        },
+        {
+          type: 'FormCheckbox',
+          field: 'selectable',
+          config: {
+            label: 'Selectable?',
+            helper: 'Make records selectable and add is_selected to it\'s properties',
           },
         },
         {
