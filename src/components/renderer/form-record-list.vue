@@ -55,11 +55,11 @@
 
         <template #cell(__select)="{ rowSelected }">
           <template v-if="rowSelected">
-            <span aria-hidden="true">⦿</span>
+            <span aria-hidden="true" style="font-size: 1.25rem;">⦿</span>
             <span class="sr-only">Selected</span>
           </template>
           <template v-else>
-            <span aria-hidden="true">○</span>
+            <span aria-hidden="true" style="font-size: 1.25rem;">⦾</span>
             <span class="sr-only">Not selected</span>
           </template>
         </template>
