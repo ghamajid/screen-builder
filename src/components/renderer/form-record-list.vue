@@ -25,6 +25,9 @@
         :empty-text="$t('No Data Available')"
         :current-page="currentPage"
         data-cy="table"
+        :selectable="selectable"
+        select-mode="single"
+        @row-selected="onRowSelected"
       >
         <template #cell()="{index,field,item}">
           <template v-if="isFiledownload(field, item)">
@@ -49,6 +52,18 @@
             </div>
           </div>
         </template>
+
+        <template #cell(__select)="{ rowSelected }">
+          <template v-if="rowSelected">
+            <span aria-hidden="true">⦿</span>
+            <span class="sr-only">Selected</span>
+          </template>
+          <template v-else>
+            <span aria-hidden="true">○</span>
+            <span class="sr-only">Not selected</span>
+          </template>
+        </template>
+
       </b-table>
       <b-pagination
         v-if="tableData.total > perPage"
@@ -159,9 +174,14 @@ const jsonOptionsActionsColumn = {
   tdClass: 'text-right',
 };
 
+const jsonOptionsSelectColumn = {
+  key: '__select',
+  label: 'Select',
+};
+
 export default {
   mixins: [mustacheEvaluation],
-  props: ['transientData','name', 'label', 'fields', 'value', 'editable', '_config', 'form', 'validationData', 'formConfig', 'formComputed', 'formWatchers'],
+  props: ['transientData','name', 'label', 'fields', 'value', 'editable', 'selectable', '_config', 'form', 'validationData', 'formConfig', 'formComputed', 'formWatchers'],
   data() {
     return {
       editFormVersion: 0,
@@ -226,6 +246,11 @@ export default {
     },
     tableData() {
       const value = this.value || [];
+      JSON.parse(JSON.stringify(value.map(obj => {
+        this.$set(obj, 'row_id', Math.random().toString(36).substring(2) + Date.now().toString(36))
+        this.$set(obj, 'is_selected', false)
+      })))
+      console.log('sdvsdvsdvsdvsdvsdvsdv')
       let from = this.paginatorPage - 1;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.lastPage = Math.ceil(value.length / this.perPage);
@@ -248,6 +273,10 @@ export default {
 
       if (this.editable && !this.selfReferenced) {
         fields.push(jsonOptionsActionsColumn);
+      }
+
+      if (this.selectable) {
+        fields.unshift(jsonOptionsSelectColumn);
       }
 
       return fields;
@@ -283,6 +312,13 @@ export default {
       },
   },
   methods: {
+    onRowSelected(items) {
+      typeof items[0] !== 'undefined' ? JSON.parse(JSON.stringify(this.tableData.data.map(obj => {
+        this.$set(obj, 'is_selected', items[0].row_id == obj.row_id);
+      }))) : JSON.parse(JSON.stringify(this.tableData.data.map(obj => {
+        this.$set(obj, 'is_selected', false);
+      })));
+    },
     formatIfDate(string) {
       return dateUtils.formatIfDate(string);
     },
@@ -391,6 +427,9 @@ export default {
     showAddForm() {
       const uniqueId = Math.random().toString(36).substring(2) + Date.now().toString(36);
       this.$set(this.addItem, 'row_id', uniqueId);
+      if (this.selectable) {
+        this.$set(this.addItem, 'is_selected', false);
+      }
       this.setUploadDataNamePrefix();
       if (!this.form) {
         this.$refs.infoModal.show();
