@@ -224,7 +224,9 @@ export default {
       return this.$refs.renderer.getCurrentPage();
     },
     setCurrentPage(page) {
-      this.$refs.renderer.setCurrentPage(page);
+        if(this.$refs.renderer){
+            this.$refs.renderer.setCurrentPage(page);
+        }
     },
   },
 };

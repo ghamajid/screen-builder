@@ -66,7 +66,10 @@ export default {
       return this.$refs.component.getCurrentPage();
     },
     setCurrentPage(page) {
-      this.$refs.component.setCurrentPage(page);
+        //console.log(this.$refs.component.setCurrentPage,'page');
+        if(this.$refs.component){
+            this.$refs.component.setCurrentPage(page);
+        }
     },
   },
 };
