@@ -233,6 +233,7 @@
                 v-model="inspection.config[item.field]"
                 @focusout.native="updateState"
                 @setName="inspection.config.name = $event"
+                :inspection="inspection"
               />
             </b-collapse>
           </template>
@@ -410,7 +411,6 @@ export default {
     if (this.title && config[0].name === 'Default') {
       config[0].name = this.title;
     }
-
     return {
       currentPage: 0,
       selected: null,
@@ -651,9 +651,9 @@ export default {
         })
         .map(field => {
           if (typeof field !== 'string') {
+
             return field.name;
           }
-
           return field;
         });
       const control = this.controls.find(control => control['editor-control'] === this.inspection['editor-control'])
