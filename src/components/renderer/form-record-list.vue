@@ -10,24 +10,24 @@
         </button>-->
       </div>
     </div>
-    <div v-if="!value">
+    <div v-if="!recordListOptions.length">
       {{ $t('This record list is empty or contains no data.') }}
     </div>
     <template v-else>
       <b-table
-        :per-page="perPage"
-        ref="vuetable"
-        :data-manager="dataManager"
-        :fields="tableFields"
-        :items="tableData.data"
-        sort-icon-left
-        :css="css"
-        :empty-text="$t('No Data Available')"
-        :current-page="currentPage"
-        data-cy="table"
-        :selectable="selectable"
-        select-mode="single"
-        @row-selected="onRowSelected"
+          :per-page="perPage"
+          ref="vuetable"
+          :data-manager="dataManager"
+          :fields="tableFields"
+          :items="tableData.data"
+          sort-icon-left
+          :css="css"
+          :empty-text="$t('No Data Available')"
+          :current-page="currentPage"
+          data-cy="table"
+          :selectable="selectable"
+          select-mode="single"
+          @row-selected="onRowSelected"
       >
         <template #cell()="{index,field,item}">
           <template v-if="isFiledownload(field, item)">
@@ -46,7 +46,8 @@
               <button @click="showEditForm(index)" class="btn btn-primary" :title="$t('Edit')" data-cy="edit-row">
                 <i class="fas fa-edit"/>
               </button>
-              <button @click="showDeleteConfirmation(index)" class="btn btn-danger" :title="$t('Delete')" data-cy="remove-row">
+              <button @click="showDeleteConfirmation(index)" class="btn btn-danger" :title="$t('Delete')"
+                      data-cy="remove-row">
                 <i class="fas fa-trash-alt"/>
               </button>
             </div>
@@ -66,96 +67,98 @@
 
       </b-table>
       <b-pagination
-        v-if="tableData.total > perPage"
-        data-cy="table-pagination"
-        v-model="currentPage"
-        :total-rows="tableData.total"
-        :per-page="perPage"
-        :aria-label="$t('Pagination')"
-        aria-controls="vuetable"
-        @change="onChangePage"
+          v-if="tableData.total > perPage"
+          data-cy="table-pagination"
+          v-model="currentPage"
+          :total-rows="tableData.total"
+          :per-page="perPage"
+          :aria-label="$t('Pagination')"
+          aria-controls="vuetable"
+          @change="onChangePage"
       />
     </template>
 
     <b-modal
-      :static="true"
-      @ok="handleOk"
-      @hidden="addItem = initFormValues"
-      size="lg"
-      v-if="editable && !selfReferenced"
-      ref="addModal"
-      :ok-title="$t('Ok')"
-      :cancel-title="$t('Cancel')"
-      :title="$t('Add')"
-      header-close-content="&times;"
-      data-cy="modal-add"
+        :static="true"
+        @ok="handleOk"
+        @hidden="addItem = initFormValues"
+        size="lg"
+        v-if="editable && !selfReferenced"
+        ref="addModal"
+        :ok-title="$t('Ok')"
+        :cancel-title="$t('Cancel')"
+        :title="$t('Add')"
+        header-close-content="&times;"
+        data-cy="modal-add"
     >
       <vue-form-renderer
-        :page="0"
-        ref="addRenderer"
-        v-model="addItem"
-        :config="popupConfig"
-        :current-page="form"
-        :computed="formComputed"
-        :watchers="formWatchers"
-        debug-context="Record List Add"
-        :key="Array.isArray(value) ? value.length : 0"
-        :_parent="validationData"
+          :page="0"
+          ref="addRenderer"
+          v-model="addItem"
+          :config="popupConfig"
+          :current-page="form"
+          :computed="formComputed"
+          :watchers="formWatchers"
+          debug-context="Record List Add"
+          :key="Array.isArray(value) ? value.length : 0"
+          :_parent="validationData"
       />
     </b-modal>
     <b-modal
-      :static="true"
-      @ok="edit"
-      size="lg"
-      v-if="editable && !selfReferenced"
-      ref="editModal"
-      :ok-title="$t('Save')"
-      :cancel-title="$t('Cancel')"
-      :title="$t('Edit Record')"
-      header-close-content="&times;"
-      data-cy="modal-edit"
+        :static="true"
+        @ok="edit"
+        size="lg"
+        v-if="editable && !selfReferenced"
+        ref="editModal"
+        :ok-title="$t('Save')"
+        :cancel-title="$t('Cancel')"
+        :title="$t('Edit Record')"
+        header-close-content="&times;"
+        data-cy="modal-edit"
     >
       <vue-form-renderer
-        :page="0"
-        ref="editRenderer"
-        v-model="editItem"
-        :config="popupConfig"
-        :current-page="form"
-        :computed="formComputed"
-        :watchers="formWatchers"
-        debug-context="Record List Edit"
-        :_parent="validationData"
-        :key="editFormVersion"
+          :page="0"
+          ref="editRenderer"
+          v-model="editItem"
+          :config="popupConfig"
+          :current-page="form"
+          :computed="formComputed"
+          :watchers="formWatchers"
+          debug-context="Record List Edit"
+          :_parent="validationData"
+          :key="editFormVersion"
       />
     </b-modal>
     <b-modal
-      @ok="remove"
-      size="lg"
-      v-if="editable && !selfReferenced"
-      ref="deleteModal"
-      :ok-title="$t('Delete')"
-      :cancel-title="$t('Cancel')"
-      :title="$t('Delete Record')"
-      header-close-content="&times;"
-      data-cy="modal-remove"
+        @ok="remove"
+        size="lg"
+        v-if="editable && !selfReferenced"
+        ref="deleteModal"
+        :ok-title="$t('Delete')"
+        :cancel-title="$t('Cancel')"
+        :title="$t('Delete Record')"
+        header-close-content="&times;"
+        data-cy="modal-remove"
     >
       <p>{{ $t('Are you sure you want to remove this record?') }}</p>
     </b-modal>
     <b-modal
-      @ok="hideInformation"
-      size="sm"
-      v-if="editable && !selfReferenced"
-      ref="infoModal"
-      :ok-title="$t('OK')"
-      :title="$t('Information form')"
-      header-close-content="&times;"
-      ok-only
-      data-cy="modal-not-assigned"
+        @ok="hideInformation"
+        size="sm"
+        v-if="editable && !selfReferenced"
+        ref="infoModal"
+        :ok-title="$t('OK')"
+        :title="$t('Information form')"
+        header-close-content="&times;"
+        ok-only
+        data-cy="modal-not-assigned"
     >
       <p>{{ $t('The form to be displayed is not assigned.') }}</p>
     </b-modal>
     <div v-if="editable && selfReferenced" class="alert alert-danger">
-      {{ $t('The Record List control is not allowed to reference other controls on its own page to add or edit records. Specify a secondary page with controls to enter records.') }}
+      {{
+        $t('The Record List control is not allowed to reference other controls on its own page to add or edit records. Specify a secondary page with controls to enter records.')
+      }}
     </div>
   </div>
 </template>
@@ -163,8 +166,9 @@
 
 <script>
 import mustacheEvaluation from '../../mixins/mustacheEvaluation';
-import _ from 'lodash';
-import { dateUtils } from '@processmaker/vue-form-elements';
+import _, {get} from 'lodash';
+import {dateUtils} from '@processmaker/vue-form-elements';
+import axios from "axios";
 //import ScreenRenderer from '../screen-renderer.vue';
 
 const jsonOptionsActionsColumn = {
@@ -181,9 +185,11 @@ const jsonOptionsSelectColumn = {
 
 export default {
   mixins: [mustacheEvaluation],
-  props: ['transientData','name', 'label', 'fields', 'value', 'editable', 'selectable', '_config', 'form', 'validationData', 'formConfig', 'formComputed', 'formWatchers'],
+  props: ['transientData', 'name', 'label', 'fields', 'value', 'editable', 'selectable', '_config', 'form', 'validationData', 'formConfig', 'formComputed', 'formWatchers'],
   data() {
+    this.fillRecordListOptions()
     return {
+      recordListOptions: [],
       editFormVersion: 0,
       single: '',
       plural: '',
@@ -245,12 +251,12 @@ export default {
 
     },
     tableData() {
-      const value = this.value || [];
+      let value = this.recordListOptions || [];
       JSON.parse(JSON.stringify(value.map(obj => {
         this.$set(obj, 'row_id', Math.random().toString(36).substring(2) + Date.now().toString(36))
         this.$set(obj, 'is_selected', false)
       })))
-      console.log('sdvsdvsdvsdvsdvsdvsdv')
+
       let from = this.paginatorPage - 1;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.lastPage = Math.ceil(value.length / this.perPage);
@@ -265,20 +271,18 @@ export default {
         to: value.length,
         data: value,
       };
+      this.$emit('input', data.data);
       return data;
     },
     // The fields used for our vue table
     tableFields() {
       const fields = this.getTableFieldsFromDataSource();
-
       if (this.editable && !this.selfReferenced) {
         fields.push(jsonOptionsActionsColumn);
       }
-
       if (this.selectable) {
         fields.unshift(jsonOptionsSelectColumn);
       }
-
       return fields;
     },
     // Determines if the form used for add/edit is self referencing. If so, we should not show it
@@ -287,31 +291,53 @@ export default {
     },
   },
   watch: {
-      value: {
-          deep: true,
-          handler() {
-              var self = this;
-              let recurse = function (obj) {
-                  for (var property in obj) {
-                      if (obj.hasOwnProperty(property)) {
-                          if (obj[property] != null && typeof obj[property] === "object"){
-                              if(property != self.name){
-                                  recurse(obj[property]);
-                              }
-                          }
-                          else{
-                              //console.log(property , self.transientData[self.name],'456');
-                              obj[property] = property in self.value[0] ? null : obj[property];
-                              //obj[property] = property in self.transientData[self.name][0] ? "" : obj[property];
-                          }
-                      }
-                  }
+    value: {
+      deep: true,
+      handler() {
+        var self = this;
+        let recurse = function (obj) {
+          for (var property in obj) {
+            if (obj.hasOwnProperty(property)) {
+              if (obj[property] != null && typeof obj[property] === "object") {
+                if (property != self.name) {
+                  recurse(obj[property]);
+                }
+              } else {
+                //console.log(property , self.transientData[self.name],'456');
+                obj[property] = property in self.value[0] ? null : obj[property];
+                //obj[property] = property in self.transientData[self.name][0] ? "" : obj[property];
               }
-              recurse(this.transientData);
-          },
+            }
+          }
+        }
+        recurse(this.transientData);
       },
+    },
   },
   methods: {
+    //get record item
+    fillRecordListOptions() {
+
+      if (this.$attrs.options.dataSource === 'recordForm') {
+        this.recordListOptions = this.value || [];
+      }
+      if (this.$attrs.options.dataSource === 'dataObject') {
+        // eslint-disable-next-line no-unused-vars
+        if (this.$attrs.options.dataUrl) {
+          var data_get = (this.$attrs.options.dataDependentVariable && this.transientData[this.$attrs.options.dataDependentVariable]) ? this.transientData[this.$attrs.options.dataDependentVariable] : '';
+          window.ProcessMaker.apiClient
+              .post(this.$attrs.options.dataUrl, {select_content: '', var_id: data_get})
+              .then((response) => {
+                // eslint-disable-next-line no-unused-vars
+                this.recordListOptions = response.data.response;
+
+              })
+              .finally(() => {
+              });
+
+        }
+      }
+    },
     onRowSelected(items) {
       typeof items[0] !== 'undefined' ? JSON.parse(JSON.stringify(this.tableData.data.map(obj => {
         this.$set(obj, 'is_selected', items[0].row_id == obj.row_id);
@@ -324,17 +350,16 @@ export default {
     },
     isImage(field, item) {
       const content = _.get(item, field.key);
-      return typeof content === 'string' && content.substr(0,11) === 'data:image/';
+      return typeof content === 'string' && content.substr(0, 11) === 'data:image/';
     },
     isFiledownload(field) {
       return field.key === '__filedownload';
     },
     setUploadDataNamePrefix(index = null) {
-      let  rowId = null;
-      if (index !== null  && this.editItem) {
+      let rowId = null;
+      if (index !== null && this.editItem) {
         rowId = this.editItem.row_id;
-      }
-      else {
+      } else {
         if (this.addItem) {
           rowId = this.addItem.row_id;
         }
@@ -369,8 +394,8 @@ export default {
       }
 
       return Array.isArray(validationData)
-        ? validationData
-        : [];
+          ? validationData
+          : [];
     },
     hideInformation() {
       this.$refs.infoModal.hide();
@@ -397,7 +422,7 @@ export default {
       }
     },
     showEditForm(index) {
-      let pageIndex = ((this.paginatorPage-1) * this.perPage) + index;
+      let pageIndex = ((this.paginatorPage - 1) * this.perPage) + index;
       // Reset edit to be a copy of our data model item
       this.editItem = JSON.parse(JSON.stringify(this.value[pageIndex]));
       this.editIndex = pageIndex;
@@ -468,7 +493,7 @@ export default {
       });
     },
     showDeleteConfirmation(index) {
-      let pageIndex = ((this.paginatorPage-1) * this.perPage) + index;
+      let pageIndex = ((this.paginatorPage - 1) * this.perPage) + index;
       this.deleteIndex = pageIndex;
       this.$refs.deleteModal.show();
     },
@@ -477,14 +502,14 @@ export default {
       let name = this.name + '.' + rowIndex + '.' + rowField;
 
       window.ProcessMaker.apiClient
-        .get('requests/' + requestId + '/files?name=' + name)
-        .then(response => {
-          let respData = response.data;
-          if (respData && respData.data && respData.data.length) {
-            let file = respData.data[0];
-            this.downloadRecordListFile(file, requestId);
-          }
-        });
+          .get('requests/' + requestId + '/files?name=' + name)
+          .then(response => {
+            let respData = response.data;
+            if (respData && respData.data && respData.data.length) {
+              let file = respData.data[0];
+              this.downloadRecordListFile(file, requestId);
+            }
+          });
     },
     downloadRecordListFile(file, requestId) {
       window.ProcessMaker.apiClient({
@@ -514,11 +539,14 @@ export default {
       this.$root.$emit('removed-record', this, recordData);
     },
   },
+created() {
+  this.fillRecordListOptions()
+}
 };
 </script>
 
 <style>
-  .table td.table-column {
-    max-width: 300px;
-  }
+.table td.table-column {
+  max-width: 300px;
+}
 </style>
