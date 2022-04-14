@@ -329,7 +329,7 @@ export default {
               .post(this.$attrs.options.dataUrl, {select_content: '', var_id: data_get})
               .then((response) => {
                 // eslint-disable-next-line no-unused-vars
-                this.recordListOptions = response.data.response;
+                this.recordListOptions = response.data;
 
               })
               .finally(() => {
