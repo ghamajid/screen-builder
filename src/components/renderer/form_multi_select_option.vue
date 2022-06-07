@@ -173,7 +173,7 @@
                             this.isOk++;
                             var data_get = (this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
                             window.ProcessMaker.apiClient
-                                .post(this.options.dataUrl, {select_content: val  ,var_id: data_get })
+                                .post(this.options.dataUrl, {select_content: val  ,var_id: 21 })
                                 .then((response) => {
                                     // eslint-disable-next-line no-unused-vars
                                     var self = this;
