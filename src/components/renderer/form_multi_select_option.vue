@@ -169,9 +169,9 @@
                             requestOptions = [];
                         }
                         if (this.options.dataUrl && (val || this.isOk == 0)) {
-
                             this.isOk++;
                             var data_get = (this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
+                            console.log(data_get)
                             window.ProcessMaker.apiClient
                                 .post(this.options.dataUrl, {select_content: val  ,var_id: 21 })
                                 .then((response) => {
