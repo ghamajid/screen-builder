@@ -96,7 +96,7 @@ export default {
     ],
     data() {
         return {
-            dataDependentVariable:null,
+            dataDependentVariable:undefined,
             isOk: 0,
             info: [],
             lastRequest: {},
@@ -172,7 +172,7 @@ export default {
                     // eslint-disable-next-line no-unused-vars
                     requestOptions = [];
                 }
-                if (this.options.dataUrl && (val || this.isOk == 0)) {
+                if (this.options.dataUrl && (val || (this.isOk == 0))) {
                     this.isOk++;
                     var data_get = (this.transientData && this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
                    //console.log(this.transientData[this.options.dataDependentVariable],'123456')
@@ -332,9 +332,12 @@ export default {
             immediate: true,
             deep: true,
             handler(val, oldVal) {
-                this.isOk = 0;
-                //console.log(val[this.options.dataDependentVariable],this.dataDependentVariable,'this.transientData[this.options.dataDependentVariable]')
-                this.fillSelectListOptions();
+                if(this.dataDependentVariable !== this.transientData[this.options.dataDependentVariable]){
+                    this.isOk = 0;
+                   // console.log(this.dataDependentVariable , this.transientData[this.options.dataDependentVariable],'this.transientData[this.options.dataDependentVariable]')
+                    this.fillSelectListOptions();
+                }
+
             },
         },
         value: {
