@@ -174,9 +174,9 @@ export default {
                 if (this.options.dataUrl && (val || this.isOk == 0)) {
                     this.isOk++;
                     var data_get = (this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
-                    console.log(data_get, this.options.dataDependentVariable, this.transientData, this.transientData[this.options.dataDependentVariable],)
+                
                     window.ProcessMaker.apiClient
-                        .post(this.options.dataUrl, {select_content: val, var_id: 21})
+                        .post(this.options.dataUrl, {select_content: val, var_id: data_get})
                         .then((response) => {
                             // eslint-disable-next-line no-unused-vars
                             var self = this;
