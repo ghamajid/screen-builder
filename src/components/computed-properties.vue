@@ -141,7 +141,8 @@
 </template>
 
 <script>
-import { FormInput, FormTextArea } from '@processmaker/vue-form-elements';
+import FormTextArea from './renderer/form-text-area';
+import FormInput from './renderer/form-input';
 import MonacoEditor from 'vue-monaco';
 import FocusErrors from '../mixins/focusErrors';
 
