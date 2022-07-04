@@ -49,16 +49,14 @@ import * as renderer from '@/components/renderer';
 import { HasColorProperty, shouldElementBeVisible, getValidPath } from '@/mixins';
 import FormMaskedInput from '@/components/renderer/form-masked-input';
 
-import {
-  // eslint-disable-next-line no-unused-vars
-  FormInput,
-  FormSelectList,
-  FormTextArea,
-  FormCheckbox,
-  FormDatePicker,
-  FormHtmlEditor,
-  FormHtmlViewer,
-} from '@processmaker/vue-form-elements';
+
+import FormInput from './form-input';
+import FormTextArea from './form-text-area';
+import FormCheckbox from './form-checkbox';
+import FormHtmlEditor from './form-html-editor';
+import FormDatePicker from './form-date-picker';
+import FormSelectList from './form-select-list';
+import FormHtmlViewer from './form-html-viewer';
 
 const defaultColumnWidth = 1;
 

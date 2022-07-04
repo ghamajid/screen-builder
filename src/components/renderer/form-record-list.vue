@@ -167,7 +167,8 @@
 <script>
 import mustacheEvaluation from '../../mixins/mustacheEvaluation';
 import _, {get} from 'lodash';
-import {dateUtils} from '@processmaker/vue-form-elements';
+// import {dateUtils} from '@processmaker/vue-form-elements';
+import dateUtils from '../../dateUtils.js';
 import axios from "axios";
 //import ScreenRenderer from '../screen-renderer.vue';
 

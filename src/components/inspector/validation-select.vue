@@ -91,7 +91,8 @@
 </template>
 
 <script>
-import { FormInput } from '@processmaker/vue-form-elements';
+
+import FormInput from '../renderer/form-input';
 import _ from 'lodash';
 import InputVariable from '../inspector/input-variable';
 

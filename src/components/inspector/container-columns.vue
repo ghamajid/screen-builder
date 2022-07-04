@@ -80,7 +80,10 @@
 
 <script>
 import draggable from 'vuedraggable';
-import {FormInput, FormCheckbox, FormTextArea} from '@processmaker/vue-form-elements';
+// import { FormCheckbox} from '@processmaker/vue-form-elements';
+import FormInput from '../renderer/form-input';
+import FormTextArea from '../renderer/form-text-area';
+import FormCheckbox from '../renderer/form-checkbox';
 
 export default {
   components: {
