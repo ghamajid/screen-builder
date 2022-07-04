@@ -96,6 +96,7 @@ export default {
     ],
     data() {
         return {
+            dataDependentVariable:null,
             isOk: 0,
             info: [],
             lastRequest: {},
@@ -173,8 +174,9 @@ export default {
                 }
                 if (this.options.dataUrl && (val || this.isOk == 0)) {
                     this.isOk++;
-                    var data_get = (this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
-                
+                    var data_get = (this.transientData && this.options.dataDependentVariable && this.transientData[this.options.dataDependentVariable]) ? this.transientData[this.options.dataDependentVariable] : '';
+                   //console.log(this.transientData[this.options.dataDependentVariable],'123456')
+                    this.dataDependentVariable = this.transientData[this.options.dataDependentVariable];
                     window.ProcessMaker.apiClient
                         .post(this.options.dataUrl, {select_content: val, var_id: data_get})
                         .then((response) => {
@@ -323,6 +325,15 @@ export default {
             immediate: true,
             deep: true,
             handler() {
+                this.fillSelectListOptions();
+            },
+        },
+        transientData: {
+            immediate: true,
+            deep: true,
+            handler(val, oldVal) {
+                this.isOk = 0;
+                //console.log(val[this.options.dataDependentVariable],this.dataDependentVariable,'this.transientData[this.options.dataDependentVariable]')
                 this.fillSelectListOptions();
             },
         },
