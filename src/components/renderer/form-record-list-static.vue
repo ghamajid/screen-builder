@@ -23,8 +23,7 @@
 
 <script>
 import mustacheEvaluation from '../../mixins/mustacheEvaluation';
-// import { dateUtils } from '@processmaker/vue-form-elements';
-import dateUtils from '../../dateUtils';
+import { dateUtils } from '@processmaker/vue-form-elements';
 
 export default {
   name: 'FormRecordListStatic',

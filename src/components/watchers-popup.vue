@@ -21,8 +21,7 @@
 </template>
 
 <script>
-import FormInput from './renderer/form-input';
-import FormTextArea from './renderer/form-text-area';
+import { FormInput, FormTextArea } from '@processmaker/vue-form-elements';
 import MonacoEditor from 'vue-monaco';
 import WatchersList from './watchers-list';
 import WatchersForm from './watchers-form';

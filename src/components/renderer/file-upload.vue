@@ -1,7 +1,6 @@
 <template>
   <div>
     <label v-uni-for="name">{{ label }}</label>
-    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
     <b-card v-if="inPreviewMode" class="mb-2">
       {{ $t('File uploads are unavailable in preview mode.') }}
     </b-card>
@@ -186,7 +185,6 @@ export default {
       return this.$refs.uploader.fileList.some(file => file._prevProgress < 1);
     },
     filesAccept() {
-
       if (!this.accept) {
         return null;
       }
@@ -196,7 +194,6 @@ export default {
       (this.accept.split(',')).forEach(item => {
         accept.push(item.trim());
       });
- 
       return accept;
     },
     fileDataName() {
@@ -215,7 +212,6 @@ export default {
       handler() {
         if (!this.collection) {
           this.setRequestFiles();
-
         }
         this.$emit('input', this.valueToSend());
       },
@@ -253,11 +249,6 @@ export default {
       },
       immediate: true,
     },
-    config(val){
-      if (this.config.validation == 'required') {
-        this.star = true
-      }
-    }
   },
   data() {
     return {
@@ -293,8 +284,6 @@ export default {
       disabled: false,
       files: [],
       nativeFiles: {},
-      star: false,
-      upload_item: false,
     };
   },
   methods: {
@@ -583,9 +572,5 @@ export default {
 .required {
   color: red;
   font-size: 0.8em;
-}
-
-.icon-star-size {
-  font-size: 8px;
 }
 </style>

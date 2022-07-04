@@ -257,12 +257,12 @@
 </template>
 
 <script>
-
-import FormInput from './renderer/form-input';
-import FormTextArea from './renderer/form-text-area';
-import FormCheckbox from './renderer/form-checkbox';
-import FormMultiSelect from './renderer/form-multi-select-elements';
-
+import {
+  FormInput,
+  FormTextArea,
+  FormMultiSelect,
+  FormCheckbox,
+} from '@processmaker/vue-form-elements';
 import MonacoEditor from 'vue-monaco';
 import DataMapping from './inspector/data-mapping';
 import OutboundConfig from './inspector/outbound-config';

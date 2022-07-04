@@ -1,27 +1,26 @@
 <template>
   <div class="form-group">
-    <label v-uni-for="name">{{ label }} </label>
-    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
+    <label v-uni-for="name">{{ label }}</label>
     <component
-        v-if="componentType!=='input'"
-        :is="componentType"
-        v-model="localValue"
-        v-bind="componentConfig"
-        v-uni-id="name"
-        :name="name"
-        class="form-control"
-        :class="classList"
-        type="text"
+      v-if="componentType!=='input'"
+      :is="componentType"
+      v-model="localValue"
+      v-bind="componentConfig"
+      v-uni-id="name"
+      :name="name"
+      class="form-control"
+      :class="classList"
+      type="text"
     />
     <input v-else
-           v-model="localValue"
-           v-bind="componentConfig"
-           v-uni-id="name"
-           :name="name"
-           class="form-control"
-           :class="(input_data  && classList)?classList:''"
-           :type="dataType"
-           :maxlength="maxlength"
+      v-model="localValue"
+      v-bind="componentConfig"
+      v-uni-id="name"
+      :name="name"
+      class="form-control"
+      :class="classList"
+      :type="dataType"
+      :maxlength="maxlength"
     >
     <template v-if="validator && validator.errorCount">
       <div class="invalid-feedback" v-for="(errors, index) in validator.errors.all()" :key="index">
@@ -36,11 +35,11 @@
 </template>
 
 <script>
-import {createUniqIdsMixin} from 'vue-uniq-ids';
+import { createUniqIdsMixin } from 'vue-uniq-ids';
 import Inputmasked from './form-input-masked';
-import {TheMask} from 'vue-the-mask';
-import {getUserDateFormat, getUserDateTimeFormat} from '../../dateUtils';
-import ValidationMixin from './mixins/validationFormElements';
+import { TheMask } from 'vue-the-mask';
+import { getUserDateFormat, getUserDateTimeFormat } from '@processmaker/vue-form-elements/src/dateUtils';
+import ValidationMixin from '@processmaker/vue-form-elements/src/components/mixins/validation';
 import moment from 'moment';
 
 const uniqIdsMixin = createUniqIdsMixin();
@@ -61,8 +60,8 @@ const componentTypesConfigs = {
 
 export default {
   inheritAttrs: false,
-  components: {TheMask, Inputmasked},
-  mixins: [uniqIdsMixin, ValidationMixin],
+  components: { TheMask, Inputmasked },
+  mixins: [ uniqIdsMixin, ValidationMixin ],
   props: [
     'value',
     'label',
@@ -71,7 +70,7 @@ export default {
     'name',
     'controlClass',
     'dataMask',
-    'config'
+    'config',
   ],
   methods: {
     getUserConfig() {
@@ -133,14 +132,6 @@ export default {
         dateTime: ['####-##-## ##:##'],
       };
     },
-    starStatus(){
-      var validationObject = this.config.validation;
-      Object.entries(validationObject).forEach(([key, value]) => {
-        if(value.value == 'required'){
-          this.star = true;
-        }
-      })
-    },
   },
   computed: {
     dataFormat() {
@@ -159,16 +150,16 @@ export default {
       let config;
       if (this.customFormatter) {
         config = componentTypesConfigs['custom'];
-      } else {
+      } else  {
         config = componentTypesConfigs[this.dataFormat];
       }
-      return Object.assign({}, (config ? this[config] : {}), this.$attrs);
+      return Object.assign({}, (config ? this[config] : {}) , this.$attrs);
     },
     getCurrencyFormat() {
       const format = this.dataMask && this.dataMask ? this.dataMask && this.dataMask.format : null;
       const separators = format ? format.match(/[.,]/g) : ['.', ','];
       if (separators.length === 0) separators.push('', '.');
-      else if (separators.length === 1) separators.push(separators[0] === '.' ? ',' : '.');
+      else if (separators.length === 1) separators.push(separators[0] === '.' ? ',': '.');
       const presicion = format ? (format.split(separators[1])[1] || '').length : 2;
       return {
         decimal: separators[1],
@@ -209,25 +200,18 @@ export default {
       }
     },
     classList() {
-
       return {
         'is-invalid': (this.validator && this.validator.errorCount) || this.error,
         [this.controlClass]: !!this.controlClass,
       };
     },
-
     dataType() {
       switch (this.dataFormat) {
-        case 'int':
-          return 'number';
-        case 'float':
-          return 'number';
-        case 'email':
-          return 'email';
-        case 'password':
-          return 'password';
-        default:
-          return 'text';
+        case 'int': return 'number';
+        case 'float': return 'number';
+        case 'email': return 'email';
+        case 'password': return 'password';
+        default: return 'text';
       }
     },
     getCustomFormatter() {
@@ -236,7 +220,6 @@ export default {
         mask: this.customFormatter,
       };
     },
-
   },
   watch: {
     value(value) {
@@ -247,17 +230,13 @@ export default {
     localValue(value) {
       if (value != this.value) {
         this.$emit('input', this.convertToData(value));
-        this.input_data = true
       }
     },
-
   },
   data() {
     return {
       validator: null,
       localValue: null,
-      input_data: false,
-      star: false,
       validationRules: {
         'percentage': 'regex:/^[+-]?\\d+(\\.\\d+)?$/',
       },
@@ -268,13 +247,5 @@ export default {
       this.localValue = this.value;
     }
   },
-  created(){
-    this.starStatus();
-  },
 };
 </script>
-<style scoped>
-  .icon-star-size {
-    font-size: 8px;
-  }
-</style>

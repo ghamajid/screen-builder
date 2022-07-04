@@ -310,8 +310,7 @@ import draggable from 'vuedraggable';
 import HasColorProperty from '../mixins/HasColorProperty';
 import * as renderer from './renderer';
 import * as inspector from './inspector';
-// import '@processmaker/vue-form-elements/dist/vue-form-elements.css';
-import '../assets/css/vue-form-elements.css';
+import '@processmaker/vue-form-elements/dist/vue-form-elements.css';
 import undoRedoModule from '../undoRedoModule';
 import accordions from './accordions';
 import { keyNameProperty } from '../form-control-common-properties';
@@ -347,20 +346,20 @@ Validator.register(
   'Columns must add to 12'
 );
 
-
-import FormInput from './renderer/form-input';
-import FormTextArea from './renderer/form-text-area';
-import FormCheckbox from './renderer/form-checkbox';
-import FormHtmlEditor from './renderer/form-html-editor';
-import FormDatePicker from './renderer/form-date-picker';
-import FormSelectList from './renderer/form-select-list';
-import FormHtmlViewer from './renderer/form-html-viewer';
+import {
+  FormInput,
+  FormSelectList,
+  FormTextArea,
+  FormCheckbox,
+  FormDatePicker,
+  FormHtmlEditor,
+  FormHtmlViewer,
+} from '@processmaker/vue-form-elements';
 
 import RequiredCheckbox from './utils/required-checkbox';
 import MultipleUploadsCheckbox from './utils/multiple-uploads-checkbox';
 
-// import '@processmaker/vue-form-elements/dist/vue-form-elements.css';
-import '../assets/css/vue-form-elements.css';
+import '@processmaker/vue-form-elements/dist/vue-form-elements.css';
 import { formTypes } from '@/global-properties';
 import _ from 'lodash';
 

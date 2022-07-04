@@ -6,9 +6,7 @@
 </template>
 
 <script>
-// import { FormCheckbox } from '@processmaker/vue-form-elements';
-import FormInput from '../renderer/form-input';
-import FormCheckbox from '../renderer/form-checkbox';
+import { FormInput, FormCheckbox } from '@processmaker/vue-form-elements';
 
 export default {
   props: ['value', 'selectedControl'],

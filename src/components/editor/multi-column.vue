@@ -108,15 +108,15 @@ import { HasColorProperty } from '@/mixins';
 import * as renderer from '@/components/renderer';
 import _ from 'lodash';
 
-
-import FormInput from '../renderer/form-input';
-import FormTextArea from '../renderer/form-text-area';
-import FormCheckbox from '../renderer/form-checkbox';
-import FormHtmlEditor from '../renderer/form-html-editor';
-import FormDatePicker from '../renderer/form-date-picker';
-import FormSelectList from '../renderer/form-select-list';
- import FormHtmlViewer from '../renderer/form-html-viewer';
-
+import {
+  FormInput,
+  FormSelectList,
+  FormTextArea,
+  FormCheckbox,
+  FormDatePicker,
+  FormHtmlEditor,
+  FormHtmlViewer,
+} from '@processmaker/vue-form-elements';
 const defaultColumnWidth = 1;
 
 export default {

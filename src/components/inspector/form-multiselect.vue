@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import ValidationMixin from '../renderer/mixins/validationFormElements';
+import ValidationMixin from '@processmaker/vue-form-elements/src/components/mixins/validation';
 
 export default {
   inheritAttrs: false,

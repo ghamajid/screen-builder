@@ -15,7 +15,7 @@ import ScreenRenderer from './screen-renderer';
 import AddLoopRow from './renderer/add-loop-row';
 import FormRecordList from './renderer/form-record-list';
 import FormImage from './renderer/form-image';
-// import VueFormElements from '@processmaker/vue-form-elements';
+import VueFormElements from '@processmaker/vue-form-elements';
 import FormButton from './renderer/form-button';
 import FileUpload from './renderer/file-upload.vue';
 import FileDownload from './renderer/file-download.vue';
@@ -24,73 +24,60 @@ import DefaultLoadingSpinner from './utils/default-loading-spinner';
 import DataProvider from '../DataProvider';
 import FormPersianDatePicker from './renderer/form-persian-date-picker';
 import FormPersianDatePickerBuilder from './renderer/form-persian-date-picker-builder';
-import FormMultiSelectOption from './renderer/form-multi-select-option';
+import FormMultiSelectOption from './renderer/form_multi_select_option';
 import Pelak from './renderer/pelak';
-import FromInput from './renderer/form-input';
-import FormTextArea from './renderer/form-text-area';
-import FormCheckbox from './renderer/form-checkbox';
-import FormHtmlEditor from './renderer/form-html-editor';
-import FormHtmlViewer from './renderer/form-html-viewer';
-import FormDatePicker from './renderer/form-date-picker';
-import FormSelectList from './renderer/form-select-list';
 
 const rendererComponents = {
-    ...renderer,
-    FormMultiColumn,
+  ...renderer,
+  FormMultiColumn,
 };
 
 // Export our named exports
 export {
-    VueFormBuilder,
-    VueFormRenderer,
-    inspector,
-    rendererComponents as renderer,
-    FormBuilderControls,
-    Task,
+  VueFormBuilder,
+  VueFormRenderer,
+  inspector,
+  rendererComponents as renderer,
+  FormBuilderControls,
+  Task,
 };
 
 // Export our Vue plugin as our default
 export default {
-    install(Vue) {
-        // First check to see if we're already installed
-        /* istanbul ignore next */
-        if (Vue._processMakerVueFormBuilderInstalled) {
-            return;
-        }
+  install(Vue) {
+    // First check to see if we're already installed
+    /* istanbul ignore next */
+    if (Vue._processMakerVueFormBuilderInstalled) {
+      return;
+    }
 
-        // Boolean flag to see if we're already installed
-        Vue._processMakerVueFormBuilderInstalled = true;
+    // Boolean flag to see if we're already installed
+    Vue._processMakerVueFormBuilderInstalled = true;
 
-        // Register the builder and renderer
-        Vue.component('AddLoopRow', AddLoopRow);
-        Vue.component('FormImage', FormImage);
-        Vue.component('FormLoop', FormLoop);
-        Vue.component('FormMultiColumn', FormMultiColumn);
-        Vue.component('FormNestedScreen', FormNestedScreen);
-        Vue.component('FormRecordList', FormRecordList);
-        Vue.component('Loop', Loop);
-        Vue.component('MultiColumn', MultiColumn);
-        Vue.component('NewFormMultiColumn', NewFormMultiColumn);
-        Vue.component('ScreenRenderer', ScreenRenderer);
-        Vue.component('task', Task);
-        Vue.component('vue-form-builder', VueFormBuilder);
-        Vue.component('vue-form-renderer', VueFormRenderer);
-        Vue.component('default-loading-spinner', DefaultLoadingSpinner);
-        // Vue.use(VueFormElements);
-        Vue.component('FormButton', FormButton);
-        Vue.component('FileUpload', FileUpload);
-        Vue.component('FileDownload', FileDownload);
-        Vue.component('FormPersianDatePicker', FormPersianDatePicker);
-        Vue.component('FormPersianDatePickerBuilder', FormPersianDatePickerBuilder);
-        Vue.component('FormMultiSelectOption', FormMultiSelectOption);
-        Vue.component('FormMaskedInput', FormMaskedInput);
-        Vue.component('Pelak', Pelak);
-        Vue.component('FromInput', FromInput);
-        Vue.component('FormTextArea', FormTextArea);
-        Vue.component('FormCheckbox', FormCheckbox);
-        Vue.component('FormHtmlEditor', FormHtmlEditor);
-        Vue.component('FormHtmlViewer', FormHtmlViewer);
-        Vue.component('FormDatePicker', FormDatePicker);
-        Vue.use(DataProvider);
-    },
+    // Register the builder and renderer
+    Vue.component('AddLoopRow', AddLoopRow);
+    Vue.component('FormImage', FormImage);
+    Vue.component('FormLoop', FormLoop);
+    Vue.component('FormMultiColumn', FormMultiColumn);
+    Vue.component('FormNestedScreen', FormNestedScreen);
+    Vue.component('FormRecordList', FormRecordList);
+    Vue.component('Loop', Loop);
+    Vue.component('MultiColumn', MultiColumn);
+    Vue.component('NewFormMultiColumn', NewFormMultiColumn);
+    Vue.component('ScreenRenderer', ScreenRenderer);
+    Vue.component('task', Task);
+    Vue.component('vue-form-builder', VueFormBuilder);
+    Vue.component('vue-form-renderer', VueFormRenderer);
+    Vue.component('default-loading-spinner', DefaultLoadingSpinner);
+    Vue.use(VueFormElements);
+    Vue.component('FormButton', FormButton);
+    Vue.component('FileUpload', FileUpload);
+    Vue.component('FileDownload', FileDownload);
+    Vue.component('FormPersianDatePicker', FormPersianDatePicker);
+    Vue.component('FormPersianDatePickerBuilder', FormPersianDatePickerBuilder);
+    Vue.component('FormMultiSelectOption', FormMultiSelectOption);
+    Vue.component('FormMaskedInput', FormMaskedInput);
+    Vue.component('Pelak', Pelak);
+    Vue.use(DataProvider);
+  },
 };
