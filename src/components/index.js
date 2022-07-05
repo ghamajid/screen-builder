@@ -15,6 +15,7 @@ import ScreenRenderer from './screen-renderer';
 import AddLoopRow from './renderer/add-loop-row';
 import FormRecordList from './renderer/form-record-list';
 import FormImage from './renderer/form-image';
+import FormInput from './renderer/form-input';
 import VueFormElements from '@processmaker/vue-form-elements';
 import FormButton from './renderer/form-button';
 import FileUpload from './renderer/file-upload.vue';
@@ -78,6 +79,7 @@ export default {
     Vue.component('FormMultiSelectOption', FormMultiSelectOption);
     Vue.component('FormMaskedInput', FormMaskedInput);
     Vue.component('Pelak', Pelak);
+    Vue.component('FormInput', FormInput);
     Vue.use(DataProvider);
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label v-uni-for="name">{{ label }}</label>
+    <label v-uni-for="name">{{ labele }}</label>
     <component
       v-if="componentType!=='input'"
       :is="componentType"
@@ -211,6 +211,7 @@ export default {
         case 'float': return 'number';
         case 'email': return 'email';
         case 'password': return 'password';
+        case 'object': return 'object';
         default: return 'text';
       }
     },
@@ -223,19 +224,48 @@ export default {
   },
   watch: {
     value(value) {
-      if (this.localValue !== value) {
-        this.localValue = value;
-      }
+        if(this.dataType == 'object'){
+            if (this.localValue !== value.value) {
+                this.labele = (this.dataType == 'object')?this.value.lable:this.label;
+                this.localValue = value.value;
+            }
+        }else{
+            if (this.localValue !== value) {
+                this.localValue = value;
+            }
+        }
+       // console.log(value,'value');
+
     },
     localValue(value) {
-      if (value != this.value) {
-        this.$emit('input', this.convertToData(value));
-      }
+        if(this.dataType == 'object'){
+            if(this.value == null){
+                this.$emit('input', {lable:"New Input",value:this.convertToData(value)});
+            }else{
+                if(value != this.value.value) {
+                    //console.log(this.convertToData(value),'this.convertToData(value)')
+                    this.labele = (this.dataType == 'object')?this.value.lable:this.label;
+                    this.$emit('input', {lable:this.value.lable,value:this.convertToData(value)});
+                }
+            }
+           /* console.log(this.value,'789')
+            //console.log(this.value == null || value != this.value['value'],'this.value')
+            if(value != this.value.value) {
+                //console.log(this.convertToData(value),'this.convertToData(value)')
+                this.$emit('input', {lable:this.value.lable,value:this.convertToData(value)});
+            }*/
+        }
+        else {
+            if(value != this.value) {
+                this.$emit('input', this.convertToData(value));
+            }
+        }
     },
   },
   data() {
     return {
       validator: null,
+      labele: null,
       localValue: null,
       validationRules: {
         'percentage': 'regex:/^[+-]?\\d+(\\.\\d+)?$/',
@@ -244,8 +274,15 @@ export default {
   },
   mounted() {
     if (this.value !== undefined) {
-      this.localValue = this.value;
+        if(this.dataType == 'object' && this.value){
+            this.localValue = this.value.value;
+        }else{
+            this.localValue = this.value;
+        }
     }
   },
+  created(){
+      this.labele = (this.dataType == 'object' && this.value)?this.value.lable:this.label;
+  }
 };
 </script>

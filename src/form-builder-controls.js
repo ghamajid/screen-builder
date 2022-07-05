@@ -13,8 +13,8 @@ import FormPersianDatePicker from './components/renderer/form-persian-date-picke
 import FormPersianDatePickerBuilder from './components/renderer/form-persian-date-picker-builder';
 import FormMultiSelectOption from './components/renderer/form_multi_select_option';
 import Pelak from './components/renderer/pelak';
+import FormInput from './components/renderer/form-input';
 import {
-  FormInput,
   FormTextArea,
   FormCheckbox,
   FormDatePicker,

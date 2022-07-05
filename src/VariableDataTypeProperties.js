@@ -9,8 +9,9 @@ const float = { value: 'float', content: 'Decimal' };
 const datetime = { value: 'datetime', content: 'Datetime' };
 const date = { value: 'date', content: 'Date' };
 const boolean = { value: 'boolean', content: 'Boolean' };
+const object = { value: 'object', content: 'Object' };
 
-const allOptions = [string, int, currency, percentage, float, datetime, date, password];
+const allOptions = [string, int, currency, percentage, float, datetime, date, password, object];
 const allOptionsWithoutDate = [string, int, float];
 
 function dataTypeFactory(options) {
