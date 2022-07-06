@@ -14,6 +14,7 @@ import FormPersianDatePickerBuilder from './components/renderer/form-persian-dat
 import FormMultiSelectOption from './components/renderer/form_multi_select_option';
 import Pelak from './components/renderer/pelak';
 import FormInput from './components/renderer/form-input';
+import FormAgGrid from './components/renderer/form-ag-grid';
 import {
   FormTextArea,
   FormCheckbox,
@@ -66,6 +67,64 @@ export default [
                 colorProperty,
                 bgcolorProperty,
                 disabledProperty,
+                defaultValueProperty,
+            ],
+        },
+    },
+    {
+        builderComponent: FormAgGrid,
+        builderBinding: 'FormAgGrid',
+        rendererComponent: FormAgGrid,
+        rendererBinding: 'FormAgGrid',
+        control: {
+            label: 'AG Grid',
+            component: 'FormAgGrid',
+            'editor-component': 'FormAgGrid',
+            'editor-control': 'FormAgGrid',
+            config: {
+                icon: 'fas fa-table',
+                label: 'AG Grid',
+                name: '',
+                placeholder: '',
+                validation: '',
+                helper: null,
+                type: 'text',
+                dataFormat: 'string',
+                height_ag_grid: 200,
+            },
+            inspector: [
+                {
+                    type: 'FormInput',
+                    field: 'height_ag_grid',
+                    config: {
+                        label: 'Height',
+                        helper: 'Put a number for height of ag-grid',
+                    },
+                },
+                {
+                    type: 'ColumnSetupTable',
+                    field: 'fields',
+                    config: {
+                        label: 'Columns',
+                        helper: 'List of columns to display in the record list',
+                    },
+                },
+                {
+                    type: 'FormInputUrl',
+                    field: 'url_grid',
+                    config: {
+                        label: 'Url Data Grid',
+                        name: 'Url Data Grid',
+                        helper: {make: 'Porsche', model: 'Boxter', price: 72000},
+                    },
+                },
+                keyNameProperty,
+                labelProperty,
+                validationRulesProperty,
+                helperTextProperty,
+                colorProperty,
+                bgcolorProperty,
+                readonlyProperty,
                 defaultValueProperty,
             ],
         },
