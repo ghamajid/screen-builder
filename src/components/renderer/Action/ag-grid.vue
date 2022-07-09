@@ -297,6 +297,10 @@
     height: 100%;
   }
 
+  .ag-theme-alpine .ag-rtl .ag-cell {
+      border-left: 1px solid gainsboro !important;
+  }
+
   .ag-header-cell-label {
     /*Necessary to allow for text to grow vertically*/
     height: 100%;
