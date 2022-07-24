@@ -14,8 +14,9 @@ import FormPersianDatePickerBuilder from './components/renderer/form-persian-dat
 import FormMultiSelectOption from './components/renderer/form_multi_select_option';
 import Pelak from './components/renderer/pelak';
 import FormInput from './components/renderer/form-input';
+import FormTextArea from './components/renderer/form-textarea';
 import {
-  FormTextArea,
+  // FormTextArea,
   FormCheckbox,
   FormDatePicker,
   FormHtmlEditor,

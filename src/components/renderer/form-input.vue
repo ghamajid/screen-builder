@@ -61,6 +61,7 @@
             }
         },
         data() {
+          console.log("input");
             return {
                 validator: null
             }
