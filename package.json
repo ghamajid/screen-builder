@@ -30,6 +30,13 @@
     "*.js"
   ],
   "dependencies": {
+    "@progress/kendo-licensing": "latest",
+    "@progress/kendo-vue-animation": "latest",
+    "@progress/kendo-vue-dropdowns": "latest",
+    "@progress/kendo-vue-intl": "latest",
+    "@progress/kendo-vue-layout": "latest",
+    "@progress/kendo-vue-progressbars": "latest",
+    "browserslist": "^4.21.2",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.27",

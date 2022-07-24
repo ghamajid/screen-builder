@@ -28,6 +28,8 @@ import FormPersianDatePickerBuilder from './renderer/form-persian-date-picker-bu
 import FormMultiSelectOption from './renderer/form_multi_select_option';
 import Pelak from './renderer/pelak';
 import FormTextArea from './renderer/form-textarea';
+import FormTimeline from './renderer/form-timeline';
+
 
 const rendererComponents = {
   ...renderer,
@@ -82,6 +84,7 @@ export default {
     Vue.component('Pelak', Pelak);
     Vue.component('FormInput', FormInput);
     Vue.component('FormTextArea', FormTextArea);
+    Vue.component('FormTimeline', FormTimeline);
     Vue.use(DataProvider);
   },
 };

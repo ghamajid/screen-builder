@@ -15,6 +15,8 @@ import FormMultiSelectOption from './components/renderer/form_multi_select_optio
 import Pelak from './components/renderer/pelak';
 import FormInput from './components/renderer/form-input';
 import FormTextArea from './components/renderer/form-textarea';
+import FormTimeline from './components/renderer/form-timeline';
+
 import {
   // FormTextArea,
   FormCheckbox,
@@ -803,5 +805,53 @@ export default [
               colorTheme,
           ],
       },
+  },
+  {
+    editorComponent: FormTimeline,
+    editorBinding: 'FormTimeline',
+    rendererComponent: FormTimeline,
+    rendererBinding: 'FormTimeline',
+    control: {
+      label: 'Timeline',
+      component: 'FormTimeline',
+      'editor-component': 'FormTimeline',
+      'editor-control': 'FormTimeline',
+      config: {
+        icon: 'fas fa-crosshairs',
+        label: 'New Timeline',
+        placeholder: '',
+        validation: '',
+        dataSourceUrl:'',
+        dataSourceEndpoint:'',
+        rootElement:'response',
+        options: {
+          showRenderAs: true,
+          dataSource: dataSourceValues.provideData,
+          jsonData: '',
+          pmqlQuery: '',
+          dataName: 'response',
+          renderAs: 'dropdown',
+          allowMultiSelect: false,
+          selectedOptions: [],
+          optionsList: [],
+          key:'value',
+          value:'content',
+          valueTypeReturned: 'single',
+        },
+        helper: null,
+      },
+      inspector: [
+        keyNameProperty,
+        labelProperty,
+        placeholderProperty,
+        // validationRulesProperty,
+        {
+          type: 'Timeline',
+          field: 'options',
+          config: {},
+        },
+        defaultValueProperty,
+      ],
+    },
   },
 ];
