@@ -33,6 +33,8 @@ export default [
       { name: 'options', showFor: 'FormMultiColumn' },
       'form',
       'editable',
+      'height_ag_grid',
+      'help_editor',
     ],
     open: false,
   },
@@ -46,7 +48,7 @@ export default [
   },
   {
     name: 'Design',
-    fields: ['color', 'bgcolor', 'variant', 'toggle', 'height', 'width'],
+    fields: ['color', 'bgcolor', 'variant', 'toggle', 'height', 'width', 'thcolor'],
     open: false,
   },
   {
