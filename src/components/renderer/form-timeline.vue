@@ -12,7 +12,7 @@
             :value="value"
             @change="handleChange"
             :items="items"
-            :orientation="this.options.renderAs"
+            :orientation="orientation"
             class="k-rtl"
         />
     </div>
@@ -35,15 +35,21 @@ export default {
         'name',
         'options'
     ],
+    
     data() {
         var name_val = 0;
+        console.log(this.transientData)
         if (this.transientData && this.transientData[this.name]) {
             name_val = this.transientData[this.name]
-            
+        }
+    
+        var orientation = 'horizontal';
+        if (this.options && this.options.renderAs) {
+            orientation = this.options.renderAs
         }
         return {
             value: name_val,
-            orientation: 'horizontal',
+            orientation: orientation,
             items: [
                 {
                     icon: "k-i-lock",
@@ -71,6 +77,6 @@ export default {
         handleOrientationChange(e) {
             this.orientation = e.target.value;
         }
-    }
+    },
 };
 </script>
