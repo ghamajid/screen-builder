@@ -58,9 +58,8 @@ export default {
             immediate: true,
             deep: true,
             handler(val, oldVal) {
-                var lastItemIndex = this.items.length - 1
-                this.value = 0
-                if (this.transientData && this.transientData[this.name]) {
+                if (this.transientData && this.transientData[this.name] && this.value != this.transientData[this.name]) {
+                    var lastItemIndex = this.items.length - 1
                     this.value = this.transientData[this.name]
                     if (this.transientData[this.name] < 0){
                         this.value = 0
@@ -68,9 +67,9 @@ export default {
                     else if(this.transientData[this.name] > lastItemIndex){
                         this.value = lastItemIndex
                     }
+                    //console.log(this.value, 'das')
+                    this.$emit('input', this.value);
                 }
-                console.log(this.value, 'das')
-                this.$emit('input', this.value);
             },
         },
     },
