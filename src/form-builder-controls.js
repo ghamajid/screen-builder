@@ -903,10 +903,13 @@ export default [
         keyNameProperty,
         labelProperty,
         placeholderProperty,
-        // validationRulesProperty,
         {
           type: 'Timeline',
           field: 'options',
+          config: {
+              label: 'Column Width',
+              validation: 'columns-adds-to-12',
+          },
         },
         defaultValueProperty,
       ],

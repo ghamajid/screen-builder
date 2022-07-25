@@ -1,13 +1,5 @@
 <template>
     <div>
-        <!--    <p>Change the orientation:</p>-->
-        <!--    <DropDownList-->
-        <!--        :style="{ width: '220px' }"-->
-        <!--        :data-items="['horizontal', 'vertical']"-->
-        <!--        :value="orientation"-->
-        <!--        @change="handleOrientationChange"-->
-        <!--    />-->
-        <!--        <hr/>-->
         <Stepper
             :value="value"
             :items="items"
