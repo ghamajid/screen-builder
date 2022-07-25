@@ -5,6 +5,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import i18next from 'i18next';
 import VueI18Next from '@panter/vue-i18next';
 import '@processmaker/vue-form-elements/dist/vue-form-elements.css';
+import './assets/css/kendo.cdn.telerik.css'
 import Vuex from 'vuex';
 import ScreenBuilder from '@/components';
 import axios from 'axios';
