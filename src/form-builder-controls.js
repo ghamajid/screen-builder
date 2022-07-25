@@ -889,7 +889,7 @@ export default [
           jsonData: '',
           pmqlQuery: '',
           dataName: 'response',
-          renderAs: 'dropdown',
+          renderAs: 'horizontal',
           allowMultiSelect: false,
           selectedOptions: [],
           optionsList: [],
@@ -907,7 +907,6 @@ export default [
         {
           type: 'Timeline',
           field: 'options',
-          config: {},
         },
         defaultValueProperty,
       ],

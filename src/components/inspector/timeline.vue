@@ -290,7 +290,7 @@ export default {
       optionValue: '',
       optionContent: '',
       showRenderAs: false,
-      renderAs: 'vertical',
+      renderAs: 'horizontal',
       allowMultiSelect: false,
       defaultOptionKey: false,
       selectedOptions: [],

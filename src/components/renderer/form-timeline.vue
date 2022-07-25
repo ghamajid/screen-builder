@@ -7,10 +7,9 @@
         <!--        :value="orientation"-->
         <!--        @change="handleOrientationChange"-->
         <!--    />-->
-<!--        <hr/>-->
+        <!--        <hr/>-->
         <Stepper
             :value="value"
-            @change="handleChange"
             :items="items"
             :orientation="orientation"
             class="k-rtl"
@@ -19,15 +18,13 @@
 </template>
 
 <script lang="ts">
-import {DropDownList} from '@progress/kendo-vue-dropdowns';
 import {
     Stepper
 } from '@progress/kendo-vue-layout';
 
 export default {
     components: {
-        Stepper,
-        DropDownList
+        Stepper
     },
     props: [
         'config',
@@ -37,18 +34,12 @@ export default {
     ],
     
     data() {
-        var name_val = 0;
-        console.log(this.transientData)
-        if (this.transientData && this.transientData[this.name]) {
-            name_val = this.transientData[this.name]
-        }
-    
         var orientation = 'horizontal';
         if (this.options && this.options.renderAs) {
             orientation = this.options.renderAs
         }
         return {
-            value: name_val,
+            value: 0,
             orientation: orientation,
             items: [
                 {
@@ -70,13 +61,26 @@ export default {
             ]
         }
     },
-    methods: {
-        handleChange(e) {
-            // this.value = e.value;
+    watch: {
+        transientData: {
+            immediate: true,
+            deep: true,
+            handler(val, oldVal) {
+                var lastItemIndex = this.items.length - 1
+                this.value = 0
+                if (this.transientData && this.transientData[this.name]) {
+                    this.value = this.transientData[this.name]
+                    if (this.transientData[this.name] < 0){
+                        this.value = 0
+                    }
+                    else if(this.transientData[this.name] > lastItemIndex){
+                        this.value = lastItemIndex
+                    }
+                }
+                console.log(this.value, 'das')
+                this.$emit('input', this.value);
+            },
         },
-        handleOrientationChange(e) {
-            this.orientation = e.target.value;
-        }
     },
 };
 </script>
