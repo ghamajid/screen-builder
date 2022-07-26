@@ -898,6 +898,7 @@ export default [
           valueTypeReturned: 'single',
         },
         helper: null,
+
       },
       inspector: [
         keyNameProperty,
