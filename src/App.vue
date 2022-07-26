@@ -548,6 +548,7 @@ export default {
 <style lang="scss">
     @import "~bootstrap/dist/css/bootstrap";
     @import '~bootstrap-vue/dist/bootstrap-vue';
+
     @import './assets/css/kendo.cdn.telerik.css';
     @import './assets/css/stackpath.bootstrapcdn.min.css';
 
