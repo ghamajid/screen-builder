@@ -11,6 +11,7 @@ export { default as LoopInspector } from './loop';
 export { default as ImageVariable } from './image-variable.vue';
 export { default as InputVariable } from './input-variable.vue';
 export { default as Tooltip } from './tooltip';
-export { default as Timeline } from './timeline';
+export { default as Orientation } from './orientation';
 export { default as FormInputUrl } from './form-input-url';
 export { default as ColumnSetupTable } from './column-setup-table';
+export { default as TimelineDataSource } from './timeline-data-source';

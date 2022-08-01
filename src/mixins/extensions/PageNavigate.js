@@ -19,7 +19,7 @@ export default {
   mounted() {
     this.extensions.push({
       onloadproperties(params) {
-        if (params.componentName === 'FormButton') {
+        if (params.componentName === 'FormButton' || params.componentName === 'FormTimeline') {
           this.pageNavigationProperties(params);
         }
       },

@@ -3,7 +3,7 @@
     <Stepper
         :value="value"
         :items="items"
-        :orientation="orientation"
+        :orientation="options.orientation"
         @change="handleChange"
         class="k-rtl"
     />
@@ -23,17 +23,13 @@ export default {
     'config',
     'transientData',
     'name',
-    'options'
+    'options',
+    'event'
   ],
 
   data() {
-    var orientation = 'horizontal';
-    if (this.options && this.options.renderAs) {
-      orientation = this.options.renderAs
-    }
     return {
       value: 0,
-      orientation: orientation,
       items: [
         {
           icon: "k-i-lock",
@@ -56,13 +52,7 @@ export default {
   },
   methods: {
     handleChange(e) {
-      this.value = e.value;
-      console.log('form-timeline',this.value,this.event,this.options)
-      this.$emit(this.event, this.options);
-      if (this.event === 'pageNavigate') {
-        this.$emit('page-navigate', this.options);
-      }
-
+      this.$emit('page-navigate', e.value);
     }
   },
   watch: {
@@ -78,11 +68,19 @@ export default {
           } else if (this.transientData[this.name] > lastItemIndex) {
             this.value = lastItemIndex
           }
-          //console.log(this.value, 'das')
           this.$emit('input', this.value);
         }
       },
     },
+    options: {
+      immediate: true,
+      deep: true,
+      handler(val, oldVal) {
+        if (this.config && this.config.orientation){
+          this.options.orientation = this.config.orientation.orientation;
+        }
+      },
+    }
   },
 };
 </script>

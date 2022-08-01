@@ -416,7 +416,7 @@ export default [
         icon: 'far fa-compass',
         label: 'Page Navigation',
         variant: 'primary',
-        event: 'pageNavigate',
+        event: '',
         eventData: null,
 
       },
@@ -886,10 +886,11 @@ export default [
         options: {
           showRenderAs: true,
           dataSource: dataSourceValues.provideData,
+
           jsonData: '',
           pmqlQuery: '',
           dataName: 'response',
-          renderAs: 'horizontal',
+          orientation: 'vertical',
           allowMultiSelect: false,
           selectedOptions: [],
           optionsList: [],
@@ -897,20 +898,22 @@ export default [
           value:'content',
           valueTypeReturned: 'single',
         },
-        helper: null,
-
+        helper: null
       },
       inspector: [
         keyNameProperty,
         labelProperty,
-        placeholderProperty,
         {
-          type: 'Timeline',
-          field: 'options',
+          type: 'Orientation',
+          field: 'orientation',
           config: {
               label: 'Column Width',
-              validation: 'columns-adds-to-12',
           },
+        },
+        {
+          type: 'TimelineDataSource',
+          field: 'steps',
+          config: {},
         },
         defaultValueProperty,
       ],
