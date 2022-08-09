@@ -1,8 +1,5 @@
 <template>
   <div>
-<!--    <label for="data-sources">{{ $t('Data Source') }}</label>-->
-<!--    <b-form-select id="data-sources" v-model="dataSource" :options="dataSourceTypes" class="mb-3" data-cy="inspector-data-sources" />-->
-
     <div v-if="!showJsonEditor && dataSource === dataSourceValues.provideData">
       <div class="row">
         <div class="col-10">
@@ -30,7 +27,7 @@
           <b-form-input id="option-title" v-model="optionTitle" data-cy="inspector-option-title" />
 
           <label class="mt-3" for="option-icon">{{ $t('Icon') }}</label>
-          <b-form-input id="option-icon" v-model="optionIcon" data-cy="inspector-option-icon" />
+          <b-form-input id="option-icon" v-model="optionIcon" data-cy="inspector-option-icon" placeholder="k-i-user"/>
         </div>
 
         <div class="card-footer text-right p-2">
@@ -78,7 +75,7 @@
                     <label class="mt-3" for="option-title">{{ $t('Title') }}</label>
                     <b-form-input id="option-title" v-model="optionTitle" data-cy="inspector-option-title" />
                     <label class="mt-3" for="option-icon">{{ $t('Icon') }}</label>
-                    <b-form-input id="option-icon" v-model="optionIcon" data-cy="inspector-option-icon" />
+                    <b-form-input id="option-icon" v-model="optionIcon" data-cy="inspector-option-icon" placeholder="k-i-user"/>
                   </div>
 
                   <div class="card-footer text-right p-2">
@@ -96,8 +93,8 @@
                 <div class="col-1" style="cursor:grab">
                   <span class="fas fa-arrows-alt-v"/>
                 </div>
-                <div class="col-1 d-flex align-items-center">
-                  <input type="radio" class="form-check" @click="defaultOptionClick" name="defaultOptionGroup" v-model="defaultOptionKey" :value="option[keyField]">
+                <div class="col-2 d-flex align-items-center" style="cursor:grab">
+                  {{ option[valueIcon] }}
                 </div>
                 <div class="col-5" style="cursor:grab">
                   {{ option[valueField] }}
@@ -122,48 +119,6 @@
         </div>
       </div>
     </div>
-<!--    <div v-if="dataSource === dataSourceValues.dataObject">-->
-<!--      <label for="value">{{ $t('url') }}</label>-->
-<!--      <b-form-input id="data_url" v-model="dataUrl" placeholder="Url"/>-->
-<!--      <small class="form-text text-muted mb-3">{{ $t('Enter the url of your json file.') }}</small>-->
-<!--    </div>-->
-<!--    <div v-if="dataSource === dataSourceValues.dataObject">-->
-<!--      <label >{{ $t('Dependent Variable') }}</label>-->
-<!--      <b-form-input id="data_depend" v-model="dataDependentVariable" />-->
-<!--      <small class="form-text text-muted mb-3">{{ $t('Enter the name of the variable that needs to be sent.') }}</small>-->
-<!--    </div>-->
-<!--    <div v-if="dataSource === dataSourceValues.dataVariable">-->
-<!--      <label >{{ $t('Variable Name') }}</label>-->
-<!--      <b-form-input id="data_var" v-model="dataVariableName" />-->
-<!--      <small class="form-text text-muted mb-3"></small>-->
-<!--    </div>-->
-<!--    <div v-if="dataSource === dataSourceValues.dataObject || dataSource === dataSourceValues.dataConnector ">-->
-<!--      <label for="element-name">{{ $t('Options Variable') }}</label>-->
-<!--      <mustache-helper/>-->
-<!--      <b-form-input id="element-name" v-model="dataName" placeholder="Request Variable Name" data-cy="inspector-options-variable" />-->
-<!--      <small class="form-text text-muted mb-3">{{ $t('Get options from this variable. Must be an array.') }}</small>-->
-<!--    </div>-->
-
-<!--    <div v-if="dataSource === dataSourceValues.dataObject || dataSource === dataSourceValues.dataVariable">-->
-<!--      <label for="value">{{ $t('Option Label Shown') }}</label>-->
-<!--      <b-form-input id="value" v-model="value" placeholder="Request Variable Property" @change="valueChanged" data-cy="inspector-options-label" />-->
-<!--      <small class="form-text text-muted mb-3">{{ $t('Enter the property name from the Request data variable that displays to the user on the screen.') }}</small>-->
-<!--    </div>-->
-
-<!--    <div v-if="showRenderAs">-->
-<!--      <div class="row mb-3">-->
-<!--        <div class="col">-->
-<!--          <label for="render-as">{{ $t('Show Control As') }}</label>-->
-<!--          <b-form-select id="render-as" v-model="renderAs" :options="renderAsOptions" data-cy="inspector-render-as" />-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="row mb-3">-->
-<!--        <div class="col-12">-->
-<!--          <input type="checkbox"  v-model="allowMultiSelect" data-cy="inspector-allow-multi-select">-->
-<!--          {{ $t('Allow Multiple Selections') }}-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
     <div v-if="showJsonEditor && dataSource === dataSourceValues.provideData">
       <div class="mb-2">
         <label for="json-data">{{ $t('JSON Data') }}</label>
@@ -201,55 +156,6 @@
       </button>
     </div>
 
-<!--    <label for="value-type-returned">{{ $t('Type of Value Returned') }}</label>-->
-<!--    <b-form-select id="value-type-returded" v-model="valueTypeReturned" :options="returnValueOptions" data-cy="inspector-value-returned" />-->
-<!--    <small class="form-text text-muted mb-3">{{ $t("Select 'Single Value' to use parts of the selected object. Select 'Object' to use the entire selected value.") }}</small>-->
-
-<!--    <div v-if="dataSource === dataSourceValues.dataConnector">-->
-<!--      <div v-if="valueTypeReturned === 'single'">-->
-<!--        <label for="key">{{ $t('Value') }}</label>-->
-<!--        <mustache-helper/>-->
-<!--        <b-form-input id="key" v-model="key" @change="keyChanged" data-cy="inspector-datasource-value"/>-->
-<!--        <small class="form-text text-muted mb-3">{{ $t('Key name in the selected object to title as the value of this step. Leave blank to use the entire selected value.') }}</small>-->
-<!--      </div>-->
-
-<!--      <label for="value">{{ $t('Title') }}</label>-->
-<!--      <mustache-helper/>-->
-<!--      <b-form-input id="value" v-model="value" @change="valueChanged" data-cy="inspector-datasource-title"/>-->
-<!--      <small class="form-text text-muted mb-3">{{ $t('Title to display to the step in the timeline.') }}</small>-->
-
-<!--      <label for="value_icon">{{ $t('Icon') }}</label>-->
-<!--      <mustache-helper/>-->
-<!--      <b-form-input id="value_icon" v-model="value_icon" @change="ValueIconChanged" data-cy="inspector-datasource-icon"/>-->
-<!--      <small class="form-text text-muted mb-3">{{ $t('Icon to display to the step in the timeline.') }}</small>-->
-<!--    </div>-->
-
-<!--    <div v-if="valueTypeReturned === 'single' && (dataSource === dataSourceValues.dataObject || dataSource === dataSourceValues.dataVariable)">-->
-<!--      <label for="key">{{ $t('Variable Data Property') }}</label>-->
-<!--      <b-form-input id="key" v-model="key" @change="keyChanged" placeholder="Request Variable Property" data-cy="inspector-options-value" />-->
-<!--      <small class="form-text text-muted mb-3">{{ $t('Enter the property name from the Request data variable that will be passed as the value when selected.') }}</small>-->
-<!--    </div>-->
-
-<!--    <div v-if="dataSource === dataSourceValues.dataConnector">-->
-<!--      <label for="data-sources-list">{{ $t('Data Connector') }}</label>-->
-<!--      <b-form-select id="data-sources-list" v-model="selectedDataSource" :options="dataSourcesList" data-cy="inspector-data-connector" :class="!selectedDataSource ? 'is-invalid' : ''"/>-->
-<!--      <div v-if="!selectedDataSource" class="invalid-feedback">{{ $t('An Data Connector must be selected') }}</div>-->
-<!--      <small class="form-text text-muted mb-3">{{ $t('Data Connector to use') }}</small>-->
-<!--    </div>-->
-
-<!--    <div v-if="dataSource === dataSourceValues.dataConnector">-->
-<!--      <label for="endpoint-list">{{ $t('End Point') }}</label>-->
-<!--      <b-form-select id="endpoint-list" v-model="selectedEndPoint" :options="endPointList" data-cy="inspector-endpoint" :class="selectedDataSource && !selectedEndPoint ? 'is-invalid' : ''"/>-->
-<!--      <div v-if="selectedDataSource && !selectedEndPoint" class="invalid-feedback">{{ $t('An Endpoint must be selected') }}</div>-->
-<!--      <small class="form-text text-muted mb-3">{{ $t('Endpoint to populate select') }}</small>-->
-<!--    </div>-->
-
-<!--    <div v-if="dataSource === dataSourceValues.dataConnector">-->
-<!--      <label for="pmql-query">{{ $t('PMQL') }}</label>-->
-<!--      <mustache-helper/>-->
-<!--      <b-form-textarea id="json-data" rows="4" v-model="pmqlQuery"/>-->
-<!--      <small class="form-text text-muted">{{ $t('Advanced data search') }}</small>-->
-<!--    </div>-->
   </div>
 </template>
 
@@ -279,17 +185,9 @@ export default {
       dataSources,
       dataSource: dataSourceValues.provideData,
       jsonData: '',
-      key: null,
-      value: null,
-      // dataName: '',
-      dataUrl: '',
-      dataDependentVariable: '',
-      dataVariableName: '',
       selectedDataSource: '',
       dataSourcesList: [],
-      selectedEndPoint: '',
       endpoints: {},
-      pmqlQuery: '',
       optionsList: [],
       showOptionCard: false,
       showRemoveWarning: false,
@@ -300,22 +198,7 @@ export default {
       optionValue: '',
       optionTitle: '',
       optionIcon: '',
-      // showRenderAs: false,
-      renderAs: 'dropdown',
-      // allowMultiSelect: false,
-      defaultOptionKey: false,
-      selectedOptions: [],
-      // renderAsOptions: [
-      //   {
-      //     text: this.$t('Dropdown/Multiselect'),
-      //     value: 'dropdown',
-      //   },
-      //   {
-      //     text: this.$t('Radio/Checkbox Group'),
-      //     value: 'checkbox',
-      //   },
-      // ],
-      monacoOptions: {
+        monacoOptions: {
         automaticLayout: true,
         fontSize: 8,
         language: 'json',
@@ -326,24 +209,10 @@ export default {
         automaticLayout: true,
       },
       showPopup: false,
-      // returnValueOptions: [
-      //   {
-      //     text: this.$t('Single Value'),
-      //     value: 'single',
-      //   },
-      //   {
-      //     text: this.$t('Object'),
-      //     value: 'object',
-      //   },
-      // ],
-      valueTypeReturned: '',
-    };
+     };
   },
   watch: {
-    // allowMultiSelect(allow) {
-    //   this.selectedControl.config.dataFormat = allow ? 'array' : 'string';
-    // },
-    options(newOptions) {
+     options(newOptions) {
       Object.keys(newOptions).forEach(key => {
         if (typeof newOptions[key] !== 'undefined') {
           this.$set(this, key, newOptions[key]);
@@ -351,69 +220,25 @@ export default {
       });
     },
     dataSource(val) {
-    //   this.showRenderAs = true;
-    //   console.log('dataSource val',val)
-      // switch (val) {
-      //   case 'dataConnector':
-      //     this.jsonData = '';
-      //     this.dataName = '';
-      //     this.getDataSourceList();
-      //     break;
-      //   case 'dataObject':
-      //     this.jsonData = '';
-      //     this.selectedDataSource = '';
-      //     break;
-      //   case 'provideData':
-      //     this.dataName = '';
           this.selectedDataSource = '';
-      //     break;
-      // }
     },
     dataObjectOptions(dataObjectOptions) {
       this.$emit('change', dataObjectOptions);
     },
-    // dataSourcesList() {
-    //   if (this.dataSourcesList.some(ds => ds.value === this.selectedDataSource)) {
-    //     return;
-    //   }
-    //
-    //   if (this.dataSourcesList.length > 0) {
-    //     this.selectedDataSource = this.dataSourcesList[0].value;
-    //   }
-    // },
-    endPointList() {
-      if (this.endPointList.some(e => e.value === this.selectedEndPoint)) {
-        return;
-      }
 
-      if (this.endPointList.length > 0) {
-        this.selectedEndPoint = this.endPointList[0].value;
-      }
-    },
   },
   computed: {
-    // endPointList() {
-    //   return _.get(this.endpoints, this.selectedDataSource, []);
-    // },
-    // dataSourceTypes() {
-    //   // if (typeof this.options.allowMultiSelect === 'undefined') {
-    //   //   return [this.dataSources[0], this.$t(this.dataSources[1])];
-    //   // }
-    //   return this.dataSources.map((item) => {
-    //     return {
-    //       value: item.value,
-    //       text: this.$t(item.text),
-    //     };
-    //   });
-    // },
+
     optionKeyClass() {
       return this.optionError ? 'is-invalid' : '';
     },
     keyField() {
-      return this.key || 'value';
+      return 'value';
     },
     valueField() {
-      return this.value || 'content';
+      return 'label';
+    },valueIcon() {
+      return 'icon';
     },
     currentItemToDelete() {
       if (this.removeIndex !== null
@@ -426,88 +251,27 @@ export default {
       return '';
     },
     dataObjectOptions() {
-      // if (!this.dataName) {
-      //   // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      //   this.dataName = this.options.dataName ? this.options.dataName : 'response';
-      // }
+
       return {
         dataSource: this.dataSource,
         jsonData: this.jsonData,
-        // dataName: this.dataName,
-        dataDependentVariable: this.dataDependentVariable,
-        dataUrl: this.dataUrl,
-        dataVariableName: this.dataVariableName,
         selectedDataSource: this.selectedDataSource,
-        selectedEndPoint: this.selectedEndPoint,
-        key: this.key,
-        value: this.value,
-        pmqlQuery: this.pmqlQuery,
-        defaultOptionKey: this.defaultOptionKey,
-        selectedOptions: this.selectedOptions,
         optionsList: this.optionsList,
-        showRenderAs: this.showRenderAs,
-        renderAs: this.renderAs,
-        // allowMultiSelect: this.allowMultiSelect,
         showOptionCard: this.showOptionCard,
         showRemoveWarning: this.showRemoveWarning,
         showJsonEditor: this.showJsonEditor,
         editIndex: this.editIndex,
         removeIndex: this.removeIndex,
-        valueTypeReturned: this.valueTypeReturned,
       };
     },
   },
   mounted() {
-    // this.dataSource = this.options.dataSource;
-    this.jsonData = this.options.jsonData;
-    // this.dataName = this.options.dataName;
-    this.dataUrl = this.options.dataUrl;
-    this.dataVariableName = this.options.dataVariableName;
-    this.dataDependentVariable = this.options.dataDependentVariable;
-    // this.selectedDataSource = this.options.selectedDataSource,
-    this.selectedEndPoint = this.options.selectedEndPoint,
-    this.key = this.options.key;
-    this.value = this.options.value;
-    this.pmqlQuery = this.options.pmqlQuery;
-    this.defaultOptionKey= this.options.defaultOptionKey;
-    this.selectedOptions = this.options.selectedOptions;
-    this.optionsList = this.options.optionsList ? this.options.optionsList : [];
-    this.jsonData = JSON.stringify(this.optionsList);
-    // this.showRenderAs = this.options.showRenderAs;
-    this.renderAs = this.options.renderAs;
-    // this.allowMultiSelect = this.options.allowMultiSelect;
-    this.valueTypeReturned = this.options.valueTypeReturned;
   },
   methods: {
     monacoMounted(editor) {
       editor.getAction('editor.action.formatDocument').run();
     },
-    // getDataSourceList() {
-    //   this.$dataProvider
-    //     .get('/data_sources')
-    //     .then(response => {
-    //       let jsonData = response.data.data;
-    //       // Map the data sources response to value/text items list
-    //       this.dataSourcesList = [{
-    //         value: null,
-    //         text: this.$t('Select...'),
-    //       }].concat(jsonData.map(this.convertToSelectOptions));
-    //       this.setEndpointList(jsonData);
-    //     });
-    // },
-    // setEndpointList(dataSources) {
-    //   const endpoints = {};
-    //   dataSources.forEach(ds => {
-    //     const dsEndpoints = ds.endpoints ? ds.endpoints : [];
-    //     endpoints[ds.id] = [{
-    //       value: null,
-    //       text: this.$t('Select...'),
-    //     }].concat(Object.keys(dsEndpoints).map(name => {
-    //       return { text: name, value: name };
-    //     }));
-    //   });
-    //   this.endpoints = endpoints;
-    // },
+
     convertToSelectOptions(option) {
       return {
         value: option['id'],
@@ -537,11 +301,6 @@ export default {
       });
       this.jsonError = '';
     },
-    defaultOptionClick() {
-      if (this.defaultOptionKey === event.target.value) {
-        this.defaultOptionKey = false;
-      }
-    },
     rowCss(index) {
       return index % 2 === 0 ? 'striped' : 'bg-default';
     },
@@ -559,13 +318,15 @@ export default {
     showEditOption(index) {
       this.optionCardType = 'edit';
       this.editIndex = index;
-      this.optionContent = this.optionsList[index][this.valueField];
+      this.optionTitle = this.optionsList[index][this.valueField];
+      this.optionIcon = this.optionsList[index][this.valueIcon];
       this.optionValue = this.optionsList[index][this.keyField];
       this.optionError = '';
     },
     showAddOption() {
       this.optionCardType = 'insert';
-      this.optionContent = '';
+      this.optionTitle = '';
+      this.optionIcon = '';
       this.optionValue = '';
       this.showOptionCard = true;
       this.optionError = '';
@@ -581,7 +342,8 @@ export default {
         }
         this.optionsList.push(
           {
-            [this.valueField]: this.optionContent,
+            [this.valueField]: this.optionTitle,
+            [this.valueIcon]: this.optionIcon,
             [this.keyField]: this.optionValue,
           }
         );
@@ -592,7 +354,8 @@ export default {
           return;
         }
         this.optionsList[this.editIndex][this.keyField] = this.optionValue;
-        this.optionsList[this.editIndex][this.valueField] = this.optionContent;
+        this.optionsList[this.editIndex][this.valueField] = this.optionTitle;
+        this.optionsList[this.editIndex][this.valueIcon] = this.optionIcon;
       }
 
       this.jsonData = JSON.stringify(this.optionsList);

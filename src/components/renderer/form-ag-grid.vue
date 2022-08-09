@@ -102,7 +102,7 @@
             'height_ag_grid',
         ],
         beforeMount() {
-            //console.log(,'123456');
+            //console.log(this.fields,'fields');
             this.columnDefs = [];
             if (this.label === null) {
                 this.rowData = [];

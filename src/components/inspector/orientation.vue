@@ -3,7 +3,8 @@
     <div class="row mb-3">
       <div class="col">
         <label for="render-as">{{ $t('Show Control As') }}</label>
-        <b-form-select id="render-as" v-model="orientation" :options="renderAsOptions" data-cy="inspector-render-as"/>
+        <b-form-select id="render-as" v-model="new_orientation" :options="renderAsOptions"
+                       data-cy="inspector-render-as"/>
       </div>
     </div>
   </div>
@@ -12,14 +13,14 @@
 <script>
 
 export default {
-  props: ['options'],
+  props: ['orientation', 'selectedControl'],
   model: {
-    prop: 'options',
+    prop: 'orientation',
     event: 'change',
   },
   data() {
     return {
-      orientation: 'horizontal',
+      new_orientation: this.selectedControl.config.options.orientation,
       renderAsOptions: [
         {
           text: this.$t('Horizontal'),
@@ -32,10 +33,10 @@ export default {
       ],
     };
   },
-
-  updated() {
-    this.orientation = this.options.orientation;
+  watch: {
+    new_orientation(val) {
+      this.$emit('change', val);
+    }
   },
-
 };
 </script>

@@ -2,8 +2,8 @@
   <div>
     <Stepper
         :value="value"
-        :items="items"
-        :orientation="options.orientation"
+        :items="items_val"
+        :orientation="orientation_val"
         @change="handleChange"
         class="k-rtl"
     />
@@ -52,6 +52,8 @@ export default {
   },
   methods: {
     handleChange(e) {
+      // this.orientation = e.target.value;
+
       this.$emit('page-navigate', e.value);
     }
   },
@@ -82,5 +84,21 @@ export default {
       },
     }
   },
+  computed:{
+    orientation_val(){
+      var orientation = this.options.orientation;
+      if(this.config){
+        orientation = (this.config.orientation && this.options.orientation !== null) ? this.config.orientation: this.options.orientation;
+      }
+      return orientation;
+    },
+    items_val(){
+      var _items = this.items;
+      if (this.config ){
+        _items = this.config.steps.optionsList;
+      }
+      return _items;
+    }
+  }
 };
 </script>
