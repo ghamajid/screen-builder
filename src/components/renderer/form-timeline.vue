@@ -95,7 +95,9 @@ export default {
     items_val(){
       var _items = this.items;
       if (this.config ){
-        _items = this.config.steps.optionsList;
+        if (this.config.steps.optionsList){
+          _items = this.config.steps.optionsList;
+        }
       }
       return _items;
     }

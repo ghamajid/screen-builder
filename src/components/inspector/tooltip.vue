@@ -1,5 +1,5 @@
 <template>
-  <div v-if="buttonType !== 'submit'">
+  <div v-if="buttonType !== 'submit' && buttonType !== 'submit_if_valid'">
     <label class="typo__label">{{ label }}</label>
     <br >
     <label class="typo__label">{{ $t("Position") }}</label>

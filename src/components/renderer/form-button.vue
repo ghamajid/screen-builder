@@ -33,6 +33,9 @@ export default {
       if (!this.tooltip || this.event === 'submit_grid') {
           return {};
       }
+      // if (!this.tooltip || this.event === 'submit_if_valid') {
+      //     return {};
+      // }
       let content = '';
       try {
         content = Mustache.render(this.tooltip.content || '', this.transientData);
@@ -131,6 +134,12 @@ export default {
               this.$emit('submit', this.eventData);
           });
           return;
+      }
+      if (this.event === 'submit_if_valid') {
+        if(this.valid){
+          this.$emit('page-navigate', this.eventData);
+
+        }
       }
       this.$emit(this.event, this.eventData);
       if (this.event === 'pageNavigate') {

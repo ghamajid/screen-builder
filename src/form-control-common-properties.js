@@ -251,6 +251,10 @@ export const buttonTypeEvent = {
           value: 'script_grid',
           content: 'Regular Button With Grid',
       },
+      {
+        value: 'submit_if_valid',
+        content: 'Page Navigation With Validation',
+      },
     ],
   },
 };

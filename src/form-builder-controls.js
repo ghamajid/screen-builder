@@ -682,6 +682,14 @@ export default [{
                         helper: 'The value being submitted',
                     },
                 },
+                {
+                    type: 'PageSelect',
+                    field: 'eventData',
+                    config: {
+                        label: 'Destination Screen',
+                        helper: 'The destination page to navigate to',
+                    },
+                },
                 buttonVariantStyleProperty,
             ],
         },

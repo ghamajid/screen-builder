@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="buttonType !== 'submit' && buttonType !== 'script' && buttonType !== 'submit_grid' && buttonType !== 'script_grid'">
     <label for="data-sources">{{ $t('Data Source') }}</label>
     <b-form-select id="data-sources" v-model="dataSource" :options="dataSourceTypes" class="mb-3"
                    data-cy="inspector-data-sources"/>
@@ -59,6 +59,7 @@
 <script>
 import {dataSources, dataSourceValues} from './record_list_data-source-types';
 import MustacheHelper from './mustache-helper';
+import _ from "lodash";
 
 export default {
   inheritAttrs: false,
@@ -67,7 +68,7 @@ export default {
   components: {
     MustacheHelper,
   },
-  watch:{
+  watch: {
     dataObjectOptions(dataObjectOptions) {
       this.$emit('change', dataObjectOptions);
     }
@@ -80,11 +81,11 @@ export default {
       dataSourceValues,
       dataSources,
       dataSource: this.inspection.config.options.dataSource,
-      dataName:this.inspection.config.options.dataName ,
-      dataUrl:this.inspection.config.options.dataUrl,
-      dataVariableName:this.inspection.config.options.dataVariableName,
-      dataDependentVariable:this.inspection.config.options.dataDependentVariable,
-      value:this.inspection.config.options.value
+      dataName: this.inspection.config.options.dataName,
+      dataUrl: this.inspection.config.options.dataUrl,
+      dataVariableName: this.inspection.config.options.dataVariableName,
+      dataDependentVariable: this.inspection.config.options.dataDependentVariable,
+      value: this.inspection.config.options.value
     }
   },
   methods: {
@@ -112,22 +113,24 @@ export default {
       if (typeof this.inspection.config.options === 'undefined') {
         this.inspection.config.options = {}
       }
-      this.inspection.config.options.dataSource=this.dataSource;
-      this.inspection.config.options.dataName=this.dataName;
-      this.inspection.config.options.dataUrl=this.dataUrl;
-      this.inspection.config.options.dataVariableName=this.dataVariableName;
-      this.inspection.config.options.dataDependentVariable=this.dataDependentVariable;
-      this.inspection.config.options.value=this.value;
+      this.inspection.config.options.dataSource = this.dataSource;
+      this.inspection.config.options.dataName = this.dataName;
+      this.inspection.config.options.dataUrl = this.dataUrl;
+      this.inspection.config.options.dataVariableName = this.dataVariableName;
+      this.inspection.config.options.dataDependentVariable = this.dataDependentVariable;
+      this.inspection.config.options.value = this.value;
       return {
         dataSource: this.dataSource,
-        dataName: this.dataName ,
+        dataName: this.dataName,
         dataUrl: this.dataUrl,
         dataVariableName: this.dataVariableName,
         dataDependentVariable: this.dataDependentVariable,
         value: this.inspection.value
       };
     },
+    buttonType() {
+      return _.get(this.$attrs, 'selectedControl.config.event');
+    },
   },
-
 };
 </script>
