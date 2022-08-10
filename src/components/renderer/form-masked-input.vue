@@ -1,26 +1,27 @@
 <template>
   <div class="form-group">
     <label v-uni-for="name">{{ labele }}</label>
+    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
     <component
-      v-if="componentType!=='input'"
-      :is="componentType"
-      v-model="localValue"
-      v-bind="componentConfig"
-      v-uni-id="name"
-      :name="name"
-      class="form-control"
-      :class="classList"
-      type="text"
+        v-if="componentType!=='input'"
+        :is="componentType"
+        v-model="localValue"
+        v-bind="componentConfig"
+        v-uni-id="name"
+        :name="name"
+        class="form-control"
+        :class="classList"
+        type="text"
     />
     <input v-else
-      v-model="localValue"
-      v-bind="componentConfig"
-      v-uni-id="name"
-      :name="name"
-      class="form-control"
-      :class="classList"
-      :type="dataType"
-      :maxlength="maxlength"
+           v-model="localValue"
+           v-bind="componentConfig"
+           v-uni-id="name"
+           :name="name"
+           class="form-control"
+           :class="(input_data  && classList)?classList:''"
+           :type="dataType"
+           :maxlength="maxlength"
     >
     <template v-if="validator && validator.errorCount">
       <div class="invalid-feedback" v-for="(errors, index) in validator.errors.all()" :key="index">
@@ -35,10 +36,10 @@
 </template>
 
 <script>
-import { createUniqIdsMixin } from 'vue-uniq-ids';
+import {createUniqIdsMixin} from 'vue-uniq-ids';
 import Inputmasked from './form-input-masked';
-import { TheMask } from 'vue-the-mask';
-import { getUserDateFormat, getUserDateTimeFormat } from '@processmaker/vue-form-elements/src/dateUtils';
+import {TheMask} from 'vue-the-mask';
+import {getUserDateFormat, getUserDateTimeFormat} from '@processmaker/vue-form-elements/src/dateUtils';
 import ValidationMixin from '@processmaker/vue-form-elements/src/components/mixins/validation';
 import moment from 'moment';
 
@@ -60,8 +61,8 @@ const componentTypesConfigs = {
 
 export default {
   inheritAttrs: false,
-  components: { TheMask, Inputmasked },
-  mixins: [ uniqIdsMixin, ValidationMixin ],
+  components: {TheMask, Inputmasked},
+  mixins: [uniqIdsMixin, ValidationMixin],
   props: [
     'value',
     'label',
@@ -132,6 +133,14 @@ export default {
         dateTime: ['####-##-## ##:##'],
       };
     },
+    starStatus() {
+      var validationObject = this.config.validation;
+      Object.entries(validationObject).forEach(([key, value]) => {
+        if (value.value == 'required') {
+          this.star = true;
+        }
+      })
+    },
   },
   computed: {
     dataFormat() {
@@ -150,16 +159,16 @@ export default {
       let config;
       if (this.customFormatter) {
         config = componentTypesConfigs['custom'];
-      } else  {
+      } else {
         config = componentTypesConfigs[this.dataFormat];
       }
-      return Object.assign({}, (config ? this[config] : {}) , this.$attrs);
+      return Object.assign({}, (config ? this[config] : {}), this.$attrs);
     },
     getCurrencyFormat() {
       const format = this.dataMask && this.dataMask ? this.dataMask && this.dataMask.format : null;
       const separators = format ? format.match(/[.,]/g) : ['.', ','];
       if (separators.length === 0) separators.push('', '.');
-      else if (separators.length === 1) separators.push(separators[0] === '.' ? ',': '.');
+      else if (separators.length === 1) separators.push(separators[0] === '.' ? ',' : '.');
       const presicion = format ? (format.split(separators[1])[1] || '').length : 2;
       return {
         decimal: separators[1],
@@ -207,12 +216,18 @@ export default {
     },
     dataType() {
       switch (this.dataFormat) {
-        case 'int': return 'number';
-        case 'float': return 'number';
-        case 'email': return 'email';
-        case 'password': return 'password';
-        case 'object': return 'object';
-        default: return 'text';
+        case 'int':
+          return 'number';
+        case 'float':
+          return 'number';
+        case 'email':
+          return 'email';
+        case 'password':
+          return 'password';
+        case 'object':
+          return 'object';
+        default:
+          return 'text';
       }
     },
     getCustomFormatter() {
@@ -224,42 +239,44 @@ export default {
   },
   watch: {
     value(value) {
-        if(this.dataType == 'object'){
-            if (this.localValue !== value.value) {
-                this.labele = (this.dataType == 'object')?this.value.lable:this.label;
-                this.localValue = value.value;
-            }
-        }else{
-            if (this.localValue !== value) {
-                this.localValue = value;
-            }
+      if (this.dataType == 'object') {
+        if (this.localValue !== value.value) {
+          this.labele = (this.dataType == 'object') ? this.value.lable : this.label;
+          this.localValue = value.value;
         }
-       // console.log(value,'value');
+      } else {
+        if (this.localValue !== value) {
+          this.localValue = value;
+        }
+      }
+      // console.log(value,'value');
 
     },
     localValue(value) {
-        if(this.dataType == 'object'){
-            if(this.value == null){
-                this.$emit('input', {lable:"New Input",value:this.convertToData(value)});
-            }else{
-                if(value != this.value.value) {
-                    //console.log(this.convertToData(value),'this.convertToData(value)')
-                    this.labele = (this.dataType == 'object')?this.value.lable:this.label;
-                    this.$emit('input', {lable:this.value.lable,value:this.convertToData(value)});
-                }
-            }
-           /* console.log(this.value,'789')
-            //console.log(this.value == null || value != this.value['value'],'this.value')
-            if(value != this.value.value) {
-                //console.log(this.convertToData(value),'this.convertToData(value)')
-                this.$emit('input', {lable:this.value.lable,value:this.convertToData(value)});
-            }*/
+      if (this.dataType == 'object') {
+        if (this.value == null) {
+          this.$emit('input', {lable: "New Input", value: this.convertToData(value)});
+          this.input_data = true
+        } else {
+          if (value != this.value.value) {
+            //console.log(this.convertToData(value),'this.convertToData(value)')
+            this.labele = (this.dataType == 'object') ? this.value.lable : this.label;
+            this.$emit('input', {lable: this.value.lable, value: this.convertToData(value)});
+            this.input_data = true
+          }
         }
-        else {
-            if(value != this.value) {
-                this.$emit('input', this.convertToData(value));
-            }
+        /* console.log(this.value,'789')
+         //console.log(this.value == null || value != this.value['value'],'this.value')
+         if(value != this.value.value) {
+             //console.log(this.convertToData(value),'this.convertToData(value)')
+             this.$emit('input', {lable:this.value.lable,value:this.convertToData(value)});
+         }*/
+      } else {
+        if (value != this.value) {
+          this.$emit('input', this.convertToData(value));
+          this.input_data = true
         }
+      }
     },
   },
   data() {
@@ -267,6 +284,8 @@ export default {
       validator: null,
       labele: null,
       localValue: null,
+      input_data: false,
+      star: false,
       validationRules: {
         'percentage': 'regex:/^[+-]?\\d+(\\.\\d+)?$/',
       },
@@ -274,15 +293,21 @@ export default {
   },
   mounted() {
     if (this.value !== undefined) {
-        if(this.dataType == 'object' && this.value){
-            this.localValue = this.value.value;
-        }else{
-            this.localValue = this.value;
-        }
+      if (this.dataType == 'object' && this.value) {
+        this.localValue = this.value.value;
+      } else {
+        this.localValue = this.value;
+      }
     }
   },
-  created(){
-      this.labele = (this.dataType == 'object' && this.value)?this.value.lable:this.label;
+  created() {
+    this.labele = (this.dataType == 'object' && this.value) ? this.value.lable : this.label;
+    this.starStatus();
   }
 };
 </script>
+<style scoped>
+.icon-star-size {
+  font-size: 8px;
+}
+</style>
