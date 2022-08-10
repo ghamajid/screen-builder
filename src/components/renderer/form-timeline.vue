@@ -70,7 +70,7 @@ export default {
           if (this.transientData[this.name] < 0) {
             this.value = 0
           } else if (this.transientData[this.name] >= lastItemIndex) {
-            this.value = lastItemIndex - 1
+            this.value = lastItemIndex
           }
           this.$emit('input', this.value);
         }

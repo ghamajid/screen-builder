@@ -911,6 +911,8 @@ export default [{
                     config: {
                         label: 'Steps',
                         helper: 'set steps data for timeline',
+                        helper_title: 'set title for step',
+                        helper_icon: 'set icon data for step'
                     },
 
                 },

@@ -25,9 +25,12 @@
           </div>
           <label class="mt-3" for="option-title">{{ $t('Title') }}</label>
           <b-form-input id="option-title" v-model="optionTitle" data-cy="inspector-option-title" />
+          <small v-if="helper_title" class="form-text text-muted" v-html="helper_title"/>
 
           <label class="mt-3" for="option-icon">{{ $t('Icon') }}</label>
           <b-form-input id="option-icon" v-model="optionIcon" data-cy="inspector-option-icon" placeholder="k-i-user"/>
+          <small v-if="helper_icon" class="form-text text-muted" v-html="helper_icon"/>
+
         </div>
 
         <div class="card-footer text-right p-2">
@@ -74,8 +77,12 @@
                     </div>
                     <label class="mt-3" for="option-title">{{ $t('Title') }}</label>
                     <b-form-input id="option-title" v-model="optionTitle" data-cy="inspector-option-title" />
+                    <small v-if="helper_title" class="form-text text-muted" v-html="helper_title"/>
+
                     <label class="mt-3" for="option-icon">{{ $t('Icon') }}</label>
                     <b-form-input id="option-icon" v-model="optionIcon" data-cy="inspector-option-icon" placeholder="k-i-user"/>
+                    <small v-if="helper_icon" class="form-text text-muted" v-html="helper_icon"/>
+
                   </div>
 
                   <div class="card-footer text-right p-2">
@@ -174,7 +181,7 @@ export default {
     MonacoEditor,
     MustacheHelper,
   },
-  props: ['options', 'selectedControl','helper'],
+  props: ['options', 'selectedControl','helper','helper_title','helper_icon'],
   model: {
     prop: 'options',
     event: 'change',
