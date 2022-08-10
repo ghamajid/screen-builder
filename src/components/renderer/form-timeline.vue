@@ -54,8 +54,8 @@ export default {
   },
   methods: {
     handleChange(e) {
-      this.$emit('input', e.value);
-      this.$emit('page-navigate', e.value);
+      // this.$emit('input', e.value);
+      // this.$emit('page-navigate', e.value);
     }
   },
   watch: {
