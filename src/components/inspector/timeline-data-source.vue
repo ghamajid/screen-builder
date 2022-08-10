@@ -18,8 +18,8 @@
           {{ $t('Edit Step') }}
         </div>
         <div class="card-body p-2">
-          <label for="option-value">{{ $t('Value') }}</label>
-          <b-form-input id="option-value" v-model="optionValue" :classs="optionKeyClass" data-cy="inspector-option-value" />
+<!--          <label for="option-value">{{ $t('Value') }}</label>-->
+<!--          <b-form-input id="option-value" v-model="optionValue" :classs="optionKeyClass" data-cy="inspector-option-value" />-->
           <div v-if="optionError" class="invalid-feedback d-block text-right">
             <div>{{ optionError }}</div>
           </div>
@@ -67,8 +67,8 @@
                     {{ $t('Edit Step') }}
                   </div>
                   <div class="card-body p-2">
-                    <label for="option-value">{{ $t('Value') }}</label>
-                    <b-form-input id="option-value" v-model="optionValue" :classs="optionKeyClass" data-cy="inspector-option-value" />
+<!--                    <label for="option-value">{{ $t('Value') }}</label>-->
+<!--                    <b-form-input id="option-value" v-model="optionValue" :classs="optionKeyClass" data-cy="inspector-option-value" />-->
                     <div v-if="optionError" class="invalid-feedback d-block text-right">
                       <div>{{ optionError }}</div>
                     </div>
@@ -118,6 +118,8 @@
           </button>
         </div>
       </div>
+      <small v-if="helper" class="form-text text-muted" v-html="helper"/>
+
     </div>
     <div v-if="showJsonEditor && dataSource === dataSourceValues.provideData">
       <div class="mb-2">
@@ -172,7 +174,7 @@ export default {
     MonacoEditor,
     MustacheHelper,
   },
-  props: ['options', 'selectedControl'],
+  props: ['options', 'selectedControl','helper'],
   model: {
     prop: 'options',
     event: 'change',
@@ -195,7 +197,7 @@ export default {
       optionCardType: '',
       editIndex: null,
       removeIndex: null,
-      optionValue: '',
+      // optionValue: '',
       optionTitle: '',
       optionIcon: '',
         monacoOptions: {
@@ -320,14 +322,14 @@ export default {
       this.editIndex = index;
       this.optionTitle = this.optionsList[index][this.valueField];
       this.optionIcon = this.optionsList[index][this.valueIcon];
-      this.optionValue = this.optionsList[index][this.keyField];
+      // this.optionValue = this.optionsList[index][this.keyField];
       this.optionError = '';
     },
     showAddOption() {
       this.optionCardType = 'insert';
       this.optionTitle = '';
       this.optionIcon = '';
-      this.optionValue = '';
+      // this.optionValue = '';
       this.showOptionCard = true;
       this.optionError = '';
       this.editIndex = null;
@@ -336,7 +338,8 @@ export default {
       const that = this;
 
       if (this.optionCardType === 'insert') {
-        if (this.optionsList.find(item => { return item[that.keyField] === this.optionValue; })) {
+        if (this.optionsList.find(item => { return item[that.keyField] === this.optionTitle; })) {
+        // if (this.optionsList.find(item => { return item[that.keyField] === this.optionValue; })) {
           this.optionError = 'An item with the same key already exists';
           return;
         }
@@ -344,16 +347,17 @@ export default {
           {
             [this.valueField]: this.optionTitle,
             [this.valueIcon]: this.optionIcon,
-            [this.keyField]: this.optionValue,
+            // [this.keyField]: this.optionValue,
           }
         );
       }
       else {
-        if (this.optionsList.find((item, index) => { return item[that.keyField] === this.optionValue && index !== this.editIndex ; })) {
+        if (this.optionsList.find((item, index) => { return item[that.keyField] === this.optionTitle && index !== this.editIndex ; })) {
+        // if (this.optionsList.find((item, index) => { return item[that.keyField] === this.optionValue && index !== this.editIndex ; })) {
           this.optionError = 'An item with the same key already exists';
           return;
         }
-        this.optionsList[this.editIndex][this.keyField] = this.optionValue;
+        // this.optionsList[this.editIndex][this.keyField] = this.optionValue;
         this.optionsList[this.editIndex][this.valueField] = this.optionTitle;
         this.optionsList[this.editIndex][this.valueIcon] = this.optionIcon;
       }

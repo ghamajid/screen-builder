@@ -6,21 +6,23 @@
         <b-form-select id="render-as" v-model="new_orientation" :options="renderAsOptions"
                        data-cy="inspector-render-as"/>
       </div>
+
     </div>
+    <small v-if="helper" class="form-text text-muted" v-html="helper"/>
   </div>
 </template>
 
 <script>
 
 export default {
-  props: ['orientation', 'selectedControl'],
+  props: ['orientation','helper'],
   model: {
     prop: 'orientation',
     event: 'change',
   },
   data() {
     return {
-      new_orientation: this.selectedControl.config.options.orientation,
+      new_orientation: this.orientation,
       renderAsOptions: [
         {
           text: this.$t('Horizontal'),

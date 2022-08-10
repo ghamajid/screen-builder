@@ -3,7 +3,7 @@
     <Stepper
         :value="value"
         :items="items_val"
-        :orientation="orientation_val"
+        :orientation="orientation"
         @change="handleChange"
         class="k-rtl"
     />
@@ -23,8 +23,10 @@ export default {
     'config',
     'transientData',
     'name',
-    'options',
-    'event'
+    'event',
+    'orientation',
+    'steps',
+    'selectedControl'
   ],
 
   data() {
@@ -62,42 +64,41 @@ export default {
       immediate: true,
       deep: true,
       handler(val, oldVal) {
-        if (this.transientData && this.transientData[this.name] && this.value != this.transientData[this.name]) {
+        if (this.transientData && this.transientData[this.name] >= 0) {
           var lastItemIndex = this.items.length - 1
           this.value = this.transientData[this.name]
           if (this.transientData[this.name] < 0) {
             this.value = 0
-          } else if (this.transientData[this.name] > lastItemIndex) {
-            this.value = lastItemIndex
+          } else if (this.transientData[this.name] >= lastItemIndex) {
+            this.value = lastItemIndex - 1
           }
           this.$emit('input', this.value);
         }
       },
     },
-    options: {
-      immediate: true,
-      deep: true,
-      handler(val, oldVal) {
-        if (this.config && this.config.orientation){
-          this.options.orientation = this.config.orientation.orientation;
-        }
-      },
-    }
+    // options: {
+    //   immediate: true,
+    //   deep: true,
+    //   handler(val, oldVal) {
+    //     if (this.config && this.config.orientation){
+    //       this.options.orientation = this.config.orientation.orientation;
+    //     }
+    //   },
+    // }
   },
-  computed:{
-    orientation_val(){
-      var orientation = this.options.orientation;
-      if(this.config){
-        orientation = (this.config.orientation && this.options.orientation !== null) ? this.config.orientation: this.options.orientation;
-      }
-      return orientation;
-    },
-    items_val(){
+  computed: {
+    // orientation_val(){
+    //   console.log('this.config',this.config,'this.options',this.options)
+    // var orientation = this.options.orientation;
+    // if(this.config){
+    //   var orientation = (this.config.orientation && this.options.orientation !== null) ? this.config.orientation: this.options.orientation;
+    // }
+    // return this.config.orientation;
+    // },
+    items_val() {
       var _items = this.items;
-      if (this.config ){
-        if (this.config.steps.optionsList){
-          _items = this.config.steps.optionsList;
-        }
+      if (this.steps.optionsList && this.steps.optionsList.length > 0) {
+        _items = this.steps.optionsList;
       }
       return _items;
     }

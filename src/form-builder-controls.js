@@ -876,21 +876,22 @@ export default [{
                 placeholder: '',
                 validation: '',
                 dataSourceUrl: '',
-                orientation:'',
+                orientation: 'horizontal',
                 steps: {},
                 dataSourceEndpoint: '',
-                options: {
-                    showRenderAs: true,
-                    dataSource: dataSourceValues.provideData,
-                    jsonData: '',
-                    orientation: 'horizontal',
+                // options: {
+                    // showRenderAs: true,
+                    // jsonData: '',
+                    // orientation: 'horizontal',
+                    // steps: {},
+
                     // allowMultiSelect: false,
                     // selectedOptions: [],
-                    optionsList: [],
+                    // optionsList: [],
                     // key: 'value',
                     // value: 'content',
                     // valueTypeReturned: 'single',
-                },
+                // },
                 helper: null
             },
             inspector: [
@@ -900,13 +901,17 @@ export default [{
                     type: 'Orientation',
                     field: 'orientation',
                     config: {
-                        // label: 'Column Width',
+                        label: 'Orientation',
+                        helper: 'select orientation of timeline',
                     },
                 },
                 {
                     type: 'TimelineDataSource',
                     field: 'steps',
-                    config: {},
+                    config: {
+                        label: 'Steps',
+                        helper: 'set steps data for timeline',
+                    },
 
                 },
                 defaultValueProperty,
