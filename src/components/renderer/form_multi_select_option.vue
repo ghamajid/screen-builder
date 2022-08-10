@@ -347,7 +347,11 @@ export default {
       },
     },
     value: {
-      handler() {
+      handler(val) {
+        console.log('val',val)
+        if (val && val.length > 0){
+          this.select_item = true;
+        }
       },
       deep: true,
       immediate: true,
