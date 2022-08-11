@@ -65,7 +65,7 @@ export default {
       deep: true,
       handler(val, oldVal) {
         if (this.transientData && this.transientData[this.name] >= 0) {
-          if (this.steps.optionsList && this.steps.optionsList.length > 0) {
+          if (this.steps && this.steps.optionsList && this.steps.optionsList.length > 0) {
             var lastItemIndex = this.steps.optionsList.length - 1
             this.value = this.transientData[this.name]
             if (this.transientData[this.name] < 0) {
