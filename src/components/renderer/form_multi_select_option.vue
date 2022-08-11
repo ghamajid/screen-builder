@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label>{{ label }}</label>
+    <label>{{ label }}55555555</label>
     <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
     <multi-select-view
         :disabled="readonly"
