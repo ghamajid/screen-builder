@@ -51,10 +51,37 @@ export default {
       };
     },
     valid() {
-      if (this.$attrs.validate) {
-        return !this.$attrs.validate.$invalid;
+      if (this.event == 'submit_if_valid'){
+        if (this.$attrs.validate){
+          var validation = [];
+          console.log('this.$attrs.validate 222',this.$attrs.validate)
+          console.log(456)
+          var params = this.$attrs.validate.vdata.$params;
+          if (Object.keys(params).length > 0){
+            Object.keys(params).forEach(m=>{
+              validation.push(!this.$attrs.validate.vdata[m].$invalid);
+            })
+          }
+
+          console.log('validation allAreTrue',validation.every(element => element === true))
+          return validation.every(element => element === true);
+
+        }
+        return true;
+
+      }else{
+        if (this.$attrs.validate) {
+          // console.log('form button : valid !this.$attrs.validate:',this.event,this.$attrs.validate,this.$attrs.validate.schema.$model,this.$attrs.validate.vdata)
+          //this.$attrs.validate.vdata.$params
+          // console.log('form button : valid !this.$attrs.validate.$invalid:',!this.$attrs.validate.$invalid)
+
+          return !this.$attrs.validate.$invalid;
+        }
+        // console.log('form button : valid:','true')
+
+        return true;
       }
-      return true;
+
     },
     message() {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -72,6 +99,7 @@ export default {
     },
   },
   data() {
+  
     return {
       errors: 0,
     };
@@ -136,6 +164,7 @@ export default {
           return;
       }
       if (this.event === 'submit_if_valid') {
+       
         if(this.valid){
           this.$emit('page-navigate', this.eventData);
 
