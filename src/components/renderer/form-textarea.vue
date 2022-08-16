@@ -1,7 +1,8 @@
 <template>
   <div class="form-group">
+	<i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
     <label v-uni-for="label">{{label}}</label>
-    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
+    
     <div v-if="richtext" :class="classList" v-uni-id="label">
       <div v-if="readonly" v-html="value"></div>
       <div v-else>
@@ -169,10 +170,11 @@ export default {
     border-top: 0;
   }
 }
-</style>
-<style scoped>
+
 .icon-star-size {
-  font-size: 8px;
+  font-size: 8px !important;
+font-weight: 160 !important;
+    color: #dc3545!important;
 }
 </style>
 

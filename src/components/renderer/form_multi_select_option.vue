@@ -1,7 +1,8 @@
 <template>
   <div class="form-group">
+	<i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
     <label>{{ label }}</label>
-    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
+    
     <multi-select-view
         :disabled="readonly"
         v-if="options.renderAs === 'dropdown'"
@@ -440,8 +441,10 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
 .icon-star-size {
-  font-size: 8px;
+  font-size: 8px !important;
+    font-weight: 160 !important;
+    color: #dc3545!important;
 }
 </style>

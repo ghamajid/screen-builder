@@ -1,8 +1,9 @@
 <template>
   <div class="form-group">
-    <label v-uni-for="name">{{ labele }}</label>
+ 
     <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
-    <component
+    <label v-uni-for="name">{{ labele }}</label>
+   <component
         v-if="componentType!=='input'"
         :is="componentType"
         v-model="localValue"
@@ -306,8 +307,10 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style>
 .icon-star-size {
-  font-size: 8px;
+  font-size: 8px !important;
+font-weight: 160 !important;
+    color: #dc3545!important;
 }
 </style>
