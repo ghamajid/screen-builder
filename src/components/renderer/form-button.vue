@@ -52,33 +52,30 @@ export default {
     },
     valid() {
       if (this.event == 'submit_if_valid'){
-        if (this.$attrs.validate){
-          var validation = [];
-          console.log('this.$attrs.validate 222',this.$attrs.validate)
-          console.log(456)
-          var params = this.$attrs.validate.vdata.$params;
-          if (Object.keys(params).length > 0){
-            Object.keys(params).forEach(m=>{
-              validation.push(!this.$attrs.validate.vdata[m].$invalid);
-            })
+        if (this.$attrs.validate && window.submitPageNavigayionDefinition && Object.keys(window.submitPageNavigayionDefinition).length > 0 && window.submitPageNavigayionDefinition.config.length > 0) {
+          let pageNumber = this.eventData - 1;
+          let validation = [];
+          let pageData = this.$attrs.validate.vdata;
+          this.errors_submit_if_valid = 0;
+          for (const item of window.submitPageNavigayionDefinition.config[pageNumber]['items']){
+            if (item['config']['name']){
+              if (pageData[item['config']['name']]){
+                validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
+                if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false){
+                  this.errors_submit_if_valid++;
+
+                }
+              }
+            }
           }
-
-          console.log('validation allAreTrue',validation.every(element => element === true))
           return validation.every(element => element === true);
-
         }
         return true;
 
       }else{
         if (this.$attrs.validate) {
-          // console.log('form button : valid !this.$attrs.validate:',this.event,this.$attrs.validate,this.$attrs.validate.schema.$model,this.$attrs.validate.vdata)
-          //this.$attrs.validate.vdata.$params
-          // console.log('form button : valid !this.$attrs.validate.$invalid:',!this.$attrs.validate.$invalid)
-
           return !this.$attrs.validate.$invalid;
         }
-        // console.log('form button : valid:','true')
-
         return true;
       }
 
@@ -87,13 +84,23 @@ export default {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.errors = 0;
       if (!this.valid) {
-        this.countErrors(this.$attrs.validate.vdata);
-        this.countErrors(this.$attrs.validate.schema);
-        let message = 'There are {{items}} validation errors in your form.';
-        if (this.errors === 1) {
-          message = 'There is a validation error in your form.';
+        if (this.event == 'submit_if_valid'){
+          this.errors = this.errors_submit_if_valid;
+          let message = 'There are {{items}} validation errors in your form.';
+          if (this.errors === 1) {
+            message = 'There is a validation error in your form.';
+          }
+          return this.$t(message, {items: this.errors});
+        }else{
+          this.countErrors(this.$attrs.validate.vdata);
+          this.countErrors(this.$attrs.validate.schema);
+          let message = 'There are {{items}} validation errors in your form.';
+          if (this.errors === 1) {
+            message = 'There is a validation error in your form.';
+          }
+          return this.$t(message, {items: this.errors});
         }
-        return this.$t(message, {items: this.errors});
+
       }
       return '';
     },
@@ -102,6 +109,7 @@ export default {
   
     return {
       errors: 0,
+      errors_submit_if_valid: 0
     };
   },
   methods: {
@@ -164,7 +172,7 @@ export default {
           return;
       }
       if (this.event === 'submit_if_valid') {
-       
+
         if(this.valid){
           this.$emit('page-navigate', this.eventData);
 

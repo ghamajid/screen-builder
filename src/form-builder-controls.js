@@ -412,7 +412,7 @@ export default [{
                 icon: 'far fa-compass',
                 label: 'Page Navigation',
                 variant: 'primary',
-                event: '',
+                event: 'pageNavigate',
                 eventData: null,
 
             },

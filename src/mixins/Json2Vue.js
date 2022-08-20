@@ -3,6 +3,7 @@ import ScreenBase from './ScreenBase';
 import CountElements from '../CountElements';
 import ValidationsFactory from '../ValidationsFactory';
 import _ from 'lodash';
+import window from "inputmask/lib/global/window";
 
 let screenRenderer;
 
@@ -339,6 +340,7 @@ export default {
       component.methods.loadValidationRules = function() {
         // Asynchronous loading of validations
         const validations = {};
+        window.submitPageNavigayionDefinition =definition;
         ValidationsFactory(definition, { screen: definition, firstPage, data: {_parent: this._parent, ...this.vdata} }).addValidations(validations).then(() => {
           if (_.isEqual(this.ValidationRules__, validations)) {
             return;
