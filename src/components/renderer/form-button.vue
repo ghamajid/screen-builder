@@ -57,6 +57,8 @@ export default {
           let validation = [];
           let pageData = this.$attrs.validate.vdata;
           this.errors_submit_if_valid = 0;
+          console.log('window.config',window.submitPageNavigayionDefinition.config,pageNumber);
+
           for (const item of window.submitPageNavigayionDefinition.config[pageNumber]['items']){
             if (item['config']['name']){
               if (pageData[item['config']['name']]){
