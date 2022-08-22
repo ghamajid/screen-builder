@@ -52,6 +52,8 @@ export default {
     },
     valid() {
       if (this.event == 'submit_if_valid'){
+        console.log('window 1111',window);
+
         if (this.$attrs.validate && window.submitPageNavigayionDefinition && Object.keys(window.submitPageNavigayionDefinition).length > 0 && window.submitPageNavigayionDefinition.config.length > 0) {
           let pageNumber = this.eventData - 1;
           let validation = [];
