@@ -56,24 +56,17 @@ export default {
 
         if (this.$attrs.validate && window.submitPageNavigayionDefinition && Object.keys(window.submitPageNavigayionDefinition).length > 0 && window.submitPageNavigayionDefinition.config.length > 0) {
           let pageNumber = this.eventData - 1;
-          let validation = [];
-          let pageData = this.$attrs.validate.vdata;
+          this.validation = [];
+          this.pageData = this.$attrs.validate.vdata;
+          console.log('this.$attrs.validate.vdata',this.$attrs.validate.vdata)
           this.errors_submit_if_valid = 0;
           console.log('window.config',window.submitPageNavigayionDefinition.config,pageNumber);
 
           let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0: pageNumber;
-          for (const item of window.submitPageNavigayionDefinition.config[pageNum]['items']){
-            if (item['config']['name']){
-              if (pageData[item['config']['name']]){
-                validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
-                if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false){
-                  this.errors_submit_if_valid++;
+          this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
+          console.log('validation 111',this.validation);
 
-                }
-              }
-            }
-          }
-          return validation.every(element => element === true);
+          return this.validation.every(element => element === true);
         }
         return true;
 
@@ -114,7 +107,9 @@ export default {
   
     return {
       errors: 0,
-      errors_submit_if_valid: 0
+      errors_submit_if_valid: 0,
+      pageData: {},
+      validation: [],
     };
   },
   methods: {
@@ -186,6 +181,29 @@ export default {
       this.$emit(this.event, this.eventData);
       if (this.event === 'pageNavigate') {
         this.$emit('page-navigate', this.eventData);
+      }
+    },
+    fetchItems(items){
+      for (const item of items){
+        if (item['config']['name']){
+          if (this.pageData[item['config']['name']]){
+            this.validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
+            if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false){
+              this.errors_submit_if_valid++;
+            }
+
+          }
+        }
+
+        console.log('item[items]',item['items'])
+        if (typeof item['items'] !== 'undefined'){
+          for (const nested_items of item['items']) {
+            console.log('nested_items',nested_items)
+
+              this.fetchItems(nested_items);
+          }
+        }
+
       }
     },
   },
