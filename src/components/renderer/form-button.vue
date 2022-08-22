@@ -1,10 +1,11 @@
 <template>
-  <div class="form-group"  style="overflow-x: hidden">
+  <div class="form-group" style="overflow-x: hidden">
     <div class="alert alert-danger" v-if="!valid">
       <i class="fas fa-exclamation-circle"/>
       {{ message }}
     </div>
-    <button v-b-tooltip="options" @click="click" :class="classList" :name="name" :aria-label="$attrs['aria-label']" :tabindex="$attrs['tabindex']">
+    <button v-b-tooltip="options" @click="click" :class="classList" :name="name" :aria-label="$attrs['aria-label']"
+            :tabindex="$attrs['tabindex']">
       {{ label }}
     </button>
   </div>
@@ -12,7 +13,7 @@
 
 <script>
 import Mustache from 'mustache';
-import { getValidPath } from '@/mixins';
+import {getValidPath} from '@/mixins';
 
 export default {
   mixins: [getValidPath],
@@ -31,7 +32,7 @@ export default {
         return {};
       }
       if (!this.tooltip || this.event === 'submit_grid') {
-          return {};
+        return {};
       }
       // if (!this.tooltip || this.event === 'submit_if_valid') {
       //     return {};
@@ -39,7 +40,9 @@ export default {
       let content = '';
       try {
         content = Mustache.render(this.tooltip.content || '', this.transientData);
-      } catch (error) { error; }
+      } catch (error) {
+        error;
+      }
 
       return {
         title: content,
@@ -51,26 +54,26 @@ export default {
       };
     },
     valid() {
-      if (this.event == 'submit_if_valid'){
-        console.log('window 1111',window);
+      if (this.event == 'submit_if_valid') {
+        console.log('window 1111', window);
 
         if (this.$attrs.validate && window.submitPageNavigayionDefinition && Object.keys(window.submitPageNavigayionDefinition).length > 0 && window.submitPageNavigayionDefinition.config.length > 0) {
           let pageNumber = this.eventData - 1;
           this.validation = [];
           this.pageData = this.$attrs.validate.vdata;
-          console.log('this.$attrs.validate.vdata',this.$attrs.validate.vdata)
+          console.log('this.$attrs.validate.vdata', this.$attrs.validate.vdata)
           this.errors_submit_if_valid = 0;
-          console.log('window.config',window.submitPageNavigayionDefinition.config,pageNumber);
+          console.log('window.config', window.submitPageNavigayionDefinition.config, pageNumber);
 
-          let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0: pageNumber;
+          let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
           this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
-          console.log('validation 111',this.validation);
+          console.log('validation 111', this.validation);
 
           return this.validation.every(element => element === true);
         }
         return true;
 
-      }else{
+      } else {
         if (this.$attrs.validate) {
           return !this.$attrs.validate.$invalid;
         }
@@ -82,14 +85,14 @@ export default {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.errors = 0;
       if (!this.valid) {
-        if (this.event == 'submit_if_valid'){
+        if (this.event == 'submit_if_valid') {
           this.errors = this.errors_submit_if_valid;
           let message = 'There are {{items}} validation errors in your form.';
           if (this.errors === 1) {
             message = 'There is a validation error in your form.';
           }
           return this.$t(message, {items: this.errors});
-        }else{
+        } else {
           this.countErrors(this.$attrs.validate.vdata);
           this.countErrors(this.$attrs.validate.schema);
           let message = 'There are {{items}} validation errors in your form.';
@@ -104,7 +107,7 @@ export default {
     },
   },
   data() {
-  
+
     return {
       errors: 0,
       errors_submit_if_valid: 0,
@@ -152,28 +155,28 @@ export default {
       }
       if (this.event === 'submit') {
         this.$emit('input', this.fieldValue);
-        this.$nextTick(()=>{
+        this.$nextTick(() => {
           this.$emit('submit', this.eventData);
         });
         return;
       }
       if (this.event === 'script_grid') {
-          const trueValue = this.fieldValue || '1';
-          const value = (this.value == trueValue) ? null : trueValue;
-          if(this.valid){
-              this.$emit('input', value);
-          }
+        const trueValue = this.fieldValue || '1';
+        const value = (this.value == trueValue) ? null : trueValue;
+        if (this.valid) {
+          this.$emit('input', value);
+        }
       }
       if (this.event === 'submit_grid') {
-          this.$emit('input', this.fieldValue);
-          this.$nextTick(()=>{
-              this.$emit('submit', this.eventData);
-          });
-          return;
+        this.$emit('input', this.fieldValue);
+        this.$nextTick(() => {
+          this.$emit('submit', this.eventData);
+        });
+        return;
       }
       if (this.event === 'submit_if_valid') {
 
-        if(this.valid){
+        if (this.valid) {
           this.$emit('page-navigate', this.eventData);
 
         }
@@ -183,28 +186,29 @@ export default {
         this.$emit('page-navigate', this.eventData);
       }
     },
-    fetchItems(items){
-      console.log('Array.isArray(items)',Array.isArray(items))
-      if (Array.isArray(items)){
-        for (const item of items){
-          if (item['config']['name']){
-            if (this.pageData[item['config']['name']]){
+    fetchItems(items) {
+      console.log('Array.isArray(items)', Array.isArray(items))
+
+      for (const item of items) {
+        // if (Array.isArray(item)) {
+          if (item['config']['name']) {
+            if (this.pageData[item['config']['name']]) {
               this.validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
-              if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false){
+              if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false) {
                 this.errors_submit_if_valid++;
               }
 
             }
           }
 
-          console.log('item[items]',item['items'])
-          if (typeof item['items'] !== 'undefined'){
+          console.log('item[items]', item['items'])
+          if (typeof item['items'] !== 'undefined') {
             for (const nested_items of item['items']) {
-              console.log('nested_items',nested_items)
+              console.log('nested_items', nested_items)
 
               this.fetchItems(nested_items);
             }
-          }
+          // }
 
         }
       }
