@@ -18,6 +18,14 @@ import {getValidPath} from '@/mixins';
 export default {
   mixins: [getValidPath],
   props: ['variant', 'label', 'event', 'eventData', 'name', 'fieldValue', 'value', 'tooltip', 'transientData'],
+  watch: {
+    '$attrs.validate': {
+      deep: true,
+      handler(validate) {
+        console.log('$attrs.validate 123 ',validate);
+      },
+    },
+  },
   computed: {
     classList() {
       let variant = this.variant || 'primary';
@@ -61,7 +69,7 @@ export default {
           let pageNumber = this.eventData - 1;
           this.validation = [];
           this.pageData = this.$attrs.validate.vdata;
-          console.log('this.$attrs.validate.vdata', this.$attrs.validate.vdata)
+          console.log('this.$attrs.validate 456', this.$attrs.validate)
           this.errors_submit_if_valid = 0;
           console.log('window.config', window.submitPageNavigayionDefinition.config, pageNumber);
 
