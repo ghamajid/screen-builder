@@ -205,8 +205,10 @@ export default {
           if (typeof item['items'] !== 'undefined') {
             for (const nested_items of item['items']) {
               console.log('nested_items', nested_items)
+              if (nested_items.length > 0 && Array.isArray(items)){
+                this.fetchItems(nested_items);
 
-              this.fetchItems(nested_items);
+              }
             }
           // }
 
