@@ -184,26 +184,29 @@ export default {
       }
     },
     fetchItems(items){
-      for (const item of items){
-        if (item['config']['name']){
-          if (this.pageData[item['config']['name']]){
-            this.validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
-            if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false){
-              this.errors_submit_if_valid++;
+      console.log('Array.isArray(items)',Array.isArray(items))
+      if (Array.isArray(items)){
+        for (const item of items){
+          if (item['config']['name']){
+            if (this.pageData[item['config']['name']]){
+              this.validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
+              if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false){
+                this.errors_submit_if_valid++;
+              }
+
             }
-
           }
-        }
 
-        console.log('item[items]',item['items'])
-        if (typeof item['items'] !== 'undefined'){
-          for (const nested_items of item['items']) {
-            console.log('nested_items',nested_items)
+          console.log('item[items]',item['items'])
+          if (typeof item['items'] !== 'undefined'){
+            for (const nested_items of item['items']) {
+              console.log('nested_items',nested_items)
 
               this.fetchItems(nested_items);
+            }
           }
-        }
 
+        }
       }
     },
   },
