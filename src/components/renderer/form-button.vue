@@ -61,7 +61,8 @@ export default {
           this.errors_submit_if_valid = 0;
           console.log('window.config',window.submitPageNavigayionDefinition.config,pageNumber);
 
-          for (const item of window.submitPageNavigayionDefinition.config[0]['items']){
+          let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0: pageNumber;
+          for (const item of window.submitPageNavigayionDefinition.config[pageNum]['items']){
             if (item['config']['name']){
               if (pageData[item['config']['name']]){
                 validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
