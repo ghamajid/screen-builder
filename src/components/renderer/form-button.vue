@@ -190,9 +190,16 @@ export default {
       console.log('Array.isArray(items)', Array.isArray(items))
 
       for (const item of items) {
+        console.log('item', item)
+
         // if (Array.isArray(item)) {
           if (item['config']['name']) {
+            console.log('item[config][name]', item['config']['name'])
+            console.log('this.pageData', this.pageData)
+
             if (this.pageData[item['config']['name']]) {
+              console.log('!this.$attrs.validate', this.$attrs.validate)
+
               this.validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
               if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false) {
                 this.errors_submit_if_valid++;
@@ -206,6 +213,8 @@ export default {
             for (const nested_items of item['items']) {
               console.log('nested_items', nested_items)
               if (nested_items.length > 0 && Array.isArray(items)){
+                console.log('nested_items.length', nested_items.length)
+
                 this.fetchItems(nested_items);
 
               }
