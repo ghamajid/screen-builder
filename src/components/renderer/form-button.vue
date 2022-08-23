@@ -205,11 +205,15 @@ export default {
             console.log('item[config][name]', item['config']['name'])
             console.log('this.pageData', this.pageData)
 
-            console.log('!this.$attrs.validate 789', this.$attrs.validate)
+            console.log('!this.$attrs.validate 7890', this.$attrs.validate)
+            console.log('this.pageData[item[config][name]] vdata',this.$attrs.validate.vdata)
+            console.log('this.pageData[item[config][name]]',this.$attrs.validate.vdata[item['config']['name']])
+            console.log('this.pageData[item[config][name]].$each',this.$attrs.validate.vdata[item['config']['name']][$each])
+            console.log('this.pageData[item[config][name]].$each.$iter',this.$attrs.validate.vdata[item['config']['name']][$each][$iter])
             if (this.$attrs.validate.vdata[item['config']['name']][$each]){
-              console.log('this.pageData[item[config][name]]',this.pageData[item['config']['name']])
-              console.log('this.pageData[item[config][name]].$each',this.pageData[item['config']['name']][$each])
-              console.log('this.pageData[item[config][name]].$each.$iter',this.pageData[item['config']['name']][$each][$iter])
+              console.log('this.pageData[item[config][name]]',this.$attrs.validate.vdata[item['config']['name']])
+              console.log('this.pageData[item[config][name]].$each',this.$attrs.validate.vdata[item['config']['name']][$each])
+              console.log('this.pageData[item[config][name]].$each.$iter',this.$attrs.validate.vdata[item['config']['name']][$each][$iter])
               this.fetchLoopItems(this.pageData[item['config']['name']][$each][$iter]);
 
             }else if (this.pageData[item['config']['name']]) {
