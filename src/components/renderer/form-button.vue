@@ -22,7 +22,7 @@ export default {
     '$attrs.validate': {
       deep: true,
       handler(validate) {
-        console.log('$attrs.validate 123 ',validate);
+        console.log('$attrs.validate 123 ', validate);
       },
     },
   },
@@ -201,22 +201,21 @@ export default {
         console.log('item', item)
 
         // if (Array.isArray(item)) {
-          if (item['config']['name']) {
-            console.log('item[config][name]', item['config']['name'])
-            console.log('this.pageData', this.pageData)
+        if (item['config']['name']) {
+          console.log('item[config][name]', item['config']['name'])
+          console.log('this.pageData', this.pageData)
 
-            console.log('!this.$attrs.validate 7890', this.$attrs.validate)
-            console.log('this.pageData[item[config][name]] vdata',this.$attrs.validate.vdata)
-            console.log('this.pageData[item[config][name]]',this.$attrs.validate.vdata[item['config']['name']])
-            console.log('this.pageData[item[config][name]].$each',this.$attrs.validate.vdata[item['config']['name']][$each])
-            console.log('this.pageData[item[config][name]].$each.$iter',this.$attrs.validate.vdata[item['config']['name']][$each][$iter])
-            if (this.$attrs.validate.vdata[item['config']['name']][$each]){
-              console.log('this.pageData[item[config][name]]',this.$attrs.validate.vdata[item['config']['name']])
-              console.log('this.pageData[item[config][name]].$each',this.$attrs.validate.vdata[item['config']['name']][$each])
-              console.log('this.pageData[item[config][name]].$each.$iter',this.$attrs.validate.vdata[item['config']['name']][$each][$iter])
-              this.fetchLoopItems(this.pageData[item['config']['name']][$each][$iter]);
+          console.log('!this.$attrs.validate 7890', this.$attrs.validate)
+          if (this.pageData[item['config']['name']]) {
+            console.log('this.pageData[item[config][name]] 147', this.pageData[item['config']['name']])
 
-            }else if (this.pageData[item['config']['name']]) {
+            if (this.$attrs.validate.vdata[item['config']['name']].$each) {
+              console.log('this.pageData[item[config][name]]', this.$attrs.validate.vdata[item['config']['name']])
+              console.log('this.pageData[item[config][name]].$each', this.$attrs.validate.vdata[item['config']['name']].$each)
+              console.log('this.pageData[item[config][name]].$each.$iter', this.$attrs.validate.vdata[item['config']['name']].$each.$iter)
+              this.fetchLoopItems(this.pageData[item['config']['name']].$each.$iter);
+
+            } else {
 
               this.validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
               if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false) {
@@ -225,28 +224,31 @@ export default {
 
             }
           }
+        }
 
-          console.log('item[items]', item['items'])
-          if (typeof item['items'] !== 'undefined') {
-            for (const nested_items of item['items']) {
-              console.log('nested_items', nested_items)
-              if (nested_items.length > 0 && Array.isArray(items)){
-                console.log('nested_items.length', nested_items.length)
+        console.log('item[items]', item['items'])
+        if (typeof item['items'] !== 'undefined') {
+          for (const nested_items of item['items']) {
+            console.log('nested_items', nested_items)
+            if (nested_items.length > 0 && Array.isArray(items)) {
+              console.log('nested_items.length', nested_items.length)
 
-                this.fetchItems(nested_items);
+              this.fetchItems(nested_items);
 
-              }
             }
+          }
           // }
 
         }
       }
     },
-    fetchLoopItems(loopItems){
-      console.log('loopItems',loopItems)
+    fetchLoopItems(loopItems) {
+      console.log('loopItems', loopItems)
     }
-  },
-};
+  }
+  ,
+}
+;
 </script>
 
 <style lang="scss">
