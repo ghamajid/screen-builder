@@ -210,12 +210,14 @@ export default {
             console.log('this.pageData[item[config][name]] 147', this.pageData[item['config']['name']])
 
             if (this.$attrs.validate.vdata[item['config']['name']].$each) {
+              console.log('9999999999999')
               console.log('this.pageData[item[config][name]]', this.$attrs.validate.vdata[item['config']['name']])
               console.log('this.pageData[item[config][name]].$each', this.$attrs.validate.vdata[item['config']['name']].$each)
               console.log('this.pageData[item[config][name]].$each.$iter', this.$attrs.validate.vdata[item['config']['name']].$each.$iter)
               this.fetchLoopItems(this.pageData[item['config']['name']].$each.$iter);
 
             } else {
+              console.log('88888888888888')
 
               this.validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
               if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false) {
@@ -228,6 +230,8 @@ export default {
 
         console.log('item[items]', item['items'])
         if (typeof item['items'] !== 'undefined') {
+          console.log('77777777777')
+
           for (const nested_items of item['items']) {
             console.log('nested_items', nested_items)
             if (nested_items.length > 0 && Array.isArray(items)) {
