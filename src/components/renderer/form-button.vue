@@ -63,7 +63,7 @@ export default {
     },
     valid() {
       if (this.event == 'submit_if_valid') {
-        console.log('window 1111', window);
+        console.log('window 555555', window);
 
         if (this.$attrs.validate && window.submitPageNavigayionDefinition && Object.keys(window.submitPageNavigayionDefinition).length > 0 && window.submitPageNavigayionDefinition.config.length > 0) {
           let pageNumber = this.eventData - 1;
@@ -205,8 +205,14 @@ export default {
             console.log('item[config][name]', item['config']['name'])
             console.log('this.pageData', this.pageData)
 
-            if (this.pageData[item['config']['name']]) {
-              console.log('!this.$attrs.validate', this.$attrs.validate)
+            console.log('!this.$attrs.validate 789', this.$attrs.validate)
+            if (this.$attrs.validate.vdata[item['config']['name']].$each){
+              console.log('this.pageData[item[config][name]]',this.pageData[item['config']['name']])
+              console.log('this.pageData[item[config][name]].$each',this.pageData[item['config']['name']].$each)
+              console.log('this.pageData[item[config][name]].$each.$iter',this.pageData[item['config']['name']].$each.$iter)
+              this.fetchLoopItems(this.pageData[item['config']['name']].$each.$iter);
+
+            }else if (this.pageData[item['config']['name']]) {
 
               this.validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
               if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false) {
@@ -232,6 +238,9 @@ export default {
         }
       }
     },
+    fetchLoopItems(loopItems){
+      console.log('loopItems',loopItems)
+    }
   },
 };
 </script>
