@@ -206,11 +206,11 @@ export default {
             console.log('this.pageData', this.pageData)
 
             console.log('!this.$attrs.validate 789', this.$attrs.validate)
-            if (this.$attrs.validate.vdata[item['config']['name']].$each){
+            if (this.$attrs.validate.vdata[item['config']['name']][$each]){
               console.log('this.pageData[item[config][name]]',this.pageData[item['config']['name']])
-              console.log('this.pageData[item[config][name]].$each',this.pageData[item['config']['name']].$each)
-              console.log('this.pageData[item[config][name]].$each.$iter',this.pageData[item['config']['name']].$each.$iter)
-              this.fetchLoopItems(this.pageData[item['config']['name']].$each.$iter);
+              console.log('this.pageData[item[config][name]].$each',this.pageData[item['config']['name']][$each])
+              console.log('this.pageData[item[config][name]].$each.$iter',this.pageData[item['config']['name']][$each][$iter])
+              this.fetchLoopItems(this.pageData[item['config']['name']][$each][$iter]);
 
             }else if (this.pageData[item['config']['name']]) {
 
