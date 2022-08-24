@@ -18,14 +18,14 @@ import {getValidPath} from '@/mixins';
 export default {
   mixins: [getValidPath],
   props: ['variant', 'label', 'event', 'eventData', 'name', 'fieldValue', 'value', 'tooltip', 'transientData'],
-  watch: {
-    '$attrs.validate': {
-      deep: true,
-      handler(validate) {
-        console.log('$attrs.validate 123 ', validate);
-      },
-    },
-  },
+  // watch: {
+  //   '$attrs.validate': {
+  //     deep: true,
+  //     handler(validate) {
+  //       console.log('$attrs.validate 123 ', validate);
+  //     },
+  //   },
+  // },
   computed: {
     classList() {
       let variant = this.variant || 'primary';
@@ -62,33 +62,45 @@ export default {
       };
     },
     valid() {
-      if (this.event == 'submit_if_valid') {
-        console.log('window 555555', window);
-
-        if (this.$attrs.validate && window.submitPageNavigayionDefinition && Object.keys(window.submitPageNavigayionDefinition).length > 0 && window.submitPageNavigayionDefinition.config.length > 0) {
-          let pageNumber = this.eventData - 1;
-          this.validation = [];
-          this.pageData = this.$attrs.validate.vdata;
-
-          console.log('this.pageData 456', this.pageData)
-          console.log('this.$attrs.validate 456', this.$attrs.validate,this.$attrs.validate.vdata,this.$attrs.validate)
-          this.errors_submit_if_valid = 0;
-          console.log('window.config', window.submitPageNavigayionDefinition.config, pageNumber);
-
-          let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
-          this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
-          console.log('validation 111', this.validation);
-
-          return this.validation.every(element => element === true);
-        }
-        return true;
-
-      } else {
+      // if (this.event == 'submit_if_valid') {
+      //
+      //   if (this.$attrs.validate && window.submitPageNavigayionDefinition && Object.keys(window.submitPageNavigayionDefinition).length > 0 && window.submitPageNavigayionDefinition.config.length > 0) {
+      //     let pageNumber = this.eventData - 1;
+      //     this.validation = [];
+      //
+      //     if (this.$attrs.validate.vdata !== undefined) {
+      //       let totallData = this.$attrs.validate.vdata;
+      //       let totallPageData = {};
+      //
+      //       Object.keys(totallData).forEach(function (key, index) {
+      //         if (key.indexOf('$') == -1) {
+      //           totallPageData = totallData;
+      //         }
+      //       });
+      //       this.pageData = totallPageData
+      //       if (Object.keys(this.pageData).length > 0){
+      //         this.errors_submit_if_valid = 0;
+      //
+      //         let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
+      //         this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
+      //         console.log('validation 111', this.validation);
+      //
+      //         return this.validation.every(element => element === true);
+      //       }
+      //     }
+      //
+      //
+      //   }
+      //   return true;
+      //
+      // } else {
+      //
         if (this.$attrs.validate) {
           return !this.$attrs.validate.$invalid;
         }
         return true;
-      }
+
+      // }
 
     },
     message() {
@@ -196,68 +208,68 @@ export default {
         this.$emit('page-navigate', this.eventData);
       }
     },
-    fetchItems(items) {
-      console.log('Array.isArray(items)', Array.isArray(items))
-
-      for (const item of items) {
-        console.log('item', item)
-        console.log('item component', item['component'])
-        if (item['component'] == "FormLoop"){
-          console.log('item settings times', item['config']['settings']['times'])
-          console.log('item items', item['items'])
-
-        }
-        // if (Array.isArray(item)) {
-        if (item['config']['name']) {
-          console.log('item[config][name]', item['config']['name'])
-          console.log('this.pageData', this.pageData)
-
-          console.log('!this.$attrs.validate 7890', this.$attrs.validate)
-          console.log('!this.$attrs.validate 258963', this.$attrs.validate.vdata[item['config']['name']])
-          console.log('!this.$attrs.validate 96321478', this.$attrs.validate['vdata'][item['config']['name']])
-          if (this.pageData[item['config']['name']]) {
-            console.log('this.pageData[item[config][name]] 147', this.pageData[item['config']['name']])
-
-            if (this.$attrs.validate.vdata[item['config']['name']].$each) {
-              console.log('9999999999999')
-              console.log('this.pageData[item[config][name]]', this.$attrs.validate.vdata[item['config']['name']])
-              console.log('this.pageData[item[config][name]].$each', this.$attrs.validate.vdata[item['config']['name']].$each)
-              console.log('this.pageData[item[config][name]].$each.$iter', this.$attrs.validate.vdata[item['config']['name']].$each.$iter)
-              this.fetchLoopItems(this.pageData[item['config']['name']].$each.$iter);
-
-            } else {
-              console.log('88888888888888')
-
-              this.validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
-              if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false) {
-                this.errors_submit_if_valid++;
-              }
-
-            }
-          }
-        }
-
-        console.log('item[items]', item['items'])
-        if (typeof item['items'] !== 'undefined') {
-          console.log('77777777777')
-
-          for (const nested_items of item['items']) {
-            console.log('nested_items', nested_items)
-            if (nested_items.length > 0 && Array.isArray(items)) {
-              console.log('nested_items.length', nested_items.length)
-
-              this.fetchItems(nested_items);
-
-            }
-          }
-          // }
-
-        }
-      }
-    },
-    fetchLoopItems(loopItems) {
-      console.log('loopItems', loopItems)
-    }
+    // fetchItems(items) {
+    //   console.log('Array.isArray(items)', Array.isArray(items))
+    //
+    //   for (const item of items) {
+    //     console.log('item', item)
+    //     console.log('item component', item['component'])
+    //     if (item['component'] == "FormLoop"){
+    //       console.log('item settings times', item['config']['settings']['times'])
+    //       console.log('item items', item['items'])
+    //
+    //     }
+    //     // if (Array.isArray(item)) {
+    //     if (item['config']['name']) {
+    //       console.log('item[config][name]', item['config']['name'])
+    //       console.log('this.pageData', this.pageData)
+    //
+    //       console.log('!this.$attrs.validate 7890', this.$attrs.validate)
+    //       console.log('!this.$attrs.validate 258963', this.$attrs.validate.vdata[item['config']['name']])
+    //       console.log('!this.$attrs.validate 96321478', this.$attrs.validate['vdata'][item['config']['name']])
+    //       if (this.pageData[item['config']['name']]) {
+    //         console.log('this.pageData[item[config][name]] 147', this.pageData[item['config']['name']])
+    //
+    //         if (this.$attrs.validate.vdata[item['config']['name']].$each) {
+    //           console.log('9999999999999')
+    //           console.log('this.pageData[item[config][name]]', this.$attrs.validate.vdata[item['config']['name']])
+    //           console.log('this.pageData[item[config][name]].$each', this.$attrs.validate.vdata[item['config']['name']].$each)
+    //           console.log('this.pageData[item[config][name]].$each.$iter', this.$attrs.validate.vdata[item['config']['name']].$each.$iter)
+    //           this.fetchLoopItems(this.pageData[item['config']['name']].$each.$iter);
+    //
+    //         } else {
+    //           console.log('88888888888888')
+    //
+    //           this.validation.push(!this.$attrs.validate.vdata[item['config']['name']].$invalid);
+    //           if (!this.$attrs.validate.vdata[item['config']['name']].$invalid == false) {
+    //             this.errors_submit_if_valid++;
+    //           }
+    //
+    //         }
+    //       }
+    //     }
+    //
+    //     console.log('item[items]', item['items'])
+    //     if (typeof item['items'] !== 'undefined') {
+    //       console.log('77777777777')
+    //
+    //       for (const nested_items of item['items']) {
+    //         console.log('nested_items', nested_items)
+    //         if (nested_items.length > 0 && Array.isArray(items)) {
+    //           console.log('nested_items.length', nested_items.length)
+    //
+    //           this.fetchItems(nested_items);
+    //
+    //         }
+    //       }
+    //       // }
+    //
+    //     }
+    //   }
+    // },
+    // fetchLoopItems(loopItems) {
+    //   console.log('loopItems', loopItems)
+    // }
   }
   ,
 }
