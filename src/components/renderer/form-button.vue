@@ -69,12 +69,9 @@ export default {
           let pageNumber = this.eventData - 1;
           this.validation = [];
           this.pageData = this.$attrs.validate.vdata;
-          var object = this.$attrs.validate;
-          var result = JSON.parse(JSON.stringify(object))
-          console.log('result',result,result.vdata);
 
           console.log('this.pageData 456', this.pageData)
-          console.log('this.$attrs.validate 456', this.$attrs.validate,this.$attrs.validate.vdata,this.$attrs.validate['vdata'])
+          console.log('this.$attrs.validate 456', this.$attrs.validate,this.$attrs.validate.vdata,this.$attrs.validate)
           this.errors_submit_if_valid = 0;
           console.log('window.config', window.submitPageNavigayionDefinition.config, pageNumber);
 
