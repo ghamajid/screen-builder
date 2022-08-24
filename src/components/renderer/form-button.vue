@@ -69,7 +69,8 @@ export default {
           let pageNumber = this.eventData - 1;
           this.validation = [];
           this.pageData = this.$attrs.validate.vdata;
-          console.log('this.$attrs.validate 456', this.$attrs.validate)
+          console.log('this.pageData 456', this.pageData)
+          console.log('this.$attrs.validate 456', this.$attrs.validate,this.$attrs.validate.vdata,this.$attrs.validate['vdata'])
           this.errors_submit_if_valid = 0;
           console.log('window.config', window.submitPageNavigayionDefinition.config, pageNumber);
 
@@ -199,7 +200,12 @@ export default {
 
       for (const item of items) {
         console.log('item', item)
+        console.log('item component', item['component'])
+        if (item['component'] == "FormLoop"){
+          console.log('item settings times', item['config']['settings']['times'])
+          console.log('item items', item['items'])
 
+        }
         // if (Array.isArray(item)) {
         if (item['config']['name']) {
           console.log('item[config][name]', item['config']['name'])
