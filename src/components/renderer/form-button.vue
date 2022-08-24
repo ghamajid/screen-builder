@@ -206,6 +206,8 @@ export default {
           console.log('this.pageData', this.pageData)
 
           console.log('!this.$attrs.validate 7890', this.$attrs.validate)
+          console.log('!this.$attrs.validate 258963', this.$attrs.validate.vdata[item['config']['name']])
+          console.log('!this.$attrs.validate 96321478', this.$attrs.validate['vdata'][item['config']['name']])
           if (this.pageData[item['config']['name']]) {
             console.log('this.pageData[item[config][name]] 147', this.pageData[item['config']['name']])
 
