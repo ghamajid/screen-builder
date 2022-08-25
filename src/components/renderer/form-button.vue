@@ -78,12 +78,8 @@ export default {
 
             console.log(4,this.pageData,Object.keys(this.pageData).length)
 
-            if (this.pageData && this.pageData !== null){
+            if (this.pageData && this.pageData !== null && this.pageData !== {} && Object.keys(this.pageData).length > 0){
               console.log(5)
-if (this.pageData !== {}){
-
-              if (Object.keys(this.pageData).length > 0){
-                console.log(6)
 
                 this.errors_submit_if_valid = 0;
                 let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
@@ -93,8 +89,6 @@ if (this.pageData !== {}){
                 console.log('validation 111', this.validation);
 
                 return this.validation.every(element => element === true);
-              }
-}
 
             }
           }
