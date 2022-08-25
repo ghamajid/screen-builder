@@ -72,14 +72,18 @@ export default {
             Object.keys(totallData).forEach(function (key, index) {
               if (key.indexOf('$') == -1) {
                 totallPageData[key] = totallData[key];
+                console.log('typeof totallPageData', typeof totallPageData);
               }
             });
             this.pageData = totallPageData
 
-            console.log(4,this.pageData,Object.keys(this.pageData).length)
+            console.log(4, this.pageData, Object.keys(this.pageData).length)
 
-            if (this.pageData && typeof this.pageData === 'object' && this.pageData !== null && this.pageData !== {} && Object.keys(this.pageData).length > 0){
+            if (typeof this.pageData === 'object') {
               console.log(5)
+
+              if (this.pageData && this.pageData !== null && this.pageData !== {} && Object.keys(this.pageData).length > 0) {
+                console.log(6)
 
                 this.errors_submit_if_valid = 0;
                 let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
@@ -90,7 +94,9 @@ export default {
 
                 return this.validation.every(element => element === true);
 
+              }
             }
+
           }
 
 
@@ -220,35 +226,35 @@ export default {
           config_name.push(item['config']['name']);
 
           if (this.pageData[item['config']['name']]) {
-            console.log(5555,'pageData config name',item['config']['name'],this.pageData[item['config']['name']])
+            console.log(5555, 'pageData config name', item['config']['name'], this.pageData[item['config']['name']])
 
             if (this.pageData[item['config']['name']].$each) {
-              console.log(9999999999999,item['config']['name'])
+              console.log(9999999999999, item['config']['name'])
               let form_validation = [];
               let form_error = 0;
               let page_data = this.pageData;
 
-              Object.keys(this.pageData[item['config']['name']].$each.$iter).map(function(key1) {
-                console.log(11,'key1',key1)
+              Object.keys(this.pageData[item['config']['name']].$each.$iter).map(function (key1) {
+                console.log(11, 'key1', key1)
 
-                  console.log(22,'config_name',item['config']['name'],page_data[item['config']['name']].$each.$iter[key1])
+                console.log(22, 'config_name', item['config']['name'], page_data[item['config']['name']].$each.$iter[key1])
                 Object.keys(page_data[item['config']['name']].$each.$iter[key1]).forEach(function (key2, index2) {
                   if (key2.indexOf('$') == -1) {
-                    console.log(34,key2,page_data[item['config']['name']].$each.$iter[key1][key2])
+                    console.log(34, key2, page_data[item['config']['name']].$each.$iter[key1][key2])
                     form_validation.push(!page_data[item['config']['name']].$each.$iter[key1][key2].$invalid);
-                      if (!page_data[item['config']['name']].$each.$iter[key1][key2].$invalid == false) {
-                        form_error++;
-                      }
+                    if (!page_data[item['config']['name']].$each.$iter[key1][key2].$invalid == false) {
+                      form_error++;
+                    }
                   }
                 });
-                  // if (page_data[item['config']['name']].$each.$iter[key1][item['config']['name']] ){
-                  //   console.log(33,'config_name',item['config']['name'])
-                  //
-                  //   form_validation.push(!page_data[item['config']['name']].$each.$iter[key1][item['config']['name']].$invalid);
-                  //   if (!page_data[item['config']['name']].$each.$iter[key1][item['config']['name']].$invalid == false) {
-                  //     form_error++;
-                  //   }
-                  // }
+                // if (page_data[item['config']['name']].$each.$iter[key1][item['config']['name']] ){
+                //   console.log(33,'config_name',item['config']['name'])
+                //
+                //   form_validation.push(!page_data[item['config']['name']].$each.$iter[key1][item['config']['name']].$invalid);
+                //   if (!page_data[item['config']['name']].$each.$iter[key1][item['config']['name']].$invalid == false) {
+                //     form_error++;
+                //   }
+                // }
               });
 
               this.validation = this.validation.concat(form_validation);
@@ -317,8 +323,8 @@ export default {
       // this.validation = this.validation.concat(form_validation);
       // this.errors_submit_if_valid += form_error;
 
-      console.log(1111,this.validation)
-      console.log(2222,this.errors_submit_if_valid)
+      console.log(1111, this.validation)
+      console.log(2222, this.errors_submit_if_valid)
 
     },
     fetchLoopItems(loopItems) {
