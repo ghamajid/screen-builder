@@ -340,8 +340,10 @@ export default {
             component.methods.loadValidationRules = function() {
                 // Asynchronous loading of validations
                 const validations = {};
-                window.submitPageNavigayionDefinition = definition;
-                console.log('window definition', definition);
+                if (definition.config.length > 0 && typeof definition['config'][0]['name'] !== 'undefined'){
+                    window.submitPageNavigayionDefinition = definition;
+                }
+
                 ValidationsFactory(definition, { screen: definition, firstPage, data: { _parent: this._parent, ...this.vdata } }).addValidations(validations).then(() => {
                     if (_.isEqual(this.ValidationRules__, validations)) {
                         return;
