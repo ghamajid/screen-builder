@@ -202,6 +202,7 @@ export default {
     },
     fetchItems(items) {
       let config_name = [];
+      console.log(123456789)
       for (const item of items) {
 
         // if (Array.isArray(item)) {
@@ -244,7 +245,7 @@ export default {
               this.errors_submit_if_valid += form_error;
 
             } else {
-              console.log('88888888888888')
+              console.log(88888888888888)
 
               this.validation.push(!this.pageData[item['config']['name']].$invalid);
               if (!this.pageData[item['config']['name']].$invalid == false) {
@@ -257,7 +258,7 @@ export default {
 
         console.log('item[items]', item['items'])
         if (typeof item['items'] !== 'undefined') {
-          console.log('77777777777')
+          console.log(77777777777)
 
           for (const nested_items of item['items']) {
             console.log('nested_items', nested_items)
