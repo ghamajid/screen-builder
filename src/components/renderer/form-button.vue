@@ -215,21 +215,18 @@ export default {
         console.log('3333333333')
         console.log('item', item)
         console.log('item component', item['component'])
-        if (item['component'] == "FormLoop"){
-          console.log('item settings times', item['config']['settings']['times'])
-          console.log('item items', item['items'])
 
-        }
         // if (Array.isArray(item)) {
         if (item['config']['name']) {
+          console.log(4444,'config name')
+
           console.log('item[config][name]', item['config']['name'])
           config_name.push(item['config']['name']);
-          console.log('this.pageData', this.pageData)
+          console.log('this.pageData 789', this.pageData)
 
-          console.log('!this.$attrs.validate 7890', this.$attrs.validate)
-          console.log('!this.$attrs.validate 258963', this.$attrs.validate.vdata[item['config']['name']])
-          console.log('!this.$attrs.validate 96321478', this.$attrs.validate['vdata'][item['config']['name']])
           if (this.pageData[item['config']['name']]) {
+            console.log(5555,'pageData config name')
+
             console.log('this.pageData[item[config][name]] 147', this.pageData[item['config']['name']])
 
             // if (this.$attrs.validate.vdata[item['config']['name']].$each) {
@@ -275,6 +272,7 @@ export default {
       Object.keys(page_data).map(function(objectKey, index) {
         var value = page_data[objectKey];
         if (value.$each){
+          console.log(3333,'$each')
           Object.keys(value.$each.$iter).map(function(key1) {
             for (const name of config_name) {
               if (value.$each.$iter[key1][name] ){
@@ -290,6 +288,9 @@ export default {
 
       this.validation = this.validation.concat(form_validation);
       this.errors_submit_if_valid += form_error;
+
+      console.log(1111,this.validation)
+      console.log(2222,this.errors_submit_if_valid)
 
     },
     fetchLoopItems(loopItems) {
