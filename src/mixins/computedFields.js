@@ -14,13 +14,6 @@ export default {
         //in this way the event is not executed again when the variable is update
         const data = new Proxy(merged, {
           get(data, name) {
-            console.log(888654);
-            // console.log(888,'data[name]',data[name],this.vdata,self.vdata[name],!isEqual(data[name], self.vdata[name]));
-            // if (data[name] === undefined || !isEqual(data[name], self.vdata[name])) {
-            //   return self.vdata[name];
-            // } else {
-            //   return data[name];
-            // }
             return data[name];
           },
           set() {

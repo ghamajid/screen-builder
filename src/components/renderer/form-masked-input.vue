@@ -135,7 +135,10 @@ export default {
       };
     },
     starStatus() {
+      console.log(123)
       var validationObject = this.config.validation;
+      console.log(456,validationObject)
+
       Object.entries(validationObject).forEach(([key, value]) => {
         if (value.value == 'required') {
           this.star = true;

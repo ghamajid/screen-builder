@@ -77,20 +77,16 @@ export default {
 
             if (this.pageData && typeof this.pageData === 'object' && Object.keys(this.pageData).length > 0) {
 
-                  this.errors_submit_if_valid = 0;
-                  let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
-                  console.log(8)
+              this.errors_submit_if_valid = 0;
+              let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
+              console.log(8)
 
-                  this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
-                  console.log('validation 111', this.validation);
+              this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
 
-                  return this.validation.every(element => element === true);
+              return this.validation.every(element => element === true);
 
             }
-
           }
-
-
         }
         return true;
 
@@ -223,12 +219,8 @@ export default {
               let page_data = this.pageData;
 
               Object.keys(this.pageData[item['config']['name']].$each.$iter).map(function (key1) {
-                console.log(11, 'key1', key1)
-
-                console.log(22, 'config_name', item['config']['name'], page_data[item['config']['name']].$each.$iter[key1])
                 Object.keys(page_data[item['config']['name']].$each.$iter[key1]).forEach(function (key2, index2) {
                   if (key2.indexOf('$') == -1) {
-                    console.log(34, key2, page_data[item['config']['name']].$each.$iter[key1][key2])
                     form_validation.push(!page_data[item['config']['name']].$each.$iter[key1][key2].$invalid);
                     if (!page_data[item['config']['name']].$each.$iter[key1][key2].$invalid == false) {
                       form_error++;
@@ -236,8 +228,6 @@ export default {
                   }
                 });
                 // if (page_data[item['config']['name']].$each.$iter[key1][item['config']['name']] ){
-                //   console.log(33,'config_name',item['config']['name'])
-                //
                 //   form_validation.push(!page_data[item['config']['name']].$each.$iter[key1][item['config']['name']].$invalid);
                 //   if (!page_data[item['config']['name']].$each.$iter[key1][item['config']['name']].$invalid == false) {
                 //     form_error++;
@@ -271,7 +261,6 @@ export default {
 
         }
       }
-
 
 
     },
