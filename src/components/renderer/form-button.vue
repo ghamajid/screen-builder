@@ -78,7 +78,7 @@ export default {
 
             console.log(4,this.pageData)
 
-            if (this.pageData && Object.keys(this.pageData).length > 0){
+            if (Object.keys(this.pageData).length > 0 && Object.keys(this.pageData).length > 0){
               this.errors_submit_if_valid = 0;
               let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
               console.log(5)
