@@ -135,15 +135,17 @@ export default {
       };
     },
     starStatus() {
-      console.log(123)
       var validationObject = this.config.validation;
       console.log(456,validationObject)
+      if (typeof validationObject === 'object'){
+        Object.entries(validationObject).forEach(([key, value]) => {
+          if (value.value == 'required') {
+            this.star = true;
+          }
+        })
+      }
 
-      Object.entries(validationObject).forEach(([key, value]) => {
-        if (value.value == 'required') {
-          this.star = true;
-        }
-      })
+
     },
   },
   computed: {
