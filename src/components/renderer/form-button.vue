@@ -78,15 +78,24 @@ export default {
 
             console.log(4,this.pageData,Object.keys(this.pageData).length)
 
-            if (this.pageData && Object.keys(this.pageData).length !== 0 && Object.keys(this.pageData).length > 0){
-              this.errors_submit_if_valid = 0;
-              let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
+            if (this.pageData && this.pageData !== null){
               console.log(5)
+if (this.pageData !== {}){
 
-              this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
-              console.log('validation 111', this.validation);
+              if (Object.keys(this.pageData).length > 0){
+                console.log(6)
 
-              return this.validation.every(element => element === true);
+                this.errors_submit_if_valid = 0;
+                let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
+                console.log(7)
+
+                this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
+                console.log('validation 111', this.validation);
+
+                return this.validation.every(element => element === true);
+              }
+}
+
             }
           }
 
