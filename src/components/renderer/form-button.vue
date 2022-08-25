@@ -57,9 +57,7 @@ export default {
     },
     valid() {
       if (this.event == 'submit_if_valid') {
-        console.log(1)
         if (this.$attrs && typeof this.$attrs.validate !== 'undefined' && typeof window.submitPageNavigayionDefinition !== 'undefined') {
-          console.log(2)
 
           let pageNumber = this.eventData - 1;
           this.validation = [];
@@ -67,38 +65,27 @@ export default {
           if (this.$attrs.validate.vdata !== undefined) {
             let totallData = this.$attrs.validate.vdata;
             let totallPageData = {};
-            console.log(3)
 
             Object.keys(totallData).forEach(function (key, index) {
               if (key.indexOf('$') == -1) {
                 totallPageData[key] = totallData[key];
-                console.log('typeof totallPageData', typeof totallPageData);
               }
             });
             this.pageData = totallPageData
 
             console.log(4, this.pageData, Object.keys(this.pageData).length)
 
-            if (typeof this.pageData === 'object') {
-              console.log(5)
-              console.log(5,Array.isArray(this.pageData),typeof this.pageData,Object.keys(this.pageData).length)
-              if (this.pageData) {
-                console.log(6)
+            if (this.pageData && typeof this.pageData === 'object' && Object.keys(this.pageData).length > 0) {
 
-                if (Object.keys(this.pageData).length > 0) {
-                  console.log(7)
+                  this.errors_submit_if_valid = 0;
+                  let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
+                  console.log(8)
 
-                  // this.errors_submit_if_valid = 0;
-                  // let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
-                  // console.log(8)
-                  //
-                  // this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
-                  // console.log('validation 111', this.validation);
-                  //
-                  // return this.validation.every(element => element === true);
+                  this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
+                  console.log('validation 111', this.validation);
 
-                }
-              }
+                  return this.validation.every(element => element === true);
+
             }
 
           }
@@ -222,18 +209,15 @@ export default {
     },
     fetchItems(items) {
       let config_name = [];
-      console.log(123456789)
+      console.log(987654321)
       for (const item of items) {
 
-        // if (Array.isArray(item)) {
         if (item['config']['name']) {
           config_name.push(item['config']['name']);
 
           if (this.pageData[item['config']['name']]) {
-            console.log(5555, 'pageData config name', item['config']['name'], this.pageData[item['config']['name']])
 
             if (this.pageData[item['config']['name']].$each) {
-              console.log(9999999999999, item['config']['name'])
               let form_validation = [];
               let form_error = 0;
               let page_data = this.pageData;
@@ -265,7 +249,6 @@ export default {
               this.errors_submit_if_valid += form_error;
 
             } else {
-              console.log(88888888888888)
 
               this.validation.push(!this.pageData[item['config']['name']].$invalid);
               if (!this.pageData[item['config']['name']].$invalid == false) {
@@ -276,64 +259,23 @@ export default {
           }
         }
 
-        console.log('item[items]', item['items'])
         if (typeof item['items'] !== 'undefined') {
-          console.log(77777777777)
 
           for (const nested_items of item['items']) {
-            console.log('nested_items', nested_items)
             if (nested_items.length > 0 && Array.isArray(items)) {
-              console.log('nested_items.length', nested_items.length)
 
               this.fetchItems(nested_items);
 
             }
           }
-          // }
 
         }
       }
 
-      // console.log(999999999999,'config_name',config_name)
-      // console.log(999999999999,'this.pageData',this.pageData)
-      //
-      // let page_data = this.pageData;
-      // let form_validation = [];
-      // let form_error = 0;
-      // console.log('this.pageData',this.pageData)
-      // Object.keys(page_data).map(function(objectKey, index) {
-      //   var value = page_data[objectKey];
-      //   if (value.$each){
-      //     console.log(3333,'$each',value.$each.$iter)
-      //     Object.keys(value.$each.$iter).map(function(key1) {
-      //       console.log(3333,'key1',key1)
-      //
-      //       for (const name of config_name) {
-      //         console.log(3333,'config_name',name)
-      //
-      //         if (value.$each.$iter[key1][name] ){
-      //           console.log(3333,'value.$each.$iter[key1][name]',value.$each.$iter[key1][name])
-      //
-      //           form_validation.push(!value.$each.$iter[key1][name].$invalid);
-      //           if (!value.$each.$iter[key1][name].$invalid == false) {
-      //             form_error++;
-      //           }
-      //         }
-      //       }
-      //     });
-      //   }
-      // });
-      // console.log(4444,form_validation,form_error)
-      // this.validation = this.validation.concat(form_validation);
-      // this.errors_submit_if_valid += form_error;
 
-      console.log(1111, this.validation)
-      console.log(2222, this.errors_submit_if_valid)
 
     },
-    fetchLoopItems(loopItems) {
-      console.log('loopItems', loopItems)
-    }
+
   }
   ,
 }
