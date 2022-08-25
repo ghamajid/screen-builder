@@ -78,7 +78,7 @@ export default {
 
             console.log(4,this.pageData,Object.keys(this.pageData).length)
 
-            if (this.pageData && this.pageData !== null && this.pageData !== {} && Object.keys(this.pageData).length > 0){
+            if (this.pageData && typeof this.pageData === 'object' && this.pageData !== null && this.pageData !== {} && Object.keys(this.pageData).length > 0){
               console.log(5)
 
                 this.errors_submit_if_valid = 0;
