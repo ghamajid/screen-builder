@@ -81,19 +81,23 @@ export default {
 
             if (typeof this.pageData === 'object') {
               console.log(5)
-
-              if (this.pageData && this.pageData !== null && this.pageData !== {} && Object.keys(this.pageData).length > 0) {
+              console.log(5,Array.isArray(this.pageData),typeof this.pageData,Object.keys(this.pageData).length)
+              if (this.pageData) {
                 console.log(6)
 
-                this.errors_submit_if_valid = 0;
-                let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
-                console.log(7)
+                if (Object.keys(this.pageData).length > 0) {
+                  console.log(7)
 
-                this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
-                console.log('validation 111', this.validation);
+                  // this.errors_submit_if_valid = 0;
+                  // let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
+                  // console.log(8)
+                  //
+                  // this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
+                  // console.log('validation 111', this.validation);
+                  //
+                  // return this.validation.every(element => element === true);
 
-                return this.validation.every(element => element === true);
-
+                }
               }
             }
 
