@@ -207,12 +207,13 @@ export default {
       let config_name = [];
       console.log(987654321)
       for (const item of items) {
+        console.log(333,'item',item)
 
         if (item['config']['name']) {
           config_name.push(item['config']['name']);
 
           if (this.pageData[item['config']['name']]) {
-
+            console.log(555,'item[config][name]',item['config']['name'])
             if (this.pageData[item['config']['name']].$each) {
               let form_validation = [];
               let form_error = 0;
@@ -234,9 +235,11 @@ export default {
                 //   }
                 // }
               });
-
               this.validation = this.validation.concat(form_validation);
               this.errors_submit_if_valid += form_error;
+              console.log(666,'this.validation',this.validation)
+              console.log(666,'this.errors_submit_if_valid',this.errors_submit_if_valid)
+
 
             } else {
 
@@ -244,6 +247,8 @@ export default {
               if (!this.pageData[item['config']['name']].$invalid == false) {
                 this.errors_submit_if_valid++;
               }
+              console.log(777,'this.validation',this.validation)
+              console.log(777,'this.errors_submit_if_valid',this.errors_submit_if_valid)
 
             }
           }
@@ -253,7 +258,7 @@ export default {
 
           for (const nested_items of item['items']) {
             if (nested_items.length > 0 && Array.isArray(items)) {
-
+              console.log(444)
               this.fetchItems(nested_items);
 
             }
