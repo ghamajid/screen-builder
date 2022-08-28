@@ -59,7 +59,9 @@ export default {
       if (this.event == 'submit_if_valid') {
         if (this.$attrs && typeof this.$attrs.validate !== 'undefined' && typeof window.submitPageNavigayionDefinition !== 'undefined') {
 
+          console.log(this.eventData,'this.eventData');
           let pageNumber = this.eventData - 1;
+          console.log(pageNumber,'pageNumber');
           this.validation = [];
 
           if (this.$attrs.validate.vdata !== undefined) {
@@ -73,15 +75,16 @@ export default {
             });
             this.pageData = totallPageData
 
-            console.log(4, this.pageData, Object.keys(this.pageData).length)
+           // console.log(4, this.pageData, Object.keys(this.pageData).length)
 
             if (this.pageData && typeof this.pageData === 'object' && Object.keys(this.pageData).length > 0) {
 
               this.errors_submit_if_valid = 0;
               let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
               console.log(8)
-
-              this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
+              if(window.submitPageNavigayionDefinition && window.submitPageNavigayionDefinition.config[pageNum]){
+                this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
+              }
 
               return this.validation.every(element => element === true);
 
