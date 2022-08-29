@@ -81,7 +81,7 @@ export default {
 
               this.errors_submit_if_valid = 0;
               let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
-              console.log(8, window.submitPageNavigayionDefinition.config)
+              console.log(8888888, window.submitPageNavigayionDefinition,this.$attrs.validate.vdata,pageNum)
               if (window.submitPageNavigayionDefinition && window.submitPageNavigayionDefinition.config[pageNum]) {
                 this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
               }
