@@ -59,9 +59,9 @@ export default {
       if (this.event == 'submit_if_valid') {
         if (this.$attrs && typeof this.$attrs.validate !== 'undefined' && typeof window.submitPageNavigayionDefinition !== 'undefined') {
 
-          console.log(this.eventData,'this.eventData');
+          console.log(this.eventData, 'this.eventData');
           let pageNumber = this.eventData - 1;
-          console.log(pageNumber,'pageNumber');
+          console.log(pageNumber, 'pageNumber');
           this.validation = [];
 
           if (this.$attrs.validate.vdata !== undefined) {
@@ -75,14 +75,14 @@ export default {
             });
             this.pageData = totallPageData
 
-           // console.log(4, this.pageData, Object.keys(this.pageData).length)
+            // console.log(4, this.pageData, Object.keys(this.pageData).length)
 
             if (this.pageData && typeof this.pageData === 'object' && Object.keys(this.pageData).length > 0) {
 
               this.errors_submit_if_valid = 0;
               let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
-              console.log(8)
-              if(window.submitPageNavigayionDefinition && window.submitPageNavigayionDefinition.config[pageNum]){
+              console.log(8, window.submitPageNavigayionDefinition.config)
+              if (window.submitPageNavigayionDefinition && window.submitPageNavigayionDefinition.config[pageNum]) {
                 this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
               }
 
@@ -210,50 +210,14 @@ export default {
       let config_name = [];
       console.log(987654321)
       for (const item of items) {
-        console.log(333,'item',item)
+        console.log(333, 'item', item)
 
         if (item['config']['name']) {
           config_name.push(item['config']['name']);
 
           if (this.pageData[item['config']['name']]) {
-            console.log(555,'item[config][name]',item['config']['name'])
-            if (this.pageData[item['config']['name']].$each) {
-              let form_validation = [];
-              let form_error = 0;
-              let page_data = this.pageData;
-
-              Object.keys(this.pageData[item['config']['name']].$each.$iter).map(function (key1) {
-                Object.keys(page_data[item['config']['name']].$each.$iter[key1]).forEach(function (key2, index2) {
-                  if (key2.indexOf('$') == -1) {
-                    form_validation.push(!page_data[item['config']['name']].$each.$iter[key1][key2].$invalid);
-                    if (!page_data[item['config']['name']].$each.$iter[key1][key2].$invalid == false) {
-                      form_error++;
-                    }
-                  }
-                });
-                // if (page_data[item['config']['name']].$each.$iter[key1][item['config']['name']] ){
-                //   form_validation.push(!page_data[item['config']['name']].$each.$iter[key1][item['config']['name']].$invalid);
-                //   if (!page_data[item['config']['name']].$each.$iter[key1][item['config']['name']].$invalid == false) {
-                //     form_error++;
-                //   }
-                // }
-              });
-              this.validation = this.validation.concat(form_validation);
-              this.errors_submit_if_valid += form_error;
-              console.log(666,'this.validation',this.validation)
-              console.log(666,'this.errors_submit_if_valid',this.errors_submit_if_valid)
-
-
-            } else {
-
-              this.validation.push(!this.pageData[item['config']['name']].$invalid);
-              if (!this.pageData[item['config']['name']].$invalid == false) {
-                this.errors_submit_if_valid++;
-              }
-              console.log(777,'this.validation',this.validation)
-              console.log(777,'this.errors_submit_if_valid',this.errors_submit_if_valid)
-
-            }
+            console.log(555, 'item[config][name]', item['config']['name'], this.pageData[item['config']['name']])
+            this.fetchLoops(this.pageData[item['config']['name']], item);
           }
         }
 
@@ -272,9 +236,57 @@ export default {
 
 
     },
+    fetchLoops(loops, item) {
+      let self = this;
 
-  }
-  ,
+      if (loops && loops.$each && typeof loops.$each === 'object') {
+        let form_validation = [];
+        let form_error = 0;
+        let page_data = this.pageData;
+
+        Object.keys(loops.$each.$iter).map(function (key1) {
+
+          Object.keys(loops.$each.$iter[key1]).forEach(function (key2, index2) {
+            if (key2.indexOf('$') == -1) {
+              if (item.items) {
+                for (const loopItem of item.items) {
+                  if (key2 == loopItem['config']['name']) {
+
+                    if (loops.$each.$iter[key1][key2].$each !== 'undefined') {
+                      self.fetchLoops(loops.$each.$iter[key1][key2], loopItem);
+                    }else{
+                      form_validation.push(!loops.$each.$iter[key1][key2].$invalid);
+                      if (!loops.$each.$iter[key1][key2].$invalid == false) {
+                        form_error++;
+                      }
+                    }
+                  }
+
+                }
+              }
+
+            }
+          });
+
+        });
+        this.validation = this.validation.concat(form_validation);
+        this.errors_submit_if_valid += form_error;
+        console.log(666, 'this.validation', this.validation)
+        console.log(666, 'this.errors_submit_if_valid', this.errors_submit_if_valid)
+
+
+      } else {
+
+        this.validation.push(!loops.$invalid);
+        if (!loops.$invalid == false) {
+          this.errors_submit_if_valid++;
+        }
+        console.log(777,'this.validation', this.validation,loops,item)
+        console.log(777, 'this.errors_submit_if_valid', this.errors_submit_if_valid)
+
+      }
+    },
+  },
 }
 ;
 </script>
