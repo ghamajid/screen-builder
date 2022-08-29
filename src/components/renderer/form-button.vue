@@ -251,10 +251,13 @@ export default {
               if (item.items) {
                 for (const loopItem of item.items) {
                   if (key2 == loopItem['config']['name']) {
-
+                    console.log(5555,key2,loops.$each.$iter[key1])
                     if (loops.$each.$iter[key1][key2].$each !== 'undefined') {
+                      console.log(111)
                       self.fetchLoops(loops.$each.$iter[key1][key2], loopItem);
                     }else{
+                      console.log(222)
+
                       form_validation.push(!loops.$each.$iter[key1][key2].$invalid);
                       if (!loops.$each.$iter[key1][key2].$invalid == false) {
                         form_error++;
