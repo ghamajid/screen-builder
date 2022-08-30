@@ -59,9 +59,7 @@ export default {
       if (this.event == 'submit_if_valid') {
         if (this.$attrs && typeof this.$attrs.validate !== 'undefined' && typeof window.submitPageNavigayionDefinition !== 'undefined') {
 
-          console.log(this.eventData, 'this.eventData');
           let pageNumber = this.eventData - 1;
-          console.log(pageNumber, 'pageNumber');
           this.validation = [];
 
           if (this.$attrs.validate.vdata !== undefined) {
@@ -74,9 +72,6 @@ export default {
               }
             });
             this.pageData = totallPageData
-
-            // console.log(4, this.pageData, Object.keys(this.pageData).length)
-
             if (this.pageData && typeof this.pageData === 'object' && Object.keys(this.pageData).length > 0) {
 
               this.errors_submit_if_valid = 0;
@@ -236,13 +231,9 @@ export default {
                 for (const loopItem of item.items) {
 
                   if (key2 == loopItem['config']['name']) {
-                    // console.log(5555,key2,loops.$each.$iter[key1],loopItem)
                     if (loops.$each.$iter[key1][key2].$each !== 'undefined') {
-                      // console.log(111)
                       self.fetchLoops(loops.$each.$iter[key1][key2], loopItem);
                     } else {
-                      // console.log(222)
-
                       form_validation.push(!loops.$each.$iter[key1][key2].$invalid);
                       if (!loops.$each.$iter[key1][key2].$invalid == false) {
                         form_error++;
@@ -273,6 +264,8 @@ export default {
           if (!loops.$invalid == false) {
             this.errors_submit_if_valid++;
           }
+        }else{
+          console.log(1111111,item)
         }
       }
     },
