@@ -81,7 +81,7 @@ export default {
 
               this.errors_submit_if_valid = 0;
               let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
-              console.log(8888888, window.submitPageNavigayionDefinition,this.$attrs.validate.vdata,pageNum)
+              console.log(8888888, window.submitPageNavigayionDefinition, this.$attrs.validate.vdata, pageNum)
               if (window.submitPageNavigayionDefinition && window.submitPageNavigayionDefinition.config[pageNum]) {
                 this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
               }
@@ -208,15 +208,17 @@ export default {
     },
     fetchItems(items) {
       let config_name = [];
-      console.log(987654321)
+      console.log(123121312, items)
       for (const item of items) {
-        console.log(333, 'item', item)
+        // console.log(333, 'item', item['config']['name'])
 
         if (item['config']['name']) {
           config_name.push(item['config']['name']);
 
           if (this.pageData[item['config']['name']]) {
-            console.log(555, 'item[config][name]', item['config']['name'], this.pageData[item['config']['name']])
+            // console.log(555, 'item[config][name]', item['config']['name'], this.pageData[item['config']['name']])
+            console.log('iiii')
+
             this.fetchLoops(this.pageData[item['config']['name']], item);
           }
         }
@@ -225,7 +227,7 @@ export default {
 
           for (const nested_items of item['items']) {
             if (nested_items.length > 0 && Array.isArray(items)) {
-              console.log(444)
+              // console.log(444)
               this.fetchItems(nested_items);
 
             }
@@ -233,34 +235,51 @@ export default {
 
         }
       }
-
-
     },
     fetchLoops(loops, item) {
       let self = this;
-
+      // console.log('loops,item',loops,item)
       if (loops && loops.$each && typeof loops.$each === 'object') {
         let form_validation = [];
         let form_error = 0;
-        let page_data = this.pageData;
-
+        console.log('loops', loops, item)
         Object.keys(loops.$each.$iter).map(function (key1) {
 
           Object.keys(loops.$each.$iter[key1]).forEach(function (key2, index2) {
             if (key2.indexOf('$') == -1) {
               if (item.items) {
+
                 for (const loopItem of item.items) {
+                  console.log(4444, key2, loopItem['config']['name'], typeof loopItem['config']['name'], loopItem)
+
                   if (key2 == loopItem['config']['name']) {
-                    console.log(5555,key2,loops.$each.$iter[key1])
+                    // console.log(5555,key2,loops.$each.$iter[key1],loopItem)
                     if (loops.$each.$iter[key1][key2].$each !== 'undefined') {
-                      console.log(111)
+                      // console.log(111)
                       self.fetchLoops(loops.$each.$iter[key1][key2], loopItem);
-                    }else{
-                      console.log(222)
+                    } else {
+                      // console.log(222)
 
                       form_validation.push(!loops.$each.$iter[key1][key2].$invalid);
                       if (!loops.$each.$iter[key1][key2].$invalid == false) {
                         form_error++;
+                      }
+                    }
+                  } else if (typeof loopItem['config']['name'] == 'undefined') {
+                    if (loopItem.component === "FormMultiColumn") {
+                      //     console.log(7777777,loopItem,loopItem.items,key2,loops.$each.$iter[key1])
+                      //
+                      for (let tableItems of loopItem.items) {
+                        for (let tableItem of tableItems) {
+                          if (tableItem['config']['name'] == key2) {
+                            console.log('tableItem', tableItem, key2)
+                            self.fetchColumn(loops.$each.$iter[key1], tableItem);
+
+                          }
+                          //     //   let column_items = [];
+                          //     //
+                          //     //   console.log(tableItem)
+                        }
                       }
                     }
                   }
@@ -284,10 +303,41 @@ export default {
         if (!loops.$invalid == false) {
           this.errors_submit_if_valid++;
         }
-        console.log(777,'this.validation', this.validation,loops,item)
-        console.log(777, 'this.errors_submit_if_valid', this.errors_submit_if_valid)
+        // console.log(777,'this.validation', this.validation,loops.$invalid,item['config']['name'])
+        // console.log(777, 'this.errors_submit_if_valid', this.errors_submit_if_valid)
 
       }
+    },
+    fetchColumn(table_items, item) {
+      console.log(987987987, table_items, item)
+        // let column_items = [];
+        // console.log(333, 'item', item, item['config']['name'])
+
+        if (item['config']['name'] ) {
+          // column_items.push(item['config']['name']);
+
+          if (table_items[item['config']['name']]) {
+            // console.log(555, 'item[config][name]', item['config']['name'], table_items[item['config']['name']])
+            console.log('cccc',table_items[item['config']['name']],item['config']['name'])
+            this.fetchLoops(table_items[item['config']['name']], item);
+            // this.validation.push(!table_items[item['config']['name']].$invalid);
+            // if (!table_items[item['config']['name']].$invalid == false) {
+            //   this.errors_submit_if_valid++;
+            // }
+          }
+        }
+        //
+        // if (typeof item['items'] !== 'undefined'  && column_items.includes(item['config']['name']) === false) {
+        //
+        //   for (const nested_items of item['items']) {
+        //     if (nested_items.length > 0 && Array.isArray(items)) {
+        //       console.log(444)
+        //       this.fetchItems(nested_items);
+        //
+        //     }
+        //   }
+        //
+        // }
     },
   },
 }
