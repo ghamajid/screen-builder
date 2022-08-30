@@ -314,7 +314,7 @@ export default {
 <style>
 .icon-star-size {
   font-size: 8px !important;
-font-weight: 160 !important;
-    color: #dc3545!important;
+  font-weight: 160 !important;
+  color: #dc3545 !important;
 }
 </style>

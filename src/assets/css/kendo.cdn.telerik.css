@@ -36358,3 +36358,9 @@ div.k-scrollview.k-scrollview-light .k-scrollview-nav-wrap {
 .k-orgchart-line-v {
     color: rgba(0, 0, 0, 0.08);
 }
+
+.icon-star-size {
+    font-size: 8px !important;
+    font-weight: 160 !important;
+    color: #dc3545!important;
+}
