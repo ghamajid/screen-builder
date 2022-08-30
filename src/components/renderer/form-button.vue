@@ -258,15 +258,15 @@ export default {
        
       } else {
         console.log(22222,item,item['config'])
-        if (item['config']['conditionalHide'] == undefined) {
+        // if (item['config']['conditionalHide'] == undefined) {
           
           this.validation.push(!loops.$invalid);
           if (!loops.$invalid == false) {
             this.errors_submit_if_valid++;
           }
-        }else{
+        /*}else{
           console.log(1111111,item)
-        }
+        }*/
       }
     },
     multiColumn(columnItems, key2, loops) {
