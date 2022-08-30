@@ -267,20 +267,9 @@ export default {
                     }
                   } else if (typeof loopItem['config']['name'] == 'undefined') {
                     if (loopItem.component === "FormMultiColumn") {
-                      //     console.log(7777777,loopItem,loopItem.items,key2,loops.$each.$iter[key1])
-                      //
-                      for (let tableItems of loopItem.items) {
-                        for (let tableItem of tableItems) {
-                          if (tableItem['config']['name'] == key2) {
-                            console.log('tableItem', tableItem, key2)
-                            self.fetchColumn(loops.$each.$iter[key1], tableItem);
+                      console.log(7777777, loopItem, loopItem.items, key2, loops.$each.$iter[key1])
+                      self.multiColumn(loopItem.items,key2,loops.$each.$iter[key1])
 
-                          }
-                          //     //   let column_items = [];
-                          //     //
-                          //     //   console.log(tableItem)
-                        }
-                      }
                     }
                   }
 
@@ -308,36 +297,60 @@ export default {
 
       }
     },
+    multiColumn(columnItems,key2,loops){
+      console.log('multiColumn',columnItems,key2,loops)
+      let thic = this;
+      for (let tableItems of columnItems) {
+        for (let tableItem of tableItems) {
+          // console.log(1212,tableItem['config']['name'] ,tableItem['component'],key2)
+          if (tableItem['config']['name'] == key2) {
+            // console.log('tableItem', tableItem, key2)
+            thic.fetchColumn(loops, tableItem);
+            // console.log(1313)
+
+          }else if(tableItem['component'] === "FormMultiColumn" ){
+            console.log(9999,'tableItem',tableItem,key2)
+            thic.multiColumn(tableItem.items,key2,loops);
+          }
+
+          //   if (tableItem['config']['name'] == undefined && !form_items.includes(tableItem['config']['name'])){
+          //   console.log(558585858,tableItem)
+          // }
+        }
+      }
+    },
     fetchColumn(table_items, item) {
       console.log(987987987, table_items, item)
-        // let column_items = [];
-        // console.log(333, 'item', item, item['config']['name'])
+      // let column_items = [];
+      // console.log(333, 'item', item, item['config']['name'])
 
-        if (item['config']['name'] ) {
-          // column_items.push(item['config']['name']);
+      if (item['config']['name']) {
+        // column_items.push(item['config']['name']);
 
-          if (table_items[item['config']['name']]) {
-            // console.log(555, 'item[config][name]', item['config']['name'], table_items[item['config']['name']])
-            console.log('cccc',table_items[item['config']['name']],item['config']['name'])
-            this.fetchLoops(table_items[item['config']['name']], item);
-            // this.validation.push(!table_items[item['config']['name']].$invalid);
-            // if (!table_items[item['config']['name']].$invalid == false) {
-            //   this.errors_submit_if_valid++;
-            // }
-          }
+        if (table_items[item['config']['name']]) {
+          // console.log(555, 'item[config][name]', item['config']['name'], table_items[item['config']['name']])
+          console.log('cccc', table_items[item['config']['name']], item['config']['name'])
+          this.fetchLoops(table_items[item['config']['name']], item);
+          // this.validation.push(!table_items[item['config']['name']].$invalid);
+          // if (!table_items[item['config']['name']].$invalid == false) {
+          //   this.errors_submit_if_valid++;
+          // }
+        } else {
+          console.log('00000', item['config']['name'])
         }
-        //
-        // if (typeof item['items'] !== 'undefined'  && column_items.includes(item['config']['name']) === false) {
-        //
-        //   for (const nested_items of item['items']) {
-        //     if (nested_items.length > 0 && Array.isArray(items)) {
-        //       console.log(444)
-        //       this.fetchItems(nested_items);
-        //
-        //     }
-        //   }
-        //
-        // }
+      }
+      //
+      // if (typeof item['items'] !== 'undefined'  && column_items.includes(item['config']['name']) === false) {
+      //
+      //   for (const nested_items of item['items']) {
+      //     if (nested_items.length > 0 && Array.isArray(items)) {
+      //       console.log(444)
+      //       this.fetchItems(nested_items);
+      //
+      //     }
+      //   }
+      //
+      // }
     },
   },
 }
