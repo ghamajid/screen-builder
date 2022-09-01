@@ -66,7 +66,7 @@ export default {
   ],
   computed: {
     classList() {
-      console.log('textarea, classlist')
+
       this.starStatus();
       return {
         'is-invalid': (this.validator && this.validator.errorCount) || (this.error && this.input_text),
@@ -117,9 +117,8 @@ export default {
       }
     },
     starStatus() {
-      console.log('textarea, starStatus',this.error)
 
-      if (this.error == 'Field is required') {
+      if (this.error == 'Field is required' || this.error == 'فیلد الزامی است') {
         console.log('textarea, this.error')
 
         this.star = true;
@@ -127,8 +126,6 @@ export default {
     },
   },
   data() {
-
-    console.log('text area')
     return {
       editorSettings: {
         inline: false,

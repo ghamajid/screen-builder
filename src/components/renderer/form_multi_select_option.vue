@@ -300,9 +300,7 @@ export default {
       },
     },
     error() {
-      console.log('setect, error',this.error)
-
-      if (this.error == 'Field is required') {
+      if (this.error == 'Field is required' || this.error == 'فیلد الزامی است') {
         this.star = true
       }
     },
