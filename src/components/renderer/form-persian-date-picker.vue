@@ -1,14 +1,12 @@
 <template>
   <div class="form-group">
-    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
     <label>{{ label }}</label>
     <input
       type="text"
-      :class="((validate_status && star)? 'form-control form-control-lg is-invalid': 'form-control form-control-lg')"
-      v-model="value1"
+      :class="(error || (validator && validator.errorCount)? 'form-control form-control-lg is-invalid': 'form-control form-control-lg')"
+      v-model="value"
       :id="num_element_id"
       placeholder=""
-      @keyup="checkInput"
     >
     <date-picker
       @change="$emit('input', (dataFormat == 'datetime')?$event.format('jYYYY/jMM/jDD HH:mm'):$event.format('jYYYY/jMM/jDD'))"
@@ -20,8 +18,7 @@
       :min="minDateChange"
       :element="num_element_id"
     />
-    <display-errors v-if="validate_status" :name="name" :error="log_error" :validator="validator"
-                    class="invalid-feedback d-block"/>
+    <display-errors v-if="error || (validator && validator.errorCount)" :name="name" :error="error" :validator="validator" class="invalid-feedback d-block"/>
     <small v-if="helper" class="form-text text-muted" v-html="helper"/>
   </div>
 </template>
@@ -77,55 +74,25 @@ export default {
       handler() {
         //console.log(this.validator, 'value')
         //console.log((this.dataFormat == 'datetime'), 'minDate')
-        this.value1 = this.$props.value
-
       },
       deep: true,
       immediate: true,
 
     },
-    error() {
-      if (this.error == 'Field is required' || this.error == 'فیلد الزامی است') {
-        this.star = true;
-        this.log_error = this.error;
-      }
-    },
-    value1(val) {
-      if (val !== null) {
-        this.input_date = true
-      }
-    },
-  },
-  methods: {
-    checkInput(val){
-      this.value1 = '';
-    }
   },
   computed:{
     classList() {
       return {
-        'is-invalid': (this.validator && this.validator.errorCount) || (this.error && this.input_date),
+        'is-invalid': (this.validator && this.validator.errorCount) || this.error,
         [this.controlClass]: !!this.controlClass,
       };
-    },
-    validate_status() {
-      if (this.input_date && this.value1 == '') {
-        return true;
-      } else {
-        return (this.validator && this.validator.errorCount) || (this.error && this.input_date);
-      }
-
     },
   },
   data() {
     return {
-      value1: '',
       date: '',
       minDateChange: '',
       maxDateChange: '',
-      input_date: false,
-      star: false,
-      log_error: this.error,
       num_element_id: this.name + new Date().getUTCMilliseconds()
     };
   },

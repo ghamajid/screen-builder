@@ -117,10 +117,7 @@ export default {
       }
     },
     starStatus() {
-
       if (this.error == 'Field is required' || this.error == 'فیلد الزامی است') {
-        console.log('textarea, this.error')
-
         this.star = true;
       }
     },
