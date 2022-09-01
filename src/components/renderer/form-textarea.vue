@@ -1,42 +1,41 @@
 <template>
   <div class="form-group">
-    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
-    <label v-uni-for="label">{{ label }}</label>
+	<i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
+    <label v-uni-for="label">{{label}}</label>
 
     <div v-if="richtext" :class="classList" v-uni-id="label">
       <div v-if="readonly" v-html="value"></div>
       <div v-else>
         <editor
-            class="editor"
-            v-if="!readonly && editorActive"
-            v-bind="$attrs"
-            :value="value"
-            :init="editorSettings"
-            :name="name"
-            @input="$emit('input', $event)"
+          class="editor"
+          v-if="!readonly && editorActive"
+          v-bind="$attrs"
+          :value="value"
+          :init="editorSettings"
+          :name="name"
+          @input="$emit('input', $event)"
         />
       </div>
     </div>
     <textarea
-        v-else
-        v-bind="$attrs"
-        :rows="rows"
-        :readonly="readonly"
-        v-uni-id="label"
-        class="form-control"
-        :class="classList"
-        :name="name"
-        :value="value"
-        @input="$emit('input', $event.target.value)"
+      v-else
+      v-bind="$attrs"
+      :rows="rows"
+      :readonly="readonly"
+      v-uni-id="label"
+      class="form-control"
+      :class="classList"
+      :name="name"
+      :value="value"
+      @input="$emit('input', $event.target.value)"
     />
-    <display-errors v-if="error || (validator && validator.errorCount)" :name="name" :error="error"
-                    :validator="validator"/>
-    <small v-if='helper' class='form-text text-muted'>{{ helper }}</small>
+    <display-errors v-if="error || (validator && validator.errorCount)" :name="name" :error="error" :validator="validator"/>
+    <small v-if='helper' class='form-text text-muted'>{{helper}}</small>
   </div>
 </template>
 
 <script>
-import {createUniqIdsMixin} from 'vue-uniq-ids'
+import { createUniqIdsMixin } from 'vue-uniq-ids'
 import ValidationMixin from './mixins/validation'
 import DataFormatMixin from './mixins/DataFormat';
 import DisplayErrors from './common/DisplayErrors';
@@ -66,7 +65,6 @@ export default {
   ],
   computed: {
     classList() {
-
       this.starStatus();
       return {
         'is-invalid': (this.validator && this.validator.errorCount) || (this.error && this.input_text),
@@ -91,7 +89,7 @@ export default {
     name() {
       this.rebootEditor();
     },
-    value(val) {
+    value(val){
       this.input_text = true
     }
   },
@@ -113,23 +111,25 @@ export default {
         return;
       }
       if (this.editorInstance.getContainer() && this.editorInstance.getContainer().style) {
-        this.editorInstance.getContainer().style.height = this.height;
+          this.editorInstance.getContainer().style.height = this.height;
       }
     },
-    starStatus() {
-      if (this.error == 'Field is required' || this.error == 'فیلد الزامی است') {
+    starStatus(){
+      if (this.error == 'Field is required'){
         this.star = true;
       }
     },
   },
   data() {
+
+    console.log('text area')
     return {
       editorSettings: {
         inline: false,
         statusbar: false,
         content_style: 'body { font-family: Arial; } .pagebreak { border: 1px solid #ccc; }',
         menubar: false,
-        plugins: ['link', 'lists', 'image'],
+        plugins: [ 'link', 'lists', 'image'],
         toolbar: 'undo redo | link image pagebreak | styleselect | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
         skin: false,
         content_css: false,
@@ -161,7 +161,6 @@ export default {
 <style lang="scss">
 .form-group .richtext {
   height: auto;
-
   :focus {
     outline: 0 !important;
   }
@@ -174,8 +173,8 @@ export default {
 
 .icon-star-size {
   font-size: 8px !important;
-  font-weight: 160 !important;
-  color: #dc3545 !important;
+font-weight: 160 !important;
+    color: #dc3545!important;
 }
 </style>
 
