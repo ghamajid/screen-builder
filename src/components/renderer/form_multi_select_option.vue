@@ -1,8 +1,8 @@
 <template>
   <div class="form-group">
-	<i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
+    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
     <label>{{ label }}</label>
-    
+
     <multi-select-view
         :disabled="readonly"
         v-if="options.renderAs === 'dropdown'"
@@ -300,6 +300,8 @@ export default {
       },
     },
     error() {
+      console.log('setect, error',this.error)
+
       if (this.error == 'Field is required') {
         this.star = true
       }
@@ -349,8 +351,8 @@ export default {
     },
     value: {
       handler(val) {
-        console.log('val',val)
-        if (val && val.length > 0){
+        console.log('val', val)
+        if (val && val.length > 0) {
           this.select_item = true;
         }
       },
@@ -444,7 +446,7 @@ export default {
 <style>
 .icon-star-size {
   font-size: 8px !important;
-    font-weight: 160 !important;
-    color: #dc3545!important;
+  font-weight: 160 !important;
+  color: #dc3545 !important;
 }
 </style>
