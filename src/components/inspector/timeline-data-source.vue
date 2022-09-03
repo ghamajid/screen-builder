@@ -187,6 +187,7 @@ export default {
     event: 'change',
   },
   data() {
+    console.log('timeline',this.options)
     return {
       optionError:'',
       dragging: false,
