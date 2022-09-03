@@ -260,7 +260,6 @@ export default {
       return '';
     },
     dataObjectOptions() {
-
       return {
         dataSource: this.dataSource,
         jsonData: this.jsonData,
@@ -275,6 +274,11 @@ export default {
     },
   },
   mounted() {
+    this.dataSource = this.options.dataSource;
+    this.jsonData = this.options.jsonData;
+    this.selectedDataSource = this.options.selectedDataSource,
+    this.optionsList = this.options.optionsList ? this.options.optionsList : [];
+    this.jsonData = JSON.stringify(this.optionsList);
   },
   methods: {
     monacoMounted(editor) {
