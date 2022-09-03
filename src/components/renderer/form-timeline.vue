@@ -31,7 +31,7 @@ export default {
   ],
 
   data() {
-    console.log('timeline',this.config,this.transientData,this.name,this.event,this.orientation,this.selectedControl)
+    console.log('timeline123',this.config,this.transientData,this.name,this.event,this.orientation,this.selectedControl)
     return {
       value: 0,
       items: [
