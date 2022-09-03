@@ -275,10 +275,11 @@ export default {
     },
   },
   mounted() {
+    console.log('this.options',this.options)
     this.dataSource = this.options.dataSource;
     this.jsonData = this.options.jsonData;
     this.selectedDataSource = this.options.selectedDataSource,
-    this.optionsList = this.options.optionsList ? this.options.optionsList : [];
+    this.optionsList = (this.options && this.options.optionsList.length) ? this.options.optionsList : [];
     this.jsonData = JSON.stringify(this.optionsList);
   },
   methods: {
