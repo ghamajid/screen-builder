@@ -426,6 +426,7 @@ export default {
         this.preview.computed = cloneDeep(this.computed);
         this.preview.customCSS = cloneDeep(this.customCSS);
         this.preview.watchers = cloneDeep(this.watchers);
+        console.log('app.vue vue-form-renderer preview',this.preview)
       }
     },
     loadFromLocalStorage() {
