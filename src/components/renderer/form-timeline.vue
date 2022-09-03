@@ -31,6 +31,7 @@ export default {
   ],
 
   data() {
+    console.log('timeline',this.config,this.transientData,this.name,this.event,this.orientation,this.selectedControl)
     return {
       value: 0,
       items: [
@@ -65,6 +66,7 @@ export default {
       deep: true,
       handler(val, oldVal) {
         if (this.transientData && this.transientData[this.name] >= 0) {
+          console.log('this.steps 1111',this.steps)
           if (this.steps && this.steps.optionsList && this.steps.optionsList.length > 0) {
             var lastItemIndex = this.steps.optionsList.length - 1
             this.value = this.transientData[this.name]
@@ -82,7 +84,9 @@ export default {
   computed: {
     items_val() {
       var _items = this.items;
-      if (this.steps.optionsList && this.steps.optionsList.length > 0) {
+      console.log('this.steps 2222',this.steps)
+
+      if (this.steps && this.steps.optionsList && this.steps.optionsList.length > 0) {
         _items = this.steps.optionsList;
       }
       return _items;
