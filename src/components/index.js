@@ -30,6 +30,7 @@ import Pelak from './renderer/pelak';
 import FormTextArea from './renderer/form-textarea';
 import FormTimeline from './renderer/form-timeline';
 import FormAgGrid from './renderer/form-ag-grid.vue';
+import FormCheckbox from './renderer/form-checkbox';
 
 
 const rendererComponents = {
@@ -87,6 +88,7 @@ export default {
     Vue.component('FormTextArea', FormTextArea);
     Vue.component('FormTimeline', FormTimeline);
     Vue.component('FormAgGrid', FormAgGrid);
+    Vue.component('FormCheckbox', FormCheckbox);
     Vue.use(DataProvider);
   },
 };

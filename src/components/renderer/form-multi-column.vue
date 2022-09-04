@@ -49,12 +49,15 @@ import * as renderer from '@/components/renderer';
 import { HasColorProperty, shouldElementBeVisible, getValidPath } from '@/mixins';
 import FormMaskedInput from '@/components/renderer/form-masked-input';
 
+import FormInput from './form-input';
+import FormTextArea from './form-textarea';
+import FormCheckbox from './form-checkbox';
 import {
   // eslint-disable-next-line no-unused-vars
-  FormInput,
+  // FormInput,
   FormSelectList,
-  FormTextArea,
-  FormCheckbox,
+  // FormTextArea,
+  // FormCheckbox,
   FormDatePicker,
   FormHtmlEditor,
   FormHtmlViewer,

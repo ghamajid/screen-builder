@@ -16,11 +16,12 @@ import Pelak from './components/renderer/pelak';
 import FormInput from './components/renderer/form-input';
 import FormTextArea from './components/renderer/form-textarea';
 import FormTimeline from './components/renderer/form-timeline';
+import FormCheckbox from './components/renderer/form-checkbox';
 
 import FormAgGrid from './components/renderer/form-ag-grid';
 import {
     // FormTextArea,
-    FormCheckbox,
+    // FormCheckbox,
     FormDatePicker,
     FormHtmlEditor,
 } from '@processmaker/vue-form-elements';
