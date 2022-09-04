@@ -1,7 +1,6 @@
 <template>
   <div class="form-group">
     <div :class="divClass">
-      <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size" style="padding-right: 20px;"></i>
 
       <input
           v-bind="$attrs"
@@ -14,6 +13,8 @@
           @change="$emit('change', $event.target.checked)"
       >
       <label :class="labelClass" v-uni-for="name">{{ label }}</label>
+      <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
+
       <div v-if="displayError" class="invalid-feedback">
         <div v-for="(error, index) in validatorErrors" :key="index">{{ error }}</div>
         <div v-if="error">{{ error }}</div>
