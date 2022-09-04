@@ -258,12 +258,12 @@
 
 <script>
 import {
-  // FormInput,
+  FormInput,
   // FormTextArea,
   FormMultiSelect,
   // FormCheckbox,
 } from '@processmaker/vue-form-elements';
-import FormInput from './renderer/form-input';
+// import FormInput from './renderer/form-input';
 import FormTextArea from './renderer/form-textarea';
 import FormCheckbox from './renderer/form-checkbox';
 import MonacoEditor from 'vue-monaco';

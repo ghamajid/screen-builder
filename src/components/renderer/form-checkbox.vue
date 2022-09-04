@@ -1,8 +1,8 @@
 <template>
   <div class="form-group">
-    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
-
     <div :class="divClass">
+      <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size" style="padding-right: 20px;"></i>
+
       <input
           v-bind="$attrs"
           v-uni-id="name"
@@ -18,6 +18,7 @@
         <div v-for="(error, index) in validatorErrors" :key="index">{{ error }}</div>
         <div v-if="error">{{ error }}</div>
       </div>
+      <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
 
       <small v-if="helper" class="form-text text-muted">{{ helper }}</small>
     </div>

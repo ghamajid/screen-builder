@@ -100,11 +100,11 @@ import { HasColorProperty } from '@/mixins';
 import * as renderer from '@/components/renderer';
 import _ from 'lodash';
 
-import FormInput from '../renderer/form-input';
+// import FormInput from '../renderer/form-input';
 import FormTextArea from '../renderer/form-textarea';
 import FormCheckbox from '../renderer/form-checkbox';
 import {
-  // FormInput,
+  FormInput,
   FormSelectList,
   // FormTextArea,
   // FormCheckbox,
