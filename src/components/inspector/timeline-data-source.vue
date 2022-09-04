@@ -187,7 +187,6 @@ export default {
     event: 'change',
   },
   data() {
-    console.log('timeline',this.options)
     return {
       optionError:'',
       dragging: false,
@@ -275,7 +274,6 @@ export default {
     },
   },
   mounted() {
-    console.log('this.options',this.options)
     this.dataSource = this.options.dataSource;
     this.jsonData = this.options.jsonData;
     this.selectedDataSource = this.options.selectedDataSource,

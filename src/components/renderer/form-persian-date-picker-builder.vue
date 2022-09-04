@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label>{{ label }}</label>
+    <label>{{ label }}dsada</label>
     <date-picker
       v-model="value"
       @change="$emit('input', $event.format('jYYYY/jMM/jDD HH:mm'))"

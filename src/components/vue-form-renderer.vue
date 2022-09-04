@@ -32,7 +32,6 @@ export default {
     },
   },
   data() {
-    console.log('vue-form-renderer config 11',this.config,this.data)
     return {
       definition: {
         config: this.config,

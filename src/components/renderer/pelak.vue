@@ -1,5 +1,6 @@
 <template>
     <div class="form-group">
+      <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
         <label>{{ label }}</label>
         <div class="row" :style="cssProps">
             <input
@@ -43,7 +44,7 @@
                     placeholder=""
             >
         </div>
-        <display-errors v-if="error || (validator && validator.errorCount)"  :name="name" :error="error"
+        <display-errors v-if="displayError"  :name="name" :error="error"
                         :validator="validator" class="invalid-feedback d-block"/>
         <small v-if="helper" class="form-text text-muted" v-html="helper"/>
     </div>
@@ -172,8 +173,9 @@
             },
             value: {
                 handler() {
-                    //console.log(this.value.split(","),'value1111111111111')
                     if(this.value){
+                      this.input_pelak = true;
+
                         this.arrValue = this.value.split(",");
                         if(this.arrValue.length == 4){
                             this.value1 = this.arrValue[0];
@@ -186,7 +188,12 @@
                 deep: true,
                 immediate: true,
 
+            },
+          error() {
+            if (this.error == 'Field is required' || this.error == 'فیلد الزامی است') {
+              this.star = true
             }
+          },
         },
         computed: {
             classList() {
@@ -195,6 +202,9 @@
                     [this.controlClass]: !!this.controlClass,
                 };
             },
+          displayError() {
+            return (this.error && this.input_pelak) || (this.validator && this.validator.errorCount);
+          }
         },
         data() {
             return {
@@ -217,7 +227,9 @@
                 value1:'',
                 value2:'',
                 value3:'',
-                value4:''
+                value4:'',
+              star: false,
+              input_pelak: false,
             };
         },
     };
