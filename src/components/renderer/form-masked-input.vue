@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
  
-    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>123
+    <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
     <label v-uni-for="name">{{ labele }}</label>
    <component
         v-if="componentType!=='input'"

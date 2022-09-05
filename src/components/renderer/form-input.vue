@@ -1,6 +1,6 @@
 <template>
   <div v-if="!Array.isArray(value)" class="form-group">
-    <label v-uni-for="name">{{value['lable']}}</label>456
+    <label v-uni-for="name">{{value['lable']}}</label>
     <input
             v-bind="$attrs"
             v-uni-id="name"

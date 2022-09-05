@@ -51,13 +51,13 @@ import FormMaskedInput from '@/components/renderer/form-masked-input';
 
 // import FormInput from './form-input';
 // import FormTextArea from './form-textarea';
-// import FormCheckbox from './form-checkbox';
+import FormCheckbox from '@/components/renderer/form-checkbox';
 import {
   // eslint-disable-next-line no-unused-vars
   FormInput,
   FormSelectList,
   FormTextArea,
-  FormCheckbox,
+  // FormCheckbox,
   FormDatePicker,
   FormHtmlEditor,
   FormHtmlViewer,
