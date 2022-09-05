@@ -89,6 +89,7 @@ export default {
     Vue.component('FormTimeline', FormTimeline);
     Vue.component('FormAgGrid', FormAgGrid);
     Vue.component('FormCheckbox', FormCheckbox);
+
     Vue.use(DataProvider);
   },
 };

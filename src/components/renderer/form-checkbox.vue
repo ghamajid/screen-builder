@@ -7,7 +7,6 @@
           v-bind="$attrs"
           v-uni-id="name"
           type="checkbox"
-          v-model="checkboxInput"
           :class="classList"
           :name="name"
           :checked="isChecked"
@@ -51,8 +50,6 @@ export default {
   data() {
     return {
       star: false,
-      input_checkbox: false,
-      checkboxInput:''
     }
   },
   computed: {
@@ -66,6 +63,7 @@ export default {
         this.$emit('change', initCheck);
         return initCheck;
       }
+
       return this.checked;
     },
     divClass() {
@@ -78,13 +76,13 @@ export default {
       return [
         this.toggle ? 'custom-control-input' : 'form-check-input',
         {
-          'is-invalid': (this.validator && this.validator.errorCount) || (this.error && this.input_checkbox),
+          'is-invalid': (this.validator && this.validator.errorCount) || (this.error && this.isChecked),
           [this.controlClass]: !!this.controlClass,
         }
       ]
     },
     displayError() {
-      return (this.error && this.input_checkbox) || (this.validator && this.validator.errorCount);
+      return (this.error && this.isChecked) || (this.validator && this.validator.errorCount);
     }
   },
   watch:{
@@ -93,9 +91,6 @@ export default {
         this.star = true
       }
     },
-    checkboxInput(){
-      this.input_checkbox = true;
-    }
   }
 }
 </script>
