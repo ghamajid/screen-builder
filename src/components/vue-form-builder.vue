@@ -348,12 +348,12 @@ Validator.register(
 
 // import FormInput from './renderer/form-input';
 // import FormTextArea from './renderer/form-textarea';
-// import FormCheckbox from './renderer/form-checkbox';
+import FormCheckbox from './renderer/form-checkbox';
 import {
   FormInput,
   FormSelectList,
   FormTextArea,
-  FormCheckbox,
+  // FormCheckbox,
   FormDatePicker,
   FormHtmlEditor,
   FormHtmlViewer,
