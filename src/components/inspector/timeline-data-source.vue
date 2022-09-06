@@ -277,8 +277,8 @@ export default {
     this.dataSource = this.options.dataSource;
     this.jsonData = this.options.jsonData;
     this.selectedDataSource = this.options.selectedDataSource;
-    console.log('TimelineDataSource',this.options,this.options.optionsList);
-    this.optionsList = (this.options && this.options.optionsList) ? this.options.optionsList : [];
+    console.log('TimelineDataSource',this.options,this.options.optionsList,this.options.optionsList !== 'undefined');
+    this.optionsList = (this.options && this.options.optionsList !== 'undefined') ? this.options.optionsList : [];
     this.jsonData = JSON.stringify(this.optionsList);
   },
   methods: {
