@@ -37017,9 +37017,7 @@ div.k-scrollview.k-scrollview-light .k-scrollview-nav-wrap {
     font-size: 8px !important;
     font-weight: 160 !important;
     color: #dc3545!important;
+    margin-right: 5px !important;
+    margin-left: 5px !important;
 }
 
-i.icon-star-size+label ,i.icon-star-space+input{
-    margin-left: 0px;
-    margin-right: 0px;
-}
