@@ -177,7 +177,7 @@ export default {
   font-weight: 160 !important;
   color: #dc3545 !important;
 }
-i + label {
+i.icon-star-size + label {
   margin-left: 0px;
   margin-right: 0px;
 }

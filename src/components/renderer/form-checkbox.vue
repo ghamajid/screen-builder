@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <div :class="divClass">
-      <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size" style="padding-left: 20px;"></i>
+      <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size icon-star-space" style="padding-left: 20px;"></i>
 
       <input
           v-bind="$attrs"
@@ -98,4 +98,5 @@ export default {
 .icon-star-size {
   font-size: 8px;
 }
+
 </style>
