@@ -1,6 +1,7 @@
 // Import our components
 import VueFormBuilder from './vue-form-builder';
 import VueFormRenderer from './vue-form-renderer';
+import VueFormRendererPrint from './vue-form-renderer-print';
 import * as renderer from './renderer';
 import FormMultiColumn from './renderer/form-multi-column';
 import * as inspector from './inspector';
@@ -12,6 +13,7 @@ import FormLoop from './renderer/form-loop';
 import NewFormMultiColumn from './renderer/new-form-multi-column';
 import FormNestedScreen from './renderer/form-nested-screen';
 import ScreenRenderer from './screen-renderer';
+import ScreenRendererPrint from './screen-renderer-print';
 import AddLoopRow from './renderer/add-loop-row';
 import FormRecordList from './renderer/form-record-list';
 import FormImage from './renderer/form-image';
@@ -42,6 +44,7 @@ const rendererComponents = {
 export {
   VueFormBuilder,
   VueFormRenderer,
+  VueFormRendererPrint,
   inspector,
   rendererComponents as renderer,
   FormBuilderControls,
@@ -71,9 +74,11 @@ export default {
     Vue.component('MultiColumn', MultiColumn);
     Vue.component('NewFormMultiColumn', NewFormMultiColumn);
     Vue.component('ScreenRenderer', ScreenRenderer);
+    Vue.component('ScreenRendererPrint', ScreenRendererPrint);
     Vue.component('task', Task);
     Vue.component('vue-form-builder', VueFormBuilder);
     Vue.component('vue-form-renderer', VueFormRenderer);
+    Vue.component('vue-form-renderer-print', VueFormRendererPrint);
     Vue.component('default-loading-spinner', DefaultLoadingSpinner);
     Vue.use(VueFormElements);
     Vue.component('FormButton', FormButton);
