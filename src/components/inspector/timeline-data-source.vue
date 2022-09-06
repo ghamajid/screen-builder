@@ -276,8 +276,9 @@ export default {
   mounted() {
     this.dataSource = this.options.dataSource;
     this.jsonData = this.options.jsonData;
-    this.selectedDataSource = this.options.selectedDataSource,
-    this.optionsList = (this.options && this.options.optionsList.length) ? this.options.optionsList : [];
+    this.selectedDataSource = this.options.selectedDataSource;
+    console.log('TimelineDataSource',this.options,this.options.optionsList);
+    this.optionsList = (this.options && this.options.optionsList) ? this.options.optionsList : [];
     this.jsonData = JSON.stringify(this.optionsList);
   },
   methods: {
