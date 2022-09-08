@@ -1,7 +1,6 @@
 <template>
   <div :class="containerClass">
-    <custom-css-output>{{ customCssWrapped }}</custom-css-output>
-    <screen-renderer-print ref="renderer" :value="data" :_parent="_parent" :definition="definition" :current-page="currentPage" @submit="submit" data-cy="screen-renderer" :show-errors="showErrors" :test-screen-definition="testScreenDefinition || false" class="p-0"/>
+
   </div>
 </template>
 
