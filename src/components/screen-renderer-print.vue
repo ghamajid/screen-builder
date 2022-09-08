@@ -1,7 +1,12 @@
 <template>
   <b-container fluid>
 
-   <div></div>
+    <component ref="component" :is="component" :vdata="value" :_parent="_parent" :_initial-page="currentPage"
+      @submit="submit"
+      @asyncWatcherTriggered="onAsyncWatcherOn"
+      @asyncWatcherCompleted="onAsyncWatcherOff"
+    />
+    <screen-renderer-error v-if="showErrors && building.error" v-model="building" />
   </b-container>
 </template>
 
@@ -27,14 +32,16 @@ export default {
     this.currentDefinition = cloneDeep(this.definition);
     console.log(this.currentDefinition,'definition123');
     this.component = this.buildComponent(this.currentDefinition);
+    console.log(this.component,'this.component_1');
   },
   watch: {
     definition: {
       deep: true,
       handler(definition) {
         if (!isEqual(definition, this.currentDefinition)) {
-          this.currentDefinition = cloneDeep(definition);
-          this.component = this.buildComponent(this.currentDefinition);
+            this.currentDefinition = cloneDeep(definition);
+            this.component = this.buildComponent(this.currentDefinition);
+            console.log(this.component,'this.component_2');
         }
       },
     },
