@@ -27,7 +27,7 @@ import ScreenRendererError from '../components/renderer/screen-renderer-error';
 import { cloneDeep, isEqual } from 'lodash';
 
 export default {
-  name: 'screen-renderer',
+  name: 'screen-renderer-print',
   components: { ScreenRendererError },
   mixins: [ Json2Vue, CurrentPageProperty ],
   data() {
