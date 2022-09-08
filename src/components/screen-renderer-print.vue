@@ -1,8 +1,6 @@
 <template>
   <b-container fluid>
-    <component ref="component" :is="component" :vdata="value" :_parent="_parent" :_initial-page="currentPage"
-      @submit="submit"
-    />
+    <component ref="component" :is="component" :vdata="value" />
   </b-container>
 </template>
 
