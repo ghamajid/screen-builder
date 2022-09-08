@@ -1,12 +1,8 @@
 <template>
   <b-container fluid>
-
     <component ref="component" :is="component" :vdata="value" :_parent="_parent" :_initial-page="currentPage"
       @submit="submit"
-      @asyncWatcherTriggered="onAsyncWatcherOn"
-      @asyncWatcherCompleted="onAsyncWatcherOff"
     />
-    <screen-renderer-error v-if="showErrors && building.error" v-model="building" />
   </b-container>
 </template>
 
