@@ -349,7 +349,7 @@ export default {
     },
     value: {
       handler(val) {
-        console.log('val', val)
+        // console.log('val', val)
         if (val && val.length > 0) {
           this.select_item = true;
         }

@@ -76,7 +76,7 @@ export default {
 
               this.errors_submit_if_valid = 0;
               let pageNum = (window.submitPageNavigayionDefinition.config.length == 1) ? 0 : pageNumber;
-              console.log(8888888, window.submitPageNavigayionDefinition, this.$attrs.validate.vdata, pageNum)
+              // console.log(8888888, window.submitPageNavigayionDefinition, this.$attrs.validate.vdata, pageNum)
               if (window.submitPageNavigayionDefinition && window.submitPageNavigayionDefinition.config[pageNum]) {
                 this.fetchItems(window.submitPageNavigayionDefinition.config[pageNum]['items']);
               }
@@ -257,7 +257,7 @@ export default {
         this.errors_submit_if_valid += form_error;
        
       } else {
-        console.log(22222,item,item['config'])
+        // console.log(22222,item,item['config'])
         // if (item['config']['conditionalHide'] == undefined) {
           
           this.validation.push(!loops.$invalid);
