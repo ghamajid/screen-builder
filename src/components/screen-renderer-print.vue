@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Json2Vue from '../mixins/Json2Vue';
+import Json2Vue from '../mixins/Json2VuePrint';
 import CurrentPageProperty from '../mixins/CurrentPageProperty';
 import ScreenRendererError from '../components/renderer/screen-renderer-error';
 import { cloneDeep, isEqual } from 'lodash';
