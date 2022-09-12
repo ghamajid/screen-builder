@@ -35,5 +35,8 @@ describe('Screen Builder', () => {
     cy.assertComponentValue('[data-cy=screen-renderer]', {
       form_input_1: '',
     });
+      cy.assertComponentValue('[data-cy=screen-renderer-print]', {
+          form_input_1: '',
+      });
   });
 });
