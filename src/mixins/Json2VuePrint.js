@@ -324,11 +324,12 @@ export default {
             screen.data[name] = code;
         },
         addWatch(screen, name, code, options = {}) {
-            if (screen.watch[name]) {
-                screen.watch[name].push({ code, options });
-            } else {
-                screen.watch[name] = [{ code, options }];
-            }
+            console.log('addWatch')
+            // if (screen.watch[name]) {
+            //     screen.watch[name].push({ code, options });
+            // } else {
+            //     screen.watch[name] = [{ code, options }];
+            // }
         },
         addMounted(screen, code) {
             screen.mounted.push(code);
