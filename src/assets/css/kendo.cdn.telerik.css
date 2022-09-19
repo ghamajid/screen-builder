@@ -37014,6 +37014,7 @@ div.k-scrollview.k-scrollview-light .k-scrollview-nav-wrap {
 }
 
 .icon-star-size {
+    display: inline;
     font-size: 8px !important;
     font-weight: 160 !important;
     color: #dc3545!important;
