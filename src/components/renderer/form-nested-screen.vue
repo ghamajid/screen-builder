@@ -1,5 +1,5 @@
 <template>
-  <vue-form-renderer-print
+  <vue-form-renderer
     v-if="!ancestorScreens.includes(screenTitle)"
     ref="nestedScreen"
     class="form-nested-screen"
@@ -18,7 +18,6 @@
 </template>
 
 <script>
-    import VueFormRendererPrint from "../vue-form-renderer-print";
 const globalObject = typeof window === 'undefined'
   ? global
   : window;
@@ -31,7 +30,7 @@ const defaultConfig = [
 ];
 
 export default {
-    components: {VueFormRendererPrint}, props: {
+  props: {
     name: String,
     screen: Number,
     value: null,
@@ -103,7 +102,6 @@ export default {
       if (id) {
         this.$dataProvider.getScreen(id)
           .then(response => {
-              console.log(response.data,'response.data.config');
             this.config = response.data.config;
             this.hideSubmitButtons(this.config);
             this.computed = response.data.computed;
