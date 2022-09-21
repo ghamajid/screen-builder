@@ -103,6 +103,7 @@ export default {
       if (id) {
         this.$dataProvider.getScreen(id)
           .then(response => {
+              console.log(response.data,'response.data.config');
             this.config = response.data.config;
             this.hideSubmitButtons(this.config);
             this.computed = response.data.computed;
@@ -132,7 +133,6 @@ export default {
     },
   },
   mounted() {
-        console.log(this.screen,'this.screen');
     this.loadScreen(this.screen);
   },
 };
