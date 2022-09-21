@@ -2,7 +2,7 @@
   <div class="form-group">
  
     <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
-    <label v-uni-for="name">{{ labele }}</label>
+    <label v-uni-for="name" class="item-label-size">{{ labele }}</label>
    <component
         v-if="componentType!=='input'"
         :is="componentType"

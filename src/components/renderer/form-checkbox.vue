@@ -12,7 +12,7 @@
           :checked="isChecked"
           @change="$emit('change', $event.target.checked)"
       >
-      <label :class="labelClass" v-uni-for="name">{{ label }}</label>
+      <label :class="labelClass" v-uni-for="name" class="item-label-size">{{ label }}</label>
       <div v-if="displayError" class="invalid-feedback">
         <div v-for="(error, index) in validatorErrors" :key="index">{{ error }}</div>
         <div v-if="error">{{ error }}</div>

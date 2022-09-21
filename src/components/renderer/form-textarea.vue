@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
-    <label v-uni-for="label">{{ label }}</label>
+    <label v-uni-for="label" class="item-label-size">{{ label }}</label>
 
     <div v-if="richtext" :class="classList" v-uni-id="label">
       <div v-if="readonly" v-html="value"></div>

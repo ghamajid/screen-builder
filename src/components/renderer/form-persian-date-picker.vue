@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <i v-if="star" class="fas fa-star text-danger m-2 icon-star-size"></i>
-    <label>{{ label }}</label>
+    <label class="item-label-size">{{ label }}</label>
     <input
       type="text"
       :class="((validate_status && star)? 'form-control form-control-lg is-invalid': 'form-control form-control-lg')"

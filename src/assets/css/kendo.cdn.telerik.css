@@ -37022,3 +37022,8 @@ div.k-scrollview.k-scrollview-light .k-scrollview-nav-wrap {
     margin-left: 5px !important;
 }
 
+.item-label-size {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label v-if="label && label !== ''">{{ label }}</label>
+    <label v-if="label && label !== ''" class="item-label-size">{{ label }}</label>
     <b-card v-if="inPreviewMode" class="mb-2">
       {{ messageForPreview }}
     </b-card>

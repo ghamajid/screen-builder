@@ -296,7 +296,6 @@ export default {
                 // Build data
                 component.data = new Function('const data = {};' + Object.keys(component.data).map(key => `this.setValue(${JSON.stringify(key)}, ${component.data[key]}, data);`).join('\n') + 'return data;');
                 // Build watchers
-                console.log('watcher');
 
                 Object.keys(component.watch).forEach((key) => {
                     const watch = { deep: true };
@@ -325,7 +324,6 @@ export default {
             screen.data[name] = code;
         },
         addWatch(screen, name, code, options = {}) {
-            console.log('addWatch')
 
             if (screen.watch[name]) {
                 screen.watch[name].push({ code, options });
