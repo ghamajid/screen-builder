@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!showJsonEditor && dataSource === dataSourceValues.provideData">
+    <div v-if="!showJsonEditor">
       <div class="row">
         <div class="col-10">
           <label for="data-sources"><b>{{ $t('Steps') }}</b></label>
@@ -18,8 +18,8 @@
           {{ $t('Edit Step') }}
         </div>
         <div class="card-body p-2">
-<!--          <label for="option-value">{{ $t('Value') }}</label>-->
-<!--          <b-form-input id="option-value" v-model="optionValue" :classs="optionKeyClass" data-cy="inspector-option-value" />-->
+          <!--          <label for="option-value">{{ $t('Value') }}</label>-->
+          <!--          <b-form-input id="option-value" v-model="optionValue" :classs="optionKeyClass" data-cy="inspector-option-value" />-->
           <div v-if="optionError" class="invalid-feedback d-block text-right">
             <div>{{ optionError }}</div>
           </div>
@@ -70,8 +70,8 @@
                     {{ $t('Edit Step') }}
                   </div>
                   <div class="card-body p-2">
-<!--                    <label for="option-value">{{ $t('Value') }}</label>-->
-<!--                    <b-form-input id="option-value" v-model="optionValue" :classs="optionKeyClass" data-cy="inspector-option-value" />-->
+                    <!--                    <label for="option-value">{{ $t('Value') }}</label>-->
+                    <!--                    <b-form-input id="option-value" v-model="optionValue" :classs="optionKeyClass" data-cy="inspector-option-value" />-->
                     <div v-if="optionError" class="invalid-feedback d-block text-right">
                       <div>{{ optionError }}</div>
                     </div>
@@ -128,28 +128,28 @@
       <small v-if="helper" class="form-text text-muted" v-html="helper"/>
 
     </div>
-    <div v-if="showJsonEditor && dataSource === dataSourceValues.provideData">
+    <div v-if="showJsonEditor">
       <div class="mb-2">
         <label for="json-data">{{ $t('JSON Data') }}</label>
         <button type="button" @click="expandEditor" class="btn-sm float-right" data-cy="inspector-monaco-json-expand"><i class="fas fa-expand"/></button>
       </div>
       <div class="small-editor-container">
         <monaco-editor
-          :options="monacoOptions"
-          class="editor"
-          v-model="jsonData"
-          language="json"
-          @change="jsonDataChange"
-          data-cy="inspector-monaco-json"
-          @editorDidMount="monacoMounted"
+            :options="monacoOptions"
+            class="editor"
+            v-model="jsonData"
+            language="json"
+            @change="jsonDataChange"
+            data-cy="inspector-monaco-json"
+            @editorDidMount="monacoMounted"
         />
       </div>
 
       <b-modal v-model="showPopup" size="lg" centered :title="$t('Script Config Editor')" v-cloak>
         <div class="editor-container">
           <monaco-editor :options="monacoLargeOptions" v-model="jsonData" language="json" class="editor"
-            @change="jsonDataChange"
-            data-cy="inspector-monaco-json-expanded"
+                         @change="jsonDataChange"
+                         data-cy="inspector-monaco-json-expanded"
           />
         </div>
         <div slot="modal-footer">
@@ -190,9 +190,9 @@ export default {
     return {
       optionError:'',
       dragging: false,
-      dataSourceValues,
+      // dataSourceValues,
       dataSources,
-      dataSource: dataSourceValues.provideData,
+      // dataSource: dataSourceValues.provideData,
       jsonData: '',
       selectedDataSource: '',
       dataSourcesList: [],
@@ -207,7 +207,7 @@ export default {
       // optionValue: '',
       optionTitle: '',
       optionIcon: '',
-        monacoOptions: {
+      monacoOptions: {
         automaticLayout: true,
         fontSize: 8,
         language: 'json',
@@ -218,19 +218,19 @@ export default {
         automaticLayout: true,
       },
       showPopup: false,
-     };
+    };
   },
   watch: {
-     options(newOptions) {
+    options(newOptions) {
       Object.keys(newOptions).forEach(key => {
         if (typeof newOptions[key] !== 'undefined') {
           this.$set(this, key, newOptions[key]);
         }
       });
     },
-    dataSource(val) {
-          this.selectedDataSource = '';
-    },
+    // dataSource(val) {
+    //       this.selectedDataSource = '';
+    // },
     dataObjectOptions(dataObjectOptions) {
       this.$emit('change', dataObjectOptions);
     },
@@ -261,7 +261,7 @@ export default {
     },
     dataObjectOptions() {
       return {
-        dataSource: this.dataSource,
+        // dataSource: this.dataSource,
         jsonData: this.jsonData,
         selectedDataSource: this.selectedDataSource,
         optionsList: this.optionsList,
@@ -274,11 +274,10 @@ export default {
     },
   },
   mounted() {
-    this.dataSource = this.options.dataSource;
+    // this.dataSource = this.options.dataSource;
     this.jsonData = this.options.jsonData;
     this.selectedDataSource = this.options.selectedDataSource;
-    console.log('TimelineDataSource',this.options,this.options.optionsList,this.options.optionsList !== 'undefined');
-    this.optionsList = (this.options && this.options.optionsList !== 'undefined') ? this.options.optionsList : [];
+    this.optionsList = (this.options && this.options.optionsList !== undefined) ? this.options.optionsList : [];
     this.jsonData = JSON.stringify(this.optionsList);
   },
   methods: {
@@ -350,22 +349,23 @@ export default {
       const that = this;
 
       if (this.optionCardType === 'insert') {
+        console.log('this.optionsList',this.optionsList)
         if (this.optionsList.find(item => { return item[that.keyField] === this.optionTitle; })) {
-        // if (this.optionsList.find(item => { return item[that.keyField] === this.optionValue; })) {
+          // if (this.optionsList.find(item => { return item[that.keyField] === this.optionValue; })) {
           this.optionError = 'An item with the same key already exists';
           return;
         }
         this.optionsList.push(
-          {
-            [this.valueField]: this.optionTitle,
-            [this.valueIcon]: this.optionIcon,
-            // [this.keyField]: this.optionValue,
-          }
+            {
+              [this.valueField]: this.optionTitle,
+              [this.valueIcon]: this.optionIcon,
+              // [this.keyField]: this.optionValue,
+            }
         );
       }
       else {
         if (this.optionsList.find((item, index) => { return item[that.keyField] === this.optionTitle && index !== this.editIndex ; })) {
-        // if (this.optionsList.find((item, index) => { return item[that.keyField] === this.optionValue && index !== this.editIndex ; })) {
+          // if (this.optionsList.find((item, index) => { return item[that.keyField] === this.optionValue && index !== this.editIndex ; })) {
           this.optionError = 'An item with the same key already exists';
           return;
         }
@@ -401,34 +401,34 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .edit-json {
-    font-size: 0.75rem;
-    margin: 0;
-    padding: 0;
-    background: none;
-    border: none;
-    width: 100%;
-    text-align: right;
+.edit-json {
+  font-size: 0.75rem;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: right;
 
-    &:hover {
-      text-decoration: underline;
-    }
+  &:hover {
+    text-decoration: underline;
   }
+}
 
-  .striped {
-    background-color: rgba(0,0,0,.05);
-  }
+.striped {
+  background-color: rgba(0,0,0,.05);
+}
 
-  .small-editor-container .editor {
-    width: inherit;
-    height: 150px;
-  }
+.small-editor-container .editor {
+  width: inherit;
+  height: 150px;
+}
 
-  .editor-container {
-    height: 70vh;
-  }
+.editor-container {
+  height: 70vh;
+}
 
-  .editor-container .editor {
-    height: inherit;
-  }
+.editor-container .editor {
+  height: inherit;
+}
 </style>
