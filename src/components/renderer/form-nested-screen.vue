@@ -132,6 +132,7 @@ export default {
     },
   },
   mounted() {
+        console.log(this.screen,'this.screen');
     this.loadScreen(this.screen);
   },
 };
