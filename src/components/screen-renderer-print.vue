@@ -23,6 +23,7 @@ export default {
     };
   },
   mounted() {
+      console.log("screen-renderer-print");
     this.currentDefinition = cloneDeep(this.definition);
     console.log(this.currentDefinition,'definition123');
     this.component = this.buildComponent(this.currentDefinition);
