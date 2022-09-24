@@ -44,44 +44,909 @@ window.exampleScreens = [{
     type: 'FORM',
     config: [{
         name: 'Sub screen example',
-        items: [{
-                'config': {
-                    'icon': 'far fa-square',
-                    'label': 'First name',
-                    'name': 'firstname',
-                    'placeholder': '',
-                    'validation': '',
-                    'helper': null,
-                    'type': 'text',
-                    'dataFormat': 'string',
-                    'customCssSelector': 'first-name',
+        items: [
+            {
+                "config": {
+                    "icon": "far fa-square",
+                    "label": "New Input",
+                    "name": "form_input_1",
+                    "placeholder": "",
+                    "validation": [],
+                    "helper": null,
+                    "type": "text",
+                    "dataFormat": "string",
+                    "readonly": false
                 },
-                'inspector': [],
-                'component': 'FormInput',
-                'editor-component': 'FormInput',
-                'editor-control': 'FormInput',
-                'label': 'Line Input',
-                'value': '__vue_devtool_undefined__',
+                "inspector": [
+                    {
+                        "type": "FormInput",
+                        "field": "name",
+                        "config": {
+                            "label": "Variable Name",
+                            "name": "Variable Name",
+                            "validation": "regex:/^(?:[A-Za-z])(?:[0-9A-Z_.a-z])*[^.]$/|required|not_in:null,break,case,catch,continue,debugger,default,delete,do,else,finally,for,function,if,in,instanceof,new,return,switch,this,throw,try,typeof,var,void,while,with,class,const,enum,export,extends,import,super,true,false",
+                            "helper": "A variable name is a symbolic name to reference information."
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "label",
+                        "config": {
+                            "label": "Label",
+                            "helper": "The label describes the field's name"
+                        }
+                    },
+                    {
+                        "type": "FormMultiselect",
+                        "field": "dataFormat",
+                        "config": {
+                            "label": "Data Type",
+                            "name": "Data Type",
+                            "helper": "The data type specifies what kind of data is stored in the variable.",
+                            "validation": "required",
+                            "options": [
+                                {
+                                    "value": "string",
+                                    "content": "Text"
+                                },
+                                {
+                                    "value": "int",
+                                    "content": "Integer"
+                                },
+                                {
+                                    "value": "currency",
+                                    "content": "Currency"
+                                },
+                                {
+                                    "value": "percentage",
+                                    "content": "Percentage"
+                                },
+                                {
+                                    "value": "float",
+                                    "content": "Decimal"
+                                },
+                                {
+                                    "value": "datetime",
+                                    "content": "Datetime"
+                                },
+                                {
+                                    "value": "date",
+                                    "content": "Date"
+                                },
+                                {
+                                    "value": "password",
+                                    "content": "Password"
+                                },
+                                {
+                                    "value": "object",
+                                    "content": "Object"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": {
+                            "extends": {
+                                "inheritAttrs": false,
+                                "mixins": [
+                                    {
+                                        "props": {
+                                            "validationMessages": {
+                                                "type": null
+                                            },
+                                            "validationField": {
+                                                "type": null
+                                            },
+                                            "validationData": {
+                                                "type": null
+                                            },
+                                            "validation": {
+                                                "type": null
+                                            }
+                                        },
+                                        "computed": {},
+                                        "watch": {
+                                            "validationData": {
+                                                "deep": true,
+                                                "user": true
+                                            }
+                                        },
+                                        "methods": {}
+                                    }
+                                ],
+                                "props": {
+                                    "selectedControl": {
+                                        "type": null
+                                    },
+                                    "value": {
+                                        "type": null
+                                    },
+                                    "name": {
+                                        "type": null
+                                    },
+                                    "helper": {
+                                        "type": null
+                                    },
+                                    "options": {
+                                        "type": null
+                                    },
+                                    "error": {
+                                        "type": null
+                                    },
+                                    "label": {
+                                        "type": null
+                                    }
+                                },
+                                "computed": {},
+                                "methods": {},
+                                "staticRenderFns": [],
+                                "_compiled": true,
+                                "beforeCreate": [
+                                    null
+                                ],
+                                "beforeDestroy": [
+                                    null
+                                ],
+                                "__file": "src/components/inspector/form-multiselect.vue",
+                                "_Ctor": {}
+                            },
+                            "computed": {},
+                            "staticRenderFns": [],
+                            "_compiled": true,
+                            "beforeCreate": [
+                                null
+                            ],
+                            "beforeDestroy": [
+                                null
+                            ],
+                            "__file": "src/components/inspector/select-data-type-mask.vue",
+                            "_Ctor": {}
+                        },
+                        "field": "dataMask",
+                        "config": {
+                            "label": "Data Format",
+                            "name": "Data Format",
+                            "helper": "The data format for the selected type."
+                        }
+                    },
+                    {
+                        "type": "ValidationSelect",
+                        "field": "validation",
+                        "config": {
+                            "label": "Validation Rules",
+                            "helper": "The validation rules needed for this field"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "placeholder",
+                        "config": {
+                            "label": "Placeholder Text",
+                            "helper": "The placeholder is what is shown in the field when no value is provided yet"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "helper",
+                        "config": {
+                            "label": "Helper Text",
+                            "helper": "Help text is meant to provide additional guidance on the field's value"
+                        }
+                    },
+                    {
+                        "type": "FormCheckbox",
+                        "field": "readonly",
+                        "config": {
+                            "label": "Read Only",
+                            "helper": ""
+                        }
+                    },
+                    {
+                        "type": "ColorSelect",
+                        "field": "color",
+                        "config": {
+                            "label": "Text Color",
+                            "helper": "Set the element's text color",
+                            "options": [
+                                {
+                                    "value": "text-primary",
+                                    "content": "primary"
+                                },
+                                {
+                                    "value": "text-secondary",
+                                    "content": "secondary"
+                                },
+                                {
+                                    "value": "text-success",
+                                    "content": "success"
+                                },
+                                {
+                                    "value": "text-danger",
+                                    "content": "danger"
+                                },
+                                {
+                                    "value": "text-warning",
+                                    "content": "warning"
+                                },
+                                {
+                                    "value": "text-info",
+                                    "content": "info"
+                                },
+                                {
+                                    "value": "text-light",
+                                    "content": "light"
+                                },
+                                {
+                                    "value": "text-dark",
+                                    "content": "dark"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ColorSelect",
+                        "field": "bgcolor",
+                        "config": {
+                            "label": "Background Color",
+                            "helper": "Set the element's background color",
+                            "options": [
+                                {
+                                    "value": "alert alert-primary",
+                                    "content": "primary"
+                                },
+                                {
+                                    "value": "alert alert-secondary",
+                                    "content": "secondary"
+                                },
+                                {
+                                    "value": "alert alert-success",
+                                    "content": "success"
+                                },
+                                {
+                                    "value": "alert alert-danger",
+                                    "content": "danger"
+                                },
+                                {
+                                    "value": "alert alert-warning",
+                                    "content": "warning"
+                                },
+                                {
+                                    "value": "alert alert-info",
+                                    "content": "info"
+                                },
+                                {
+                                    "value": "alert alert-light",
+                                    "content": "light"
+                                },
+                                {
+                                    "value": "alert alert-dark",
+                                    "content": "dark"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": {
+                            "props": {
+                                "helper": {
+                                    "type": null
+                                },
+                                "value": {
+                                    "type": null
+                                }
+                            },
+                            "components": {
+                                "MonacoEditor": {
+                                    "name": "MonacoEditor",
+                                    "props": {
+                                        "value": {},
+                                        "theme": {
+                                            "default": "vs"
+                                        },
+                                        "language": {},
+                                        "options": {},
+                                        "amdRequire": {}
+                                    },
+                                    "model": {
+                                        "event": "change"
+                                    },
+                                    "watch": {
+                                        "options": {
+                                            "deep": true,
+                                            "user": true
+                                        }
+                                    },
+                                    "methods": {},
+                                    "_Ctor": {}
+                                }
+                            },
+                            "watch": {
+                                "value": {
+                                    "immediate": true,
+                                    "user": true
+                                }
+                            },
+                            "computed": {
+                                "effectiveValue": {}
+                            },
+                            "methods": {},
+                            "staticRenderFns": [],
+                            "_compiled": true,
+                            "_scopeId": "data-v-4f1374fd",
+                            "beforeCreate": [
+                                null
+                            ],
+                            "beforeDestroy": [
+                                null
+                            ],
+                            "__file": "src/components/inspector/default-value-editor.vue",
+                            "_Ctor": {}
+                        },
+                        "field": "defaultValue",
+                        "config": {
+                            "label": "Default Value",
+                            "helper": "The default value is pre populated using the existing request data. This feature will allow you to modify the value displayed on screen load if needed."
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "conditionalHide",
+                        "config": {
+                            "label": "Visibility Rule",
+                            "helper": "This control is hidden until this expression is true"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "customFormatter",
+                        "config": {
+                            "label": "Custom Format String",
+                            "helper": "Use the Mask Pattern format <br> Date ##/##/#### <br> SSN ###-##-#### <br> Phone (###) ###-####",
+                            "validation": ""
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "customCssSelector",
+                        "config": {
+                            "label": "CSS Selector Name",
+                            "helper": "Use this in your custom css rules",
+                            "validation": "regex: [-?[_a-zA-Z]+[_-a-zA-Z0-9]*]"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "ariaLabel",
+                        "config": {
+                            "label": "Aria Label",
+                            "helper": "Attribute designed to help assistive technology (e.g. screen readers) attach a label"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "tabindex",
+                        "config": {
+                            "label": "Tab Order",
+                            "helper": "Order in which a user will move focus from one control to another by pressing the Tab key",
+                            "validation": "regex: [0-9]*"
+                        }
+                    }
+                ],
+                "component": "FormInput",
+                "editor-component": "FormInput",
+                "editor-control": "FormInput",
+                "label": "Line Input"
             },
             {
-                'config': {
-                    'icon': 'far fa-square',
-                    'label': 'Last name',
-                    'name': 'lastname',
-                    'placeholder': '',
-                    'validation': '',
-                    'helper': null,
-                    'type': 'text',
-                    'dataFormat': 'string',
-                    'customCssSelector': '',
+                "config": {
+                    "icon": "far fa-square",
+                    "label": "New Input",
+                    "name": "form_input_2",
+                    "placeholder": "",
+                    "validation": "",
+                    "helper": null,
+                    "type": "text",
+                    "dataFormat": "string"
                 },
-                'inspector': [],
-                'component': 'FormInput',
-                'editor-component': 'FormInput',
-                'editor-control': 'FormInput',
-                'label': 'Line Input',
-                'value': '__vue_devtool_undefined__',
+                "inspector": [
+                    {
+                        "type": "FormInput",
+                        "field": "name",
+                        "config": {
+                            "label": "Variable Name",
+                            "name": "Variable Name",
+                            "validation": "regex:/^(?:[A-Za-z])(?:[0-9A-Z_.a-z])*[^.]$/|required|not_in:null,break,case,catch,continue,debugger,default,delete,do,else,finally,for,function,if,in,instanceof,new,return,switch,this,throw,try,typeof,var,void,while,with,class,const,enum,export,extends,import,super,true,false",
+                            "helper": "A variable name is a symbolic name to reference information."
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "label",
+                        "config": {
+                            "label": "Label",
+                            "helper": "The label describes the field's name"
+                        }
+                    },
+                    {
+                        "type": "FormMultiselect",
+                        "field": "dataFormat",
+                        "config": {
+                            "label": "Data Type",
+                            "name": "Data Type",
+                            "helper": "The data type specifies what kind of data is stored in the variable.",
+                            "validation": "required",
+                            "options": [
+                                {
+                                    "value": "string",
+                                    "content": "Text"
+                                },
+                                {
+                                    "value": "int",
+                                    "content": "Integer"
+                                },
+                                {
+                                    "value": "currency",
+                                    "content": "Currency"
+                                },
+                                {
+                                    "value": "percentage",
+                                    "content": "Percentage"
+                                },
+                                {
+                                    "value": "float",
+                                    "content": "Decimal"
+                                },
+                                {
+                                    "value": "datetime",
+                                    "content": "Datetime"
+                                },
+                                {
+                                    "value": "date",
+                                    "content": "Date"
+                                },
+                                {
+                                    "value": "password",
+                                    "content": "Password"
+                                },
+                                {
+                                    "value": "object",
+                                    "content": "Object"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": {
+                            "extends": {
+                                "inheritAttrs": false,
+                                "mixins": [
+                                    {
+                                        "props": {
+                                            "validationMessages": {
+                                                "type": null
+                                            },
+                                            "validationField": {
+                                                "type": null
+                                            },
+                                            "validationData": {
+                                                "type": null
+                                            },
+                                            "validation": {
+                                                "type": null
+                                            }
+                                        },
+                                        "computed": {},
+                                        "watch": {
+                                            "validationData": {
+                                                "deep": true,
+                                                "user": true
+                                            }
+                                        },
+                                        "methods": {}
+                                    }
+                                ],
+                                "props": {
+                                    "selectedControl": {
+                                        "type": null
+                                    },
+                                    "value": {
+                                        "type": null
+                                    },
+                                    "name": {
+                                        "type": null
+                                    },
+                                    "helper": {
+                                        "type": null
+                                    },
+                                    "options": {
+                                        "type": null
+                                    },
+                                    "error": {
+                                        "type": null
+                                    },
+                                    "label": {
+                                        "type": null
+                                    }
+                                },
+                                "computed": {},
+                                "methods": {},
+                                "staticRenderFns": [],
+                                "_compiled": true,
+                                "beforeCreate": [
+                                    null
+                                ],
+                                "beforeDestroy": [
+                                    null
+                                ],
+                                "__file": "src/components/inspector/form-multiselect.vue",
+                                "_Ctor": {}
+                            },
+                            "computed": {},
+                            "staticRenderFns": [],
+                            "_compiled": true,
+                            "beforeCreate": [
+                                null
+                            ],
+                            "beforeDestroy": [
+                                null
+                            ],
+                            "__file": "src/components/inspector/select-data-type-mask.vue",
+                            "_Ctor": {}
+                        },
+                        "field": "dataMask",
+                        "config": {
+                            "label": "Data Format",
+                            "name": "Data Format",
+                            "helper": "The data format for the selected type."
+                        }
+                    },
+                    {
+                        "type": "ValidationSelect",
+                        "field": "validation",
+                        "config": {
+                            "label": "Validation Rules",
+                            "helper": "The validation rules needed for this field"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "placeholder",
+                        "config": {
+                            "label": "Placeholder Text",
+                            "helper": "The placeholder is what is shown in the field when no value is provided yet"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "helper",
+                        "config": {
+                            "label": "Helper Text",
+                            "helper": "Help text is meant to provide additional guidance on the field's value"
+                        }
+                    },
+                    {
+                        "type": "FormCheckbox",
+                        "field": "readonly",
+                        "config": {
+                            "label": "Read Only"
+                        }
+                    },
+                    {
+                        "type": "ColorSelect",
+                        "field": "color",
+                        "config": {
+                            "label": "Text Color",
+                            "helper": "Set the element's text color",
+                            "options": [
+                                {
+                                    "value": "text-primary",
+                                    "content": "primary"
+                                },
+                                {
+                                    "value": "text-secondary",
+                                    "content": "secondary"
+                                },
+                                {
+                                    "value": "text-success",
+                                    "content": "success"
+                                },
+                                {
+                                    "value": "text-danger",
+                                    "content": "danger"
+                                },
+                                {
+                                    "value": "text-warning",
+                                    "content": "warning"
+                                },
+                                {
+                                    "value": "text-info",
+                                    "content": "info"
+                                },
+                                {
+                                    "value": "text-light",
+                                    "content": "light"
+                                },
+                                {
+                                    "value": "text-dark",
+                                    "content": "dark"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ColorSelect",
+                        "field": "bgcolor",
+                        "config": {
+                            "label": "Background Color",
+                            "helper": "Set the element's background color",
+                            "options": [
+                                {
+                                    "value": "alert alert-primary",
+                                    "content": "primary"
+                                },
+                                {
+                                    "value": "alert alert-secondary",
+                                    "content": "secondary"
+                                },
+                                {
+                                    "value": "alert alert-success",
+                                    "content": "success"
+                                },
+                                {
+                                    "value": "alert alert-danger",
+                                    "content": "danger"
+                                },
+                                {
+                                    "value": "alert alert-warning",
+                                    "content": "warning"
+                                },
+                                {
+                                    "value": "alert alert-info",
+                                    "content": "info"
+                                },
+                                {
+                                    "value": "alert alert-light",
+                                    "content": "light"
+                                },
+                                {
+                                    "value": "alert alert-dark",
+                                    "content": "dark"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": {
+                            "props": {
+                                "helper": {
+                                    "type": null
+                                },
+                                "value": {
+                                    "type": null
+                                }
+                            },
+                            "components": {
+                                "MonacoEditor": {
+                                    "name": "MonacoEditor",
+                                    "props": {
+                                        "value": {},
+                                        "theme": {
+                                            "default": "vs"
+                                        },
+                                        "language": {},
+                                        "options": {},
+                                        "amdRequire": {}
+                                    },
+                                    "model": {
+                                        "event": "change"
+                                    },
+                                    "watch": {
+                                        "options": {
+                                            "deep": true,
+                                            "user": true
+                                        }
+                                    },
+                                    "methods": {},
+                                    "_Ctor": {}
+                                }
+                            },
+                            "watch": {
+                                "value": {
+                                    "immediate": true,
+                                    "user": true
+                                }
+                            },
+                            "computed": {
+                                "effectiveValue": {}
+                            },
+                            "methods": {},
+                            "staticRenderFns": [],
+                            "_compiled": true,
+                            "_scopeId": "data-v-4f1374fd",
+                            "beforeCreate": [
+                                null
+                            ],
+                            "beforeDestroy": [
+                                null
+                            ],
+                            "__file": "src/components/inspector/default-value-editor.vue",
+                            "_Ctor": {}
+                        },
+                        "field": "defaultValue",
+                        "config": {
+                            "label": "Default Value",
+                            "helper": "The default value is pre populated using the existing request data. This feature will allow you to modify the value displayed on screen load if needed."
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "conditionalHide",
+                        "config": {
+                            "label": "Visibility Rule",
+                            "helper": "This control is hidden until this expression is true"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "customFormatter",
+                        "config": {
+                            "label": "Custom Format String",
+                            "helper": "Use the Mask Pattern format <br> Date ##/##/#### <br> SSN ###-##-#### <br> Phone (###) ###-####",
+                            "validation": ""
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "customCssSelector",
+                        "config": {
+                            "label": "CSS Selector Name",
+                            "helper": "Use this in your custom css rules",
+                            "validation": "regex: [-?[_a-zA-Z]+[_-a-zA-Z0-9]*]"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "ariaLabel",
+                        "config": {
+                            "label": "Aria Label",
+                            "helper": "Attribute designed to help assistive technology (e.g. screen readers) attach a label"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "tabindex",
+                        "config": {
+                            "label": "Tab Order",
+                            "helper": "Order in which a user will move focus from one control to another by pressing the Tab key",
+                            "validation": "regex: [0-9]*"
+                        }
+                    }
+                ],
+                "component": "FormInput",
+                "editor-component": "FormInput",
+                "editor-control": "FormInput",
+                "label": "Line Input"
             },
+            {
+                "config": {
+                    "icon": "far fa-compass",
+                    "label": "Page Navigation",
+                    "variant": "primary",
+                    "event": "pageNavigate",
+                    "eventData": "1"
+                },
+                "inspector": [
+                    {
+                        "type": "PageSelect",
+                        "field": "eventData",
+                        "config": {
+                            "label": "Destination Screen",
+                            "helper": "The destination page to navigate to"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "label",
+                        "config": {
+                            "label": "Button Label",
+                            "helper": "The label describes the button's text"
+                        }
+                    },
+                    {
+                        "type": "FormMultiselect",
+                        "field": "variant",
+                        "config": {
+                            "label": "Button Variant Style",
+                            "helper": "The variant determines the appearance of the button",
+                            "options": [
+                                {
+                                    "value": "primary",
+                                    "content": "Primary"
+                                },
+                                {
+                                    "value": "secondary",
+                                    "content": "Secondary"
+                                },
+                                {
+                                    "value": "success",
+                                    "content": "Success"
+                                },
+                                {
+                                    "value": "danger",
+                                    "content": "Danger"
+                                },
+                                {
+                                    "value": "warning",
+                                    "content": "Warning"
+                                },
+                                {
+                                    "value": "info",
+                                    "content": "Info"
+                                },
+                                {
+                                    "value": "light",
+                                    "content": "Light"
+                                },
+                                {
+                                    "value": "dark",
+                                    "content": "Dark"
+                                },
+                                {
+                                    "value": "link",
+                                    "content": "Link"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "conditionalHide",
+                        "config": {
+                            "label": "Visibility Rule",
+                            "helper": "This control is hidden until this expression is true"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "customFormatter",
+                        "config": {
+                            "label": "Custom Format String",
+                            "helper": "Use the Mask Pattern format <br> Date ##/##/#### <br> SSN ###-##-#### <br> Phone (###) ###-####",
+                            "validation": ""
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "customCssSelector",
+                        "config": {
+                            "label": "CSS Selector Name",
+                            "helper": "Use this in your custom css rules",
+                            "validation": "regex: [-?[_a-zA-Z]+[_-a-zA-Z0-9]*]"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "ariaLabel",
+                        "config": {
+                            "label": "Aria Label",
+                            "helper": "Attribute designed to help assistive technology (e.g. screen readers) attach a label"
+                        }
+                    },
+                    {
+                        "type": "FormInput",
+                        "field": "tabindex",
+                        "config": {
+                            "label": "Tab Order",
+                            "helper": "Order in which a user will move focus from one control to another by pressing the Tab key",
+                            "validation": "regex: [0-9]*"
+                        }
+                    }
+                ],
+                "component": "FormButton",
+                "editor-component": "FormButton",
+                "editor-control": "PageNavigation",
+                "label": "Page Navigation"
+            }
         ],
     }, ],
     computed: [],
