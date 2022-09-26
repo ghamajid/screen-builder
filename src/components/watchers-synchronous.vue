@@ -24,7 +24,12 @@
 
     <div class="container text-center" v-else>
       <div class="icon-container m-4">
-        <i class="fas fa-sad-tear fa-10x"/>
+        <div class="cell battery__sad">
+          <div class="battery">
+            <div class="face"></div>
+            <div class="acid"></div>
+          </div>
+        </div>
       </div>
       <h3 class="display-6">{{ $t('Something has gone wrong.') }}</h3>
       <p class="lead">{{ $t("Unfortunately this screen has had an issue. We've notified the administrator.") }} <a href="javascript:void(0)" @click="showMessage=!showMessage" data-cy="watchers-show-error-message"><i class="fas fa-info-circle"/></a></p>
