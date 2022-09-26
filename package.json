@@ -42,7 +42,6 @@
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.27",
-    "sass": "^1.55.0",
     "scrollparent": "^2.0.1",
     "vue-class-component": "^7.2.6",
     "vue-loader": "^15.9.2",

@@ -22,15 +22,7 @@
       <p class="lead">{{ $t('This window will automatically close when complete.') }}</p>
     </div>
 
-    <div class="container text-center" v-else>
-      <div class="icon-container m-4">
-        <div class="cell battery__sad">
-          <div class="battery">
-            <div class="face"></div>
-            <div class="acid"></div>
-          </div>
-        </div>
-      </div>
+    <div class="container text-center" style="padding-top: 50px;" v-else>
       <h3 class="display-6">{{ $t('Something has gone wrong.') }}</h3>
       <p class="lead">{{ $t("Unfortunately this screen has had an issue. We've notified the administrator.") }} <a href="javascript:void(0)" @click="showMessage=!showMessage" data-cy="watchers-show-error-message"><i class="fas fa-info-circle"/></a></p>
       <small v-if="showMessage" class="text-danger text-left small">{{ errorMessage }}</small>
