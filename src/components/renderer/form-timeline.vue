@@ -30,7 +30,6 @@ export default {
   ],
 
   data() {
-    console.log(1111,this.config,this.transientData,this.name,this.event,this.orientation,this.steps, this.selectedControl)
     return {
       value: 0,
       items: [

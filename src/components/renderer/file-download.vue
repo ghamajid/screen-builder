@@ -120,6 +120,7 @@ export default {
       if (parent !== recordList) {
         return;
       }
+      console.log('listenRecordList',recordList, index, id,parent)
       this.rowId = (parent !== null) ? id : null;
     },
     downloadFile(file) {
@@ -169,6 +170,7 @@ export default {
       });
     },
     downloadCollectionFile(file) {
+      console.log('downloadCollectionFile',file)
       this.$dataProvider.download('/files/' + file.id + '/contents').then(response => {
         this.sendToBrowser(response, file);
       });
