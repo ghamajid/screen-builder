@@ -5,9 +5,8 @@
         :items="items_val"
         :orientation="orientation"
         class="k-rtl"
+        @change="handleChange"
     />
-    <!--        @change="handleChange"-->
-
   </div>
 </template>
 
@@ -31,6 +30,7 @@ export default {
   ],
 
   data() {
+    console.log(1111,this.config,this.transientData,this.name,this.event,this.orientation,this.steps, this.selectedControl)
     return {
       value: 0,
       items: [
@@ -54,10 +54,11 @@ export default {
     }
   },
   methods: {
-    // handleChange(e) {
-    //   // this.$emit('input', e.value);
-    //   // this.$emit('page-navigate', e.value);
-    // }
+    handleChange(e) {
+      this.$emit('input', e.value);
+      this.$emit('page-navigate', e.value);
+      console.log(e.value)
+    }
   },
   watch: {
     transientData: {

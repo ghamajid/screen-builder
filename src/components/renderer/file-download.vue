@@ -33,6 +33,7 @@ import _ from  'lodash';
 export default {
   inheritAttrs: false,
   data() {
+    console.log('this.name',this.name,'this.requestFiles',this.requestFiles)
     return {
       filesInfo: [],
       prefix: '',
