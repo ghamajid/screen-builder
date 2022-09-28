@@ -37027,8 +37027,16 @@ div.k-scrollview.k-scrollview-light .k-scrollview-nav-wrap {
     font-size: 1rem;
 }
 
+.uploader-file-icon[icon=image] {
+    content: "\1F5BB" !important;
+}
+
 .uploader-file-icon[icon=image]:before {
     /* content: "\1F4CA"; */
     content: "\1F5BB" !important;
+}
+.uploader-file-icon:before {
+    content: "\1F5BB" !important;
+
 }
 

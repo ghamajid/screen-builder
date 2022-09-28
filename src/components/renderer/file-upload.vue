@@ -39,10 +39,9 @@
               <div style="padding-bottom: 10px;">
                 <div class="" style="display:flex; background:rgb(226 238 255)">
                   <div v-if="nativeFiles[file.id]" style="flex: 1" :data-cy="file.file_name.replace(/[^0-9a-zA-Z\-]/g, '-')">
-                   9999 <uploader-file :file="nativeFiles[file.id]" :list="true" />
-                    22222
+                   <uploader-file :file="nativeFiles[file.id]" :list="true" />
                   </div>
-                  <div v-else style="flex: 1">55525
+                  <div v-else style="flex: 1">
                     <i class="fas fa-paperclip"/> {{ file.file_name }}
                   </div>
                   <div class="pt-1">
@@ -573,5 +572,17 @@ export default {
 .required {
   color: red;
   font-size: 0.8em;
+}
+.uploader-file-icon[icon=image] {
+  content: "\1F5BB" !important;
+}
+
+.uploader-file-icon[icon=image]:before {
+  /* content: "\1F4CA"; */
+  content: "\1F5BB" !important;
+}
+.uploader-file-icon:before {
+  content: "\1F5BB" !important;
+
 }
 </style>
