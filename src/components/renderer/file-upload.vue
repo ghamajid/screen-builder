@@ -481,6 +481,7 @@ export default {
       }
     },
     fileUploaded(rootFile, file, message) {
+      console.log('fileUploaded')
       let name = file.name;
       if (message) {
         const msg = JSON.parse(message);
@@ -522,6 +523,7 @@ export default {
       return null;
     },
     start() {
+      console.log('start')
       if (this.parentRecordList(this) === null) {
         this.row_id = null;
       }
@@ -572,17 +574,5 @@ export default {
 .required {
   color: red;
   font-size: 0.8em;
-}
-.uploader-file-icon[icon=image] {
-  content: "\1F5BB" !important;
-}
-
-.uploader-file-icon[icon=image]:before {
-  /* content: "\1F4CA"; */
-  content: "\1F5BB" !important;
-}
-.uploader-file-icon:before {
-  content: "\1F5BB" !important;
-
 }
 </style>
