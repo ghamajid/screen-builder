@@ -36,12 +36,13 @@
         <template>
           <ul>
             <li v-for="(file, i) in files " :key="i" :data-cy="file.id">
-              <div class="">
+              <div style="padding-bottom: 10px;">
                 <div class="" style="display:flex; background:rgb(226 238 255)">
                   <div v-if="nativeFiles[file.id]" style="flex: 1" :data-cy="file.file_name.replace(/[^0-9a-zA-Z\-]/g, '-')">
-                    <uploader-file :file="nativeFiles[file.id]" :list="true" />
+                   9999 <uploader-file :file="nativeFiles[file.id]" :list="true" />
+                    22222
                   </div>
-                  <div v-else style="flex: 1">
+                  <div v-else style="flex: 1">55525
                     <i class="fas fa-paperclip"/> {{ file.file_name }}
                   </div>
                   <div class="pt-1">
