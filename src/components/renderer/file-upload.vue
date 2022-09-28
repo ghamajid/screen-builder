@@ -35,8 +35,8 @@
       <uploader-list>
         <template>
           <div id="kkkkk">
-            <div>
-              <img src="@/assets/loading.svg">
+            <div v-if="displayLoading">
+              <img src="../../../src/assets/loading.svg">
             </div>
             <ul>
               <li v-for="(file, i) in files " :key="i" :data-cy="file.id">
@@ -290,6 +290,7 @@ export default {
       disabled: false,
       files: [],
       nativeFiles: {},
+      displayLoading: false
     };
   },
   methods: {
@@ -487,6 +488,8 @@ export default {
       }
     },
     fileUploaded(rootFile, file, message) {
+      this.displayLoading = false;
+
       console.log('fileUploaded')
       let name = file.name;
       if (message) {
@@ -530,6 +533,7 @@ export default {
     },
     start() {
       console.log('start')
+      this.displayLoading = ture;
       if (this.parentRecordList(this) === null) {
         this.row_id = null;
       }

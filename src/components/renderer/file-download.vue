@@ -216,7 +216,7 @@ export default {
       if (requestFiles.length === 0 && this.fileDataName.endsWith('.file')) {
         requestFiles = this.requestFileInsideALoop();
       }
-
+      console.log('setFilesInfoFromRequest',requestFiles)
       this.filesInfo = requestFiles.map(file => {
         const info = { id: file.id, name: file.file_name };
         if (file.token) {
@@ -239,6 +239,7 @@ export default {
       return [];
     },
     setFilesInfoFromCollectionValue() {
+      console.log('setFilesInfoFromCollectionValue',this.value)
       if (!this.value) {
         this.filesInfo = [];
         return;
