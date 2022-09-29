@@ -37,7 +37,7 @@
         <template>
           <div id="kkkkk">
             <div v-if="displayLoading">
-<!--              <img src="'/loading.svg'">-->
+              <img :src="loadingPic">
             </div>
             <ul>
               <li v-for="(file, i) in files " :key="i" :data-cy="file.id">
