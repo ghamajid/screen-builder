@@ -1,7 +1,6 @@
 <template>
   <div>
     <label v-uni-for="name" class="item-label-size">{{ label }}</label>
-    <img :src="loadingPic">22
     <b-card v-if="inPreviewMode" class="mb-2">
       {{ $t('File uploads are unavailable in preview mode.') }}
     </b-card>
@@ -37,7 +36,29 @@
         <template>
           <div id="kkkkk">
             <div v-if="displayLoading">
-              <img :src="loadingPic">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:#fff;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                <circle cx="80" cy="50" r="5" fill="#d7689d">
+                  <animate attributeName="cx" values="80;59.270509831248425" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                  <animate attributeName="cy" values="50;78.53169548885461" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                  <animate attributeName="fill" values="#d7689d;#f3d337" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                </circle><circle cx="59.270509831248425" cy="78.53169548885461" r="5" fill="#f3d337">
+                <animate attributeName="cx" values="59.270509831248425;25.72949016875158" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                <animate attributeName="cy" values="78.53169548885461;67.6335575687742" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                <animate attributeName="fill" values="#f3d337;#a0c443" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+              </circle><circle cx="25.72949016875158" cy="67.6335575687742" r="5" fill="#a0c443">
+                <animate attributeName="cx" values="25.72949016875158;25.729490168751575" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                <animate attributeName="cy" values="67.6335575687742;32.366442431225806" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                <animate attributeName="fill" values="#a0c443;#66b5ae" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+              </circle><circle cx="25.729490168751575" cy="32.366442431225806" r="5" fill="#66b5ae">
+                <animate attributeName="cx" values="25.729490168751575;59.27050983124842" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                <animate attributeName="cy" values="32.366442431225806;21.46830451114539" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                <animate attributeName="fill" values="#66b5ae;#5da4dc" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+              </circle><circle cx="59.27050983124842" cy="21.46830451114539" r="5" fill="#5da4dc">
+                <animate attributeName="cx" values="59.27050983124842;80" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                <animate attributeName="cy" values="21.46830451114539;49.99999999999999" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+                <animate attributeName="fill" values="#5da4dc;#d7689d" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
+              </circle>
+              </svg>
             </div>
             <ul>
               <li v-for="(file, i) in files " :key="i" :data-cy="file.id">
@@ -76,7 +97,6 @@
 import { createUniqIdsMixin } from 'vue-uniq-ids';
 import uploader from 'vue-simple-uploader';
 import _ from 'lodash';
-import loadingPic from './../../assets/loading.svg';
 
 // Create the mixin
 const uniqIdsMixin = createUniqIdsMixin();
@@ -259,9 +279,7 @@ export default {
     },
   },
   data() {
-    console.log('loadingPic',loadingPic)
     return {
-      loadingPic: loadingPic,
       uploaderId: 1,
       content: '',
       validator: {
