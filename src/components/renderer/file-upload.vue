@@ -85,7 +85,7 @@
                 <div class="" style="display:flex; background:rgb(226 238 255)">
                   <div v-if="nativeFiles[file.id]" style="flex: 1"
                        :data-cy="file.file_name.replace(/[^0-9a-zA-Z\-]/g, '-')">
-                   1 <uploader-file-new :file="nativeFiles[file.id]" :list="true"/>2
+                    <uploader-file-new :file="nativeFiles[file.id]" :list="true"></uploader-file-new>
                   </div>
                   <div v-else style="flex: 1">
                     <i class="fas fa-paperclip"/> {{ file.file_name }}

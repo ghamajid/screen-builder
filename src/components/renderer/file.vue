@@ -70,6 +70,7 @@
       }
     },
     data () {
+      console.log('file456')
       return {
         response: null,
         paused: false,
