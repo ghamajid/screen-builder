@@ -33,7 +33,7 @@
       </uploader-drop>
       <div v-if="displayLoading">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-             style="margin:auto;background:#fff;display:block;margin-top: -50px !important;" width="50px" height="50px"
+             style="margin:auto;background:#fff;display:block;margin-top: -47px !important;" width="50px" height="50px"
              viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
           <circle cx="80" cy="50" r="5" fill="#d7689d">
             <animate attributeName="cx" values="80;59.270509831248425" keyTimes="0;1" dur="1s"
@@ -90,7 +90,7 @@
                   <div v-else style="flex: 1">
                     <i class="fas fa-paperclip"/> {{ file.file_name }}
                   </div>
-                  <div class="pt-1">
+                  <div style="border-bottom: 1px solid #cdcdcd;">
                     <b-btn variant="outline" @click="removeFile(file)" v-b-tooltip.hover :title="$t('Delete')">
                       <i class="fas fa-trash-alt"/>
                     </b-btn>
