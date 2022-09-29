@@ -533,7 +533,7 @@ export default {
     },
     start() {
       console.log('start')
-      this.displayLoading = ture;
+      this.displayLoading = true;
       if (this.parentRecordList(this) === null) {
         this.row_id = null;
       }
