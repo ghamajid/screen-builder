@@ -5,82 +5,100 @@
       {{ $t('File uploads are unavailable in preview mode.') }}
     </b-card>
     <uploader
-      v-else
-      :options="options"
-      :attrs="attrs"
-      ref="uploader"
-      @complete="complete"
-      @upload-start="start"
-      @file-removed="removed"
-      @file-success="fileUploaded"
-      @file-added="addFile"
-      :class="{'was-validated': required}"
+        v-else
+        :options="options"
+        :attrs="attrs"
+        ref="uploader"
+        @complete="complete"
+        @upload-start="start"
+        @file-removed="removed"
+        @file-success="fileUploaded"
+        @file-added="addFile"
+        :class="{'was-validated': required}"
     >
       <uploader-unsupport/>
-
       <uploader-drop class="form-control-file">
         <p>{{ $t('Drop a file here to upload or') }}</p>
         <uploader-btn
-          :attrs="nativeButtonAttrs"
-          :class="{disabled: disabled}"
-          tabindex="0"
-          v-on:keyup.native="browse"
-          :aria-label="$attrs['aria-label']"
-          class="btn btn-secondary text-white"
+            :attrs="nativeButtonAttrs"
+            :class="{disabled: disabled}"
+            tabindex="0"
+            v-on:keyup.native="browse"
+            :aria-label="$attrs['aria-label']"
+            class="btn btn-secondary text-white"
         >
           {{ $t('select file') }}
         </uploader-btn>
         <span v-if="validation === 'required' && !value" class="required">{{ $t('Required') }}</span>
       </uploader-drop>
+      <div v-if="displayLoading">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+             style="margin:auto;background:#fff;display:block;margin-top: -50px !important;" width="50px" height="50px"
+             viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+          <circle cx="80" cy="50" r="5" fill="#d7689d">
+            <animate attributeName="cx" values="80;59.270509831248425" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="cy" values="50;78.53169548885461" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="fill" values="#d7689d;#f3d337" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+          </circle>
+          <circle cx="59.270509831248425" cy="78.53169548885461" r="5" fill="#f3d337">
+            <animate attributeName="cx" values="59.270509831248425;25.72949016875158" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="cy" values="78.53169548885461;67.6335575687742" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="fill" values="#f3d337;#a0c443" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+          </circle>
+          <circle cx="25.72949016875158" cy="67.6335575687742" r="5" fill="#a0c443">
+            <animate attributeName="cx" values="25.72949016875158;25.729490168751575" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="cy" values="67.6335575687742;32.366442431225806" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="fill" values="#a0c443;#66b5ae" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+          </circle>
+          <circle cx="25.729490168751575" cy="32.366442431225806" r="5" fill="#66b5ae">
+            <animate attributeName="cx" values="25.729490168751575;59.27050983124842" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="cy" values="32.366442431225806;21.46830451114539" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="fill" values="#66b5ae;#5da4dc" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+          </circle>
+          <circle cx="59.27050983124842" cy="21.46830451114539" r="5" fill="#5da4dc">
+            <animate attributeName="cx" values="59.27050983124842;80" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="cy" values="21.46830451114539;49.99999999999999" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="fill" values="#5da4dc;#d7689d" keyTimes="0;1" dur="1s"
+                     repeatCount="indefinite"></animate>
+          </circle>
+        </svg>
+      </div>
       <uploader-list>
         <template>
-          <div id="kkkkk">
-            <div v-if="displayLoading">
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:#fff;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-                <circle cx="80" cy="50" r="5" fill="#d7689d">
-                  <animate attributeName="cx" values="80;59.270509831248425" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                  <animate attributeName="cy" values="50;78.53169548885461" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                  <animate attributeName="fill" values="#d7689d;#f3d337" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                </circle><circle cx="59.270509831248425" cy="78.53169548885461" r="5" fill="#f3d337">
-                <animate attributeName="cx" values="59.270509831248425;25.72949016875158" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                <animate attributeName="cy" values="78.53169548885461;67.6335575687742" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                <animate attributeName="fill" values="#f3d337;#a0c443" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-              </circle><circle cx="25.72949016875158" cy="67.6335575687742" r="5" fill="#a0c443">
-                <animate attributeName="cx" values="25.72949016875158;25.729490168751575" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                <animate attributeName="cy" values="67.6335575687742;32.366442431225806" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                <animate attributeName="fill" values="#a0c443;#66b5ae" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-              </circle><circle cx="25.729490168751575" cy="32.366442431225806" r="5" fill="#66b5ae">
-                <animate attributeName="cx" values="25.729490168751575;59.27050983124842" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                <animate attributeName="cy" values="32.366442431225806;21.46830451114539" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                <animate attributeName="fill" values="#66b5ae;#5da4dc" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-              </circle><circle cx="59.27050983124842" cy="21.46830451114539" r="5" fill="#5da4dc">
-                <animate attributeName="cx" values="59.27050983124842;80" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                <animate attributeName="cy" values="21.46830451114539;49.99999999999999" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-                <animate attributeName="fill" values="#5da4dc;#d7689d" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animate>
-              </circle>
-              </svg>
-            </div>
-            <ul>
-              <li v-for="(file, i) in files " :key="i" :data-cy="file.id">
-                <div style="padding-bottom: 10px;">
-                  <div class="" style="display:flex; background:rgb(226 238 255)">
-                    <div v-if="nativeFiles[file.id]" style="flex: 1" :data-cy="file.file_name.replace(/[^0-9a-zA-Z\-]/g, '-')">
-                      <uploader-file :file="nativeFiles[file.id]" :list="true" />
-                    </div>
-                    <div v-else style="flex: 1">
-                      <i class="fas fa-paperclip"/> {{ file.file_name }}
-                    </div>
-                    <div class="pt-1">
-                      <b-btn variant="outline" @click="removeFile(file)" v-b-tooltip.hover :title="$t('Delete')">
-                        <i class="fas fa-trash-alt"/>
-                      </b-btn>
-                    </div>
+          <ul>
+            <li v-for="(file, i) in files " :key="i" :data-cy="file.id">
+              <div style="padding-bottom: 10px;">
+                <div class="" style="display:flex; background:rgb(226 238 255)">
+                  <div v-if="nativeFiles[file.id]" style="flex: 1"
+                       :data-cy="file.file_name.replace(/[^0-9a-zA-Z\-]/g, '-')">
+                    <uploader-file :file="nativeFiles[file.id]" :list="true"/>
+                  </div>
+                  <div v-else style="flex: 1">
+                    <i class="fas fa-paperclip"/> {{ file.file_name }}
+                  </div>
+                  <div class="pt-1">
+                    <b-btn variant="outline" @click="removeFile(file)" v-b-tooltip.hover :title="$t('Delete')">
+                      <i class="fas fa-trash-alt"/>
+                    </b-btn>
                   </div>
                 </div>
-              </li>
-            </ul>
-          </div>
-
+              </div>
+            </li>
+          </ul>
         </template>
       </uploader-list>
       <div class="invalid-feedback" :class="{'d-block': required && !value}">
@@ -94,7 +112,7 @@
 </template>
 
 <script>
-import { createUniqIdsMixin } from 'vue-uniq-ids';
+import {createUniqIdsMixin} from 'vue-uniq-ids';
 import uploader from 'vue-simple-uploader';
 import _ from 'lodash';
 
@@ -121,13 +139,13 @@ export default {
   },
   mounted() {
     this.$root.$on('set-upload-data-name',
-      (recordList, index, id) => this.listenRecordList(recordList, index, id));
+        (recordList, index, id) => this.listenRecordList(recordList, index, id));
 
     this.$root.$on('removed-record',
-      (recordList, record) => this.listenRemovedRecord(recordList, record));
+        (recordList, record) => this.listenRemovedRecord(recordList, record));
 
     this.$root.$on('removed-loop',
-      (loop, removed) => this.listenRemovedLoop(loop, removed));
+        (loop, removed) => this.listenRemovedLoop(loop, removed));
 
     this.removeDefaultClasses();
 
@@ -184,7 +202,7 @@ export default {
       return this.files.map(f => f.id);
     },
     nativeButtonAttrs() {
-      const attrs = { 'data-cy':'file-upload-button' };
+      const attrs = {'data-cy': 'file-upload-button'};
       if (this.disabled) {
         attrs.disabled = true;
       }
@@ -333,11 +351,11 @@ export default {
       }
     },
     filesFromCollectionSingle(value) {
-      return [{ id: value.id, file_name: value.name }];
+      return [{id: value.id, file_name: value.name}];
     },
     filesFromCollectionMulti(value) {
       return value.map(v => {
-        return { id: v.file.id, file_name: v.file.name };
+        return {id: v.file.id, file_name: v.file.name};
       });
     },
     setRequestFiles() {
@@ -353,7 +371,7 @@ export default {
     },
     valueForMulti() {
       return this.files.map(file => {
-        return { file: this.formatForType(file) };
+        return {file: this.formatForType(file)};
       });
     },
     valueForSingle() {
@@ -364,7 +382,7 @@ export default {
     },
     formatForType(file) {
       if (this.collection) {
-        return { id: file.id, name: file.file_name };
+        return {id: file.id, name: file.file_name};
       }
       return file.id;
     },
@@ -391,7 +409,8 @@ export default {
               // In record lists, delete can be called twice on the same file.
               // Catch and igore the error.
               // eslint-disable-next-line no-unused-vars
-              await this.$dataProvider.deleteFile(id).catch(e => {});
+              await this.$dataProvider.deleteFile(id).catch(e => {
+              });
               this.removeFromFiles(id);
             }
           }
@@ -409,7 +428,7 @@ export default {
         }
       }
     },
-    async removeFile(file) { 
+    async removeFile(file) {
       const id = file.id;
       const token = file.token ? file.token : null;
 
@@ -417,13 +436,13 @@ export default {
       if (!isNaN(id)) {
         await this.$dataProvider.deleteFile(id, token);
       }
-      
+
       this.removeFromFiles(id);
     },
     removeFromFiles(id) {
       const idx = this.files.findIndex(f => f.id === id);
       this.$delete(this.files, idx);
-      
+
       if (this.nativeFiles[id]) {
         if (this.$refs.uploader) {
           this.$refs.uploader.uploader.removeFile(this.nativeFiles[id]);
@@ -521,13 +540,13 @@ export default {
         if (this.collection) {
           id = msg.id;
         }
-        
+
         const fileInfo = {
           id,
           file_name: name,
           mime_type: rootFile.fileType,
         };
-       
+
         this.$set(this.nativeFiles, id, rootFile);
         this.addToFiles(fileInfo);
       } else {
@@ -542,11 +561,12 @@ export default {
     complete() {
       // Unblock submit
       this.validator.errorCount = 0;
-      window.onbeforeunload = function() {};
+      window.onbeforeunload = function () {
+      };
     },
     parentRecordList(node) {
       if (node.$parent && node.$parent.$options) {
-        if (node.$parent.$options._componentTag ===  'form-record-list') {
+        if (node.$parent.$options._componentTag === 'form-record-list') {
           return node.$parent;
         }
         return this.parentRecordList(node.$parent);
@@ -562,7 +582,7 @@ export default {
 
       // Block submit until files are loaded
       this.validator.errorCount = 1;
-      window.onbeforeunload = function() {
+      window.onbeforeunload = function () {
         return true;
       };
     },
@@ -586,8 +606,8 @@ export default {
       } else {
         const requestIDNode = document.head.querySelector('meta[name="request-id"]');
         return requestIDNode
-          ? `/api/1.0/requests/${requestIDNode.content}/files`
-          : null;
+            ? `/api/1.0/requests/${requestIDNode.content}/files`
+            : null;
       }
     },
     checkIfInRecordList() {
