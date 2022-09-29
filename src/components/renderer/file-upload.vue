@@ -85,12 +85,12 @@
                 <div class="" style="display:flex; background:rgb(226 238 255)">
                   <div v-if="nativeFiles[file.id]" style="flex: 1"
                        :data-cy="file.file_name.replace(/[^0-9a-zA-Z\-]/g, '-')">
-                    <uploader-file :file="nativeFiles[file.id]" :list="true"/>
+                   1 <uploader-file-new :file="nativeFiles[file.id]" :list="true"/>2
                   </div>
                   <div v-else style="flex: 1">
                     <i class="fas fa-paperclip"/> {{ file.file_name }}
                   </div>
-                  <div style="border-bottom: 1px solid #cdcdcd;">
+                  <div style="border-bottom: 1px solid #cdcdcd;padding-top: 4px !important;">
                     <b-btn variant="outline" @click="removeFile(file)" v-b-tooltip.hover :title="$t('Delete')">
                       <i class="fas fa-trash-alt"/>
                     </b-btn>
@@ -114,6 +114,7 @@
 <script>
 import {createUniqIdsMixin} from 'vue-uniq-ids';
 import uploader from 'vue-simple-uploader';
+import UploaderFileNew from './file';
 import _ from 'lodash';
 
 // Create the mixin
@@ -531,7 +532,6 @@ export default {
     fileUploaded(rootFile, file, message) {
       this.displayLoading = false;
 
-      console.log('fileUploaded')
       let name = file.name;
       if (message) {
         const msg = JSON.parse(message);
@@ -574,7 +574,6 @@ export default {
       return null;
     },
     start() {
-      console.log('start')
       this.displayLoading = true;
       if (this.parentRecordList(this) === null) {
         this.row_id = null;
