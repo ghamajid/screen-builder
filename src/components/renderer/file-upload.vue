@@ -1,6 +1,7 @@
 <template>
   <div>
     <label v-uni-for="name" class="item-label-size">{{ label }}</label>
+    <img :src="loadingPic">22
     <b-card v-if="inPreviewMode" class="mb-2">
       {{ $t('File uploads are unavailable in preview mode.') }}
     </b-card>
@@ -36,7 +37,7 @@
         <template>
           <div id="kkkkk">
             <div v-if="displayLoading">
-              <img src="'/loading.svg'">
+<!--              <img src="'/loading.svg'">-->
             </div>
             <ul>
               <li v-for="(file, i) in files " :key="i" :data-cy="file.id">
@@ -75,6 +76,7 @@
 import { createUniqIdsMixin } from 'vue-uniq-ids';
 import uploader from 'vue-simple-uploader';
 import _ from 'lodash';
+import loadingPic from './../../assets/loading.svg';
 
 // Create the mixin
 const uniqIdsMixin = createUniqIdsMixin();
@@ -257,7 +259,9 @@ export default {
     },
   },
   data() {
+    console.log('loadingPic',loadingPic)
     return {
+      loadingPic: loadingPic,
       uploaderId: 1,
       content: '',
       validator: {
