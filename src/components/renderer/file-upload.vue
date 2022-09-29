@@ -132,7 +132,7 @@ const ignoreErrors = [
 ];
 
 export default {
-  components: uploader,
+  components: {uploader, UploaderFileNew},
   mixins: [uniqIdsMixin],
   props: ['label', 'error', 'helper', 'name', 'value', 'controlClass', 'endpoint', 'accept', 'validation', 'parent', 'config', 'multipleUpload'],
   updated() {
