@@ -36,9 +36,6 @@ window.axios = axios.create({
     baseURL: '/api/1.0/',
 });
 
-console.log('document.cookie',document,document.cookie)
-window.cookie = document.cookie;
-
 window.exampleScreens = [{
     id: 1,
     screen_category_id: 1,
