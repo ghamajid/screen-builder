@@ -85,7 +85,7 @@
                 <div class="" style="display:flex; background:rgb(226 238 255)">
                   <div v-if="nativeFiles[file.id]" style="flex: 1"
                        :data-cy="file.file_name.replace(/[^0-9a-zA-Z\-]/g, '-')">
-                    <uploader-file-new :file="nativeFiles[file.id]" :list="true"/>
+                    <uploader-file :file="nativeFiles[file.id]" :list="true"/>
                   </div>
                   <div v-else style="flex: 1">
                     <i class="fas fa-paperclip"/> {{ file.file_name }}
@@ -115,7 +115,6 @@
 import {createUniqIdsMixin} from 'vue-uniq-ids';
 import uploader from 'vue-simple-uploader';
 import _ from 'lodash';
-import UploaderFileNew from './file-up';
 
 // Create the mixin
 const uniqIdsMixin = createUniqIdsMixin();
@@ -132,7 +131,7 @@ const ignoreErrors = [
 ];
 
 export default {
-  components: {uploader, UploaderFileNew},
+  components: uploader,
   mixins: [uniqIdsMixin],
   props: ['label', 'error', 'helper', 'name', 'value', 'controlClass', 'endpoint', 'accept', 'validation', 'parent', 'config', 'multipleUpload'],
   updated() {
@@ -574,6 +573,7 @@ export default {
       return null;
     },
     start() {
+      console.log('start')
       this.displayLoading = true;
       if (this.parentRecordList(this) === null) {
         this.row_id = null;
