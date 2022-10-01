@@ -57,6 +57,7 @@
 <script>
 import _ from 'lodash';
 
+
 const defaultBeforeLoadTask = () => {
   return new Promise((resolve) => {
     resolve();
@@ -365,7 +366,9 @@ export default {
         // There could be another task in the parent, so don't emit completed
         return;
       }
-      console.log('completed, this.requestId')
+      console.log(this.$cookies.get("dev_template"))
+      console.log(this.$cookies.keys());
+
       // this.$emit('completed', this.requestId);
     },
     processUpdated: _.debounce(function(data) {
