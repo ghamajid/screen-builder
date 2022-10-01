@@ -366,8 +366,16 @@ export default {
         return;
       }
       console.log('cookies',window.document.cookie);
+      const all_cookie = window.document.cookie;
+      const considered_cookie = 'dev_template=ghasedak';
+      console.log('all_cookie.includes(considered_cookie)',all_cookie.includes(considered_cookie))
+      if (all_cookie.includes(considered_cookie)){
+        window.location.href = '/requests';
 
-      // this.$emit('completed', this.requestId);
+      }else{
+        // this.$emit('completed', this.requestId);
+
+      }
     },
     processUpdated: _.debounce(function(data) {
       if (
