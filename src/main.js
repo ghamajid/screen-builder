@@ -13,9 +13,7 @@ import axios from 'axios';
 import TestComponents from '../tests/components';
 import BootstrapVue from 'bootstrap-vue';
 import Multiselect from '@processmaker/vue-multiselect/src/Multiselect';
-import VueCookies from 'vue-cookies';
 
-Vue.use(VueCookies);
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
@@ -37,6 +35,8 @@ const store = new Vuex.Store({ modules: {} });
 window.axios = axios.create({
     baseURL: '/api/1.0/',
 });
+console.log('document.cookie',document.cookie)
+window.cookie = document.cookie;
 
 window.exampleScreens = [{
     id: 1,
