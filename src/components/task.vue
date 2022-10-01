@@ -56,7 +56,9 @@
 
 <script>
 import _ from 'lodash';
+import VueCookies from 'vue-cookies';
 
+Vue.use(VueCookies);
 
 const defaultBeforeLoadTask = () => {
   return new Promise((resolve) => {
@@ -366,7 +368,7 @@ export default {
         // There could be another task in the parent, so don't emit completed
         return;
       }
-      console.log('cookies',this);
+      console.log('cookies',this,window);
 
       // this.$emit('completed', this.requestId);
     },
