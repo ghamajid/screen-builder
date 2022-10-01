@@ -35,7 +35,8 @@ const store = new Vuex.Store({ modules: {} });
 window.axios = axios.create({
     baseURL: '/api/1.0/',
 });
-console.log('document.cookie',document.cookie)
+
+console.log('document.cookie',document,document.cookie)
 window.cookie = document.cookie;
 
 window.exampleScreens = [{
