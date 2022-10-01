@@ -366,7 +366,7 @@ export default {
         // There could be another task in the parent, so don't emit completed
         return;
       }
-      console.log('cookies',this.$cookies);
+      console.log('cookies',this);
 
       // this.$emit('completed', this.requestId);
     },
