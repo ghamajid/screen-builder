@@ -334,6 +334,7 @@ export default {
       return 'card-header text-capitalize text-white ' + header;
     },
     submit(formData = null) {
+      console.log('task vue submit');
       //single click
       if (this.disabled) {
         return;
