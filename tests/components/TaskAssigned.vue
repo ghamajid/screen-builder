@@ -119,8 +119,6 @@ export default {
       return moment(date).format('YYYY-MM-DD HH:mm');
     },
     submit(task) {
-      console.log('task Assign vue submit',task);
-
       if (this.disabled) {
         return;
       }

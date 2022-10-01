@@ -334,7 +334,6 @@ export default {
       return 'card-header text-capitalize text-white ' + header;
     },
     submit(formData = null) {
-      console.log('task vue submit');
       //single click
       if (this.disabled) {
         return;
@@ -366,7 +365,8 @@ export default {
         // There could be another task in the parent, so don't emit completed
         return;
       }
-      this.$emit('completed', this.requestId);
+      console.log('completed, this.requestId')
+      // this.$emit('completed', this.requestId);
     },
     processUpdated: _.debounce(function(data) {
       if (
