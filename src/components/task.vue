@@ -56,9 +56,6 @@
 
 <script>
 import _ from 'lodash';
-import VueCookies from 'vue-cookies';
-
-Vue.use(VueCookies);
 
 const defaultBeforeLoadTask = () => {
   return new Promise((resolve) => {

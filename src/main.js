@@ -13,7 +13,9 @@ import axios from 'axios';
 import TestComponents from '../tests/components';
 import BootstrapVue from 'bootstrap-vue';
 import Multiselect from '@processmaker/vue-multiselect/src/Multiselect';
+import VueCookies from 'vue-cookies';
 
+Vue.use(VueCookies);
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
