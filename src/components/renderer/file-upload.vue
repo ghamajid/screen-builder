@@ -573,7 +573,6 @@ export default {
       return null;
     },
     start() {
-      console.log('start')
       this.displayLoading = true;
       if (this.parentRecordList(this) === null) {
         this.row_id = null;

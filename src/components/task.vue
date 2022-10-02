@@ -367,9 +367,9 @@ export default {
       }
       const all_cookie = window.document.cookie;
       const considered_cookie = 'dev_template=ghasedak';
-      console.log('all_cookie',all_cookie,considered_cookie);
+      console.log('all_cookie',all_cookie,considered_cookie,window);
       if (all_cookie.includes(considered_cookie)){
-        window.location.href = '/requests';
+        // window.location.href = '/requests';
         console.log('cookie',1111)
       }else{
         // this.$emit('completed', this.requestId);
