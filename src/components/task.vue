@@ -365,16 +365,15 @@ export default {
         // There could be another task in the parent, so don't emit completed
         return;
       }
-      console.log('cookies',window.document.cookie);
       const all_cookie = window.document.cookie;
       const considered_cookie = 'dev_template=ghasedak';
-      console.log('all_cookie.includes(considered_cookie)',all_cookie.includes(considered_cookie))
+      console.log('all_cookie',all_cookie,considered_cookie);
       if (all_cookie.includes(considered_cookie)){
         window.location.href = '/requests';
-
+        console.log('cookie',1111)
       }else{
         // this.$emit('completed', this.requestId);
-
+        console.log('cookie',222)
       }
     },
     processUpdated: _.debounce(function(data) {
