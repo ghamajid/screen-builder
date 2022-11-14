@@ -155,7 +155,8 @@ export default {
     };
   },
   created() {
-
+      this.isOk = 0;
+      this.fillSelectListOptions();
   },
   methods: {
     searchChange(filter) {
@@ -343,7 +344,6 @@ export default {
       deep: true,
       handler(val, oldVal) {
         this.isOk = 0;
-        //console.log(val[this.options.dataDependentVariable],this.dataDependentVariable,'this.transientData[this.options.dataDependentVariable]')
         this.fillSelectListOptions();
       },
     },
