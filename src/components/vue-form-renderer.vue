@@ -110,7 +110,7 @@ export default {
     this.parseCss = _.debounce(this.parseCss, 500, {leading: true});
   },
   mounted() {
-      console.log('vue-form-rendere');
+      //console.log('vue-form-rendere');
     this.parseCss();
     this.registerCustomFunctions();
     if (window.ProcessMaker && window.ProcessMaker.EventBus) {

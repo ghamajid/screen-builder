@@ -18,6 +18,7 @@ export default {
     loadFormLoopItems({ element, node, definition }) {
       const loop = this.createComponent('div', {
         'v-for': `(loopRow, index) in ${element.config.settings.varname}`,
+        'class':'loop_row'
       });
       const nested = {
         config: [
@@ -61,6 +62,7 @@ export default {
     },
   },
   mounted() {
+      //console.log("789456132");
     this.alias['FormLoop'] = 'div';
     this.extensions.push({
       beforeload() {

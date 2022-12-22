@@ -59,7 +59,7 @@ export default {
           parent = null;
           break;
         }
-        
+
         if (i > 100) {
           throw 'Loop Error';
         }
@@ -213,7 +213,7 @@ export default {
       if (!val) {
         val = {};
       }
-      
+
       val._parent = _.cloneDeep(this.transientDataCopy);
       return val;
     },
@@ -234,6 +234,7 @@ export default {
     },
   },
   mounted() {
+      console.log("asdasdasd");
     this.$set(this.$parent.transientData, this.name, _.cloneDeep(this.matrix));
   },
 };

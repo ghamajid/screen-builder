@@ -3,7 +3,6 @@ import ScreenBase from './ScreenBase';
 import CountElements from '../CountElements';
 import ValidationsFactory from '../ValidationsFactory';
 import _ from 'lodash';
-import window from "inputmask/lib/global/window";
 
 let screenRenderer;
 
@@ -15,7 +14,7 @@ export default {
         definition: Object,
         components: {
             type: Object,
-            default () {
+            default() {
                 return {};
             },
         },
@@ -102,8 +101,8 @@ export default {
                 this.building.errors = errors;
                 this.building.show = true;
                 return component || {
-                    template: '<div></div>',
-                };
+                        template: '<div></div>',
+                    };
             } finally {
                 Vue.config.warnHandler = warnHandler;
                 Vue.config.errorHandler = errorHandler;
@@ -121,7 +120,7 @@ export default {
             this.extensions.forEach((ext) => ext.beforeload instanceof Function && ext.beforeload.bind(this)({ pages, owner, definition }));
             pages.forEach((page, index) => {
                 if (page) {
-                    const component = this.createComponent('div', { name: page.name, class: 'page', 'v-if': `currentPage__==${index}` });
+                    const component = this.createComponent('div', {name: page.name, class:'page', 'v-if': `currentPage__==${index}`});
                     this.loadItems(page.items, component, screen, definition, index);
                     owner.appendChild(component);
                 }
@@ -134,10 +133,10 @@ export default {
             return name.replace(/[A-Z]/g, m => `-${m}`).toLowerCase().replace(/^-/, '');
         },
         camelCase(name) {
-            return name.replace(/_\w/g, m => m.substr(1, 1).toUpperCase());
+            return name.replace(/_\w/g, m => m.substr(1,1).toUpperCase());
         },
         updateComponentConfig(nodeName, properties) {
-            this.updatedConfigs.push({ name: nodeName, properties });
+            this.updatedConfigs.push({name: nodeName, properties});
         },
         mergeUpdatedConfig(nodeName, properties) {
             let updatedConfig = this.updatedConfigs.find(config => config.name === nodeName);
@@ -158,10 +157,10 @@ export default {
             for (let property in properties) {
                 const value = properties[property];
                 if (value !== false && value !== null && value !== undefined) {
-                    if (property.substr(0, 1) === ':' || (typeof value === 'string' && value.indexOf('{{') === -1)) {
+                    if (property.substr(0,1) === ':' || (typeof value === 'string' && value.indexOf('{{') === -1)) {
                         node.setAttribute(this.escapeVuePropertyName(property), value);
                     } else if (typeof value === 'string' && value.indexOf('{{') !== -1 && !properties.ignoreMustache) {
-                        node.setAttribute(':' + this.escapeVuePropertyName(property), 'mustache(' + this.byValue(value) + ')');
+                        node.setAttribute(':' + this.escapeVuePropertyName(property), 'mustache('+this.byValue(value)+')');
                     } else if (value !== undefined) {
                         node.setAttribute(':' + this.escapeVuePropertyName(property), this.byValue(value));
                     }
@@ -183,22 +182,22 @@ export default {
             items.forEach(element => {
                 const componentName = element[this.nodeNameProperty];
                 const nodeName = this.alias[componentName] || componentName;
-                const properties = {...element.config };
+                const properties = { ...element.config };
                 // Extensions.onloadproperties
-                this.extensions.forEach((ext) => ext.onloadproperties instanceof Function && ext.onloadproperties.bind(this)({ properties, element, component, items, nodeName, componentName, screen, definition, formIndex }));
+                this.extensions.forEach((ext) => ext.onloadproperties instanceof Function && ext.onloadproperties.bind(this)({ properties, element, component, items, nodeName, componentName, screen, definition , formIndex}));
                 // Create component
                 const node = this.createComponent(nodeName, properties);
                 // Create wrapper
                 const wrapper = this.ownerDocument.createElement('div');
                 wrapper.appendChild(node);
                 // Extensions.onloaditems to add items to container
-                this.extensions.forEach((ext) => ext.onloaditems instanceof Function && ext.onloaditems.bind(this)({ properties, element, component, items, nodeName, componentName, node, wrapper, screen, definition, formIndex }));
+                this.extensions.forEach((ext) => ext.onloaditems instanceof Function && ext.onloaditems.bind(this)({ properties, element, component, items, nodeName, componentName, node, wrapper, screen, definition, formIndex}));
                 // Append node
                 component.appendChild(wrapper);
             });
         },
         setDefaultPropertyValues(props) {
-            let result = {...props };
+            let result = {...props};
             if (typeof result.ariaLabel === 'undefined' || result.ariaLabel === null || result.ariaLabel === '') {
                 if (result.label) {
                     result.ariaLabel = result.label;
@@ -231,7 +230,7 @@ export default {
         registerNestedVariable(name, prefix, definition) {
             const items = screenRenderer.getVariablesTree(definition);
             this.variablesTree.push({ name, prefix, config: {}, items });
-            screenRenderer.getVariablesTree({ config: [] });
+            screenRenderer.getVariablesTree({config:[]});
         },
         getVariablesTree(definition) {
             let component;
@@ -250,7 +249,7 @@ export default {
                 const template = this.parse(component, definition);
                 // Extensions.onparse
                 this.extensions.forEach((ext) => {
-                    ext.onparse instanceof Function ? ext.onparse.bind(this)({ screen: component, template, definition }) : null;
+                    ext.onparse instanceof Function ? ext.onparse.bind(this)({ screen: component, template, definition}) : null;
                 });
                 return this.variablesTree;
             } catch (error) {
@@ -286,7 +285,7 @@ export default {
                 const template = this.parse(component, definition);
                 // Extensions.onparse
                 this.extensions.forEach((ext) => {
-                    ext.onparse instanceof Function ? ext.onparse.bind(this)({ screen: component, template, definition }) : null;
+                    ext.onparse instanceof Function ? ext.onparse.bind(this)({ screen: component, template, definition}) : null;
                 });
                 component.template = template;
                 // Extensions.onbuild
@@ -296,11 +295,10 @@ export default {
                 // Build data
                 component.data = new Function('const data = {};' + Object.keys(component.data).map(key => `this.setValue(${JSON.stringify(key)}, ${component.data[key]}, data);`).join('\n') + 'return data;');
                 // Build watchers
-
                 Object.keys(component.watch).forEach((key) => {
                     const watch = { deep: true };
                     component.watch[key].forEach(w => Object.assign(watch, w.options));
-                    watch.handler = new Function('value', component.watch[key].map(w => `try{${w.code}}catch(e){console.warn(e)}`).join('\n'));
+                    watch.handler = new Function('value', component.watch[key].map(w => w.code).join('\n'));
                     component.watch[key] = watch;
                 });
                 // Add validation rules
@@ -316,19 +314,18 @@ export default {
                 this.building.errors = [];
                 this.building.show = true;
                 return component || {
-                    template: '<div></div>',
-                };
+                        template: '<div></div>',
+                    };
             }
         },
         addData(screen, name, code) {
             screen.data[name] = code;
         },
         addWatch(screen, name, code, options = {}) {
-
             if (screen.watch[name]) {
-                screen.watch[name].push({ code, options });
+                screen.watch[name].push({code, options});
             } else {
-                screen.watch[name] = [{ code, options }];
+                screen.watch[name] = [{code, options}];
             }
         },
         addMounted(screen, code) {
@@ -342,11 +339,7 @@ export default {
             component.methods.loadValidationRules = function() {
                 // Asynchronous loading of validations
                 const validations = {};
-                if (definition.config.length > 0 && typeof definition['config'][0]['name'] !== 'undefined'){
-                    window.submitPageNavigayionDefinition = definition;
-                }
-
-                ValidationsFactory(definition, { screen: definition, firstPage, data: { _parent: this._parent, ...this.vdata } }).addValidations(validations).then(() => {
+                ValidationsFactory(definition, { screen: definition, firstPage, data: {_parent: this._parent, ...this.vdata} }).addValidations(validations).then(() => {
                     if (_.isEqual(this.ValidationRules__, validations)) {
                         return;
                     }
@@ -361,7 +354,7 @@ export default {
             component.mounted.push('this.loadValidationRules()');
         },
         countElements(definition) {
-            return new Promise((resolve) => {
+            return new Promise(( resolve ) => {
                 const allElements = [];
                 CountElements(definition, { screen: definition }).countItems(allElements).then(() => {
                     resolve(allElements);
@@ -374,7 +367,7 @@ export default {
             screenRenderer = new this.constructor({
                 propsData: {
                     value: {},
-                    definition: { config: [] },
+                    definition: {config: []},
                 },
             });
             screenRenderer.$mount();

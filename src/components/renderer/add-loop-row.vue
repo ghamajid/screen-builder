@@ -32,6 +32,7 @@ export default {
     },
     remove() {
       const removed = this.value.pop();
+      console.log(this.$root.$emit('removed-loop'),'123');
       this.$root.$emit('removed-loop', this, removed);
     },
     removeConfirm() {

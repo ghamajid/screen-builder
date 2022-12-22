@@ -390,6 +390,7 @@ export default {
       return this.fileIds.includes(id);
     },
     listenRemovedLoop(loop, removed) {
+
       this.deleteAssociatedFiles(removed);
     },
     listenRemovedRecord(recordList, record) {

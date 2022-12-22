@@ -1,30 +1,29 @@
 import { validators } from './mixins/ValidationRules';
 import DataProvider from './DataProvider';
-import {get, set } from 'lodash';
+import { get, set } from 'lodash';
 import { Parser } from 'expr-eval';
 
-let globalObject = typeof window === 'undefined' ?
-    global :
-    window;
+let globalObject = typeof window === 'undefined'
+    ? global
+    : window;
 class Validations {
     screen = null;
     firstPage = 0;
-    configPage = {};
     data = {};
     constructor(element, options) {
-            this.element = element;
-            Object.assign(this, options);
-        }
-        /**
-         * Add a Vuelidate rule for the element.
-         * Ex.
-         * {
-         *   form_input_1: {
-         *     required,
-         *     minLength: minLength(6)
-         *   }
-         * }
-         */
+        this.element = element;
+        Object.assign(this, options);
+    }
+    /**
+     * Add a Vuelidate rule for the element.
+     * Ex.
+     * {
+   *   form_input_1: {
+   *     required,
+   *     minLength: minLength(6)
+   *   }
+   * }
+     */
     async addValidations(validations) {
         throw 'Abstract method addValidations not implemented', validations;
     }
@@ -62,25 +61,13 @@ class ArrayOfFieldsValidations extends Validations {
  */
 class ScreenValidations extends Validations {
     async addValidations(validations) {
-        this.configPage = this.element.config;
-        let pageNumber = this.firstPage;
-
-        for (const item of Object.values(this.element.config)) {
-            this.element.pagesValidated = [pageNumber];
-            const screenValidations = ValidationsFactory(item.items, { screen: this.element, data: this.data });
+        // add validations for page 1
+        if (this.element.config[this.firstPage]) {
+            this.element.pagesValidated = [this.firstPage];
+            const screenValidations = ValidationsFactory(this.element.config[this.firstPage].items, { screen: this.element, data: this.data });
             await screenValidations.addValidations(validations);
             delete this.element.pagesValidated;
-            pageNumber++;
         }
-
-        // add validations for page 1
-        // if (this.element.config[this.firstPage]) {
-        //     this.element.pagesValidated = [this.firstPage];
-        //     console.log('validation factory', this.element, { screen: this.element, data: this.data }, 'validations', validations)
-        //     const screenValidations = ValidationsFactory(this.element.config[this.firstPage].items, { screen: this.element, data: this.data });
-        //     await screenValidations.addValidations(validations);
-        //     delete this.element.pagesValidated;
-        // }
     }
 }
 
@@ -126,7 +113,7 @@ class FormLoopValidations extends Validations {
         const loopField = get(validations, this.element.config.name);
         loopField['$each'] = {};
         const firstRow = (get(this.data, this.element.config.name) || [{}])[0];
-        await ValidationsFactory(this.element.items, { screen: this.screen, data: { _parent: this.data, ...firstRow } }).addValidations(loopField['$each']);
+        await ValidationsFactory(this.element.items, { screen: this.screen, data: {_parent: this.data, ...firstRow } }).addValidations(loopField['$each']);
     }
 }
 
@@ -166,7 +153,6 @@ class PageNavigateValidations extends Validations {
  */
 class FormElementValidations extends Validations {
     async addValidations(validations) {
-
         if (this.element.config && this.element.config.readonly) {
             //readonly elements do not need validation
             return;
@@ -194,6 +180,7 @@ class FormElementValidations extends Validations {
                 return;
             }
         }
+
         set(validations, fieldName, get(validations, fieldName, {}));
         const fieldValidation = get(validations, fieldName);
         if (validationConfig instanceof Array) {
@@ -259,7 +246,6 @@ function ValidationsFactory(element, options) {
     if (element.component === 'FormButton' && element.config.event === 'pageNavigate') {
         return new PageNavigateValidations(element, options);
     }
-
     return new FormElementValidations(element, options);
 }
 
