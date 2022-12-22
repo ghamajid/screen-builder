@@ -1,5 +1,5 @@
 <template>
-  <div class="data-table overflow-auto">
+  <div class="data-table">
     <div class="row mb-2 ml-0 mr-0">
       <div class="col">
         <h4>{{ label }}</h4>
@@ -39,11 +39,11 @@
         </template>
         <template #cell(__actions)="{index}">
           <div class="actions">
-            <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
-              <button @click="showEditForm(index)" class="btn btn-primary" :title="$t('Edit')" data-cy="edit-row">
+            <div class="btn-group btn-group-sm" role="group" :aria-label="$t('Actions')">
+              <button @click="showEditForm(index)" class="btn btn-primary m-1" :title="$t('Edit')" data-cy="edit-row">
                 <i class="fas fa-edit"/>
               </button>
-              <button @click="showDeleteConfirmation(index)" class="btn btn-danger" :title="$t('Delete')" data-cy="remove-row">
+              <button @click="showDeleteConfirmation(index)" class="btn btn-danger m-1" :title="$t('Delete')" data-cy="remove-row">
                 <i class="fas fa-trash-alt"/>
               </button>
             </div>
@@ -151,7 +151,6 @@
     import _ from 'lodash';
     import { dateUtils } from '@processmaker/vue-form-elements';
     //import ScreenRenderer from '../screen-renderer.vue';
-
     const jsonOptionsActionsColumn = {
         key: '__actions',
         label: 'Actions',
@@ -191,6 +190,9 @@
                 },
                 initFormValues: {},
             };
+        },
+        created(){
+            jsonOptionsActionsColumn.label= this.$t('Actions');
         },
         computed: {
             popupConfig() {
