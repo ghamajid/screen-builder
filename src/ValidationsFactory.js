@@ -1,6 +1,6 @@
 import { validators } from './mixins/ValidationRules';
 import DataProvider from './DataProvider';
-import { get, set } from 'lodash';
+import { get, set, merge } from 'lodash';
 import { Parser } from 'expr-eval';
 
 let globalObject = typeof window === 'undefined'
@@ -10,6 +10,7 @@ class Validations {
     screen = null;
     firstPage = 0;
     data = {};
+    insideLoop = false;
     constructor(element, options) {
         this.element = element;
         Object.assign(this, options);
@@ -51,7 +52,7 @@ class Validations {
 class ArrayOfFieldsValidations extends Validations {
     async addValidations(validations) {
         for (const item of this.element) {
-            await ValidationsFactory(item, { screen: this.screen, data: this.data }).addValidations(validations);
+            await ValidationsFactory(item, { screen: this.screen, data: this.data, parentVisibilityRule: this.parentVisibilityRule, insideLoop: this.insideLoop }).addValidations(validations);
         }
     }
 }
@@ -81,12 +82,16 @@ class FormNestedScreenValidations extends Validations {
             return;
         }
         const definition = await this.loadScreen(this.element.config.screen);
+        let parentVisibilityRule = this.parentVisibilityRule ? this.parentVisibilityRule : this.element.config.conditionalHide;
         if (definition && definition[0] && definition[0].items) {
-            await ValidationsFactory(definition[0].items, { screen: this.screen, data: this.data }).addValidations(validations);
+            await ValidationsFactory(definition[0].items, { screen: this.screen, data: this.data, parentVisibilityRule }).addValidations(validations);
         }
     }
 
     async loadScreen(id) {
+        if (!id) {
+            return null;
+        }
         if (!globalObject['nestedScreens']) {
             globalObject['nestedScreens'] = {};
         }
@@ -97,7 +102,6 @@ class FormNestedScreenValidations extends Validations {
         globalObject.nestedScreens['id_' + id] = response.data.config;
         return response.data.config;
     }
-
 }
 
 /**
@@ -112,8 +116,57 @@ class FormLoopValidations extends Validations {
         set(validations, this.element.config.name, {});
         const loopField = get(validations, this.element.config.name);
         loopField['$each'] = {};
+        this.checkForSiblings(validations);
         const firstRow = (get(this.data, this.element.config.name) || [{}])[0];
-        await ValidationsFactory(this.element.items, { screen: this.screen, data: {_parent: this.data, ...firstRow } }).addValidations(loopField['$each']);
+        await ValidationsFactory(this.element.items, { screen: this.screen, data: {_parent: this.data, ...firstRow }, parentVisibilityRule: this.element.config.conditionalHide, insideLoop: true }).addValidations(loopField['$each']);
+    }
+    checkForSiblings(validations) {
+        const siblings = [];
+        const siblingValidations = [];
+        // Find loops that reference the same variable
+        this.screen.config.forEach(page => {
+            if (!page || !page.items) {
+                return;
+            }
+            page.items.filter(item => {
+                if (item.component === 'FormLoop' && item.config.name === this.element.config.name) {
+                    siblings.push(item);
+                }
+            });
+
+            // Get siblings validations
+            if (siblings) {
+                siblings.forEach(sibling => {
+                    sibling.items.filter(item => {
+                        if (!item.config.validation) {
+                            return;
+                        }
+
+                        item.config.validation.forEach(validation => {
+                            const rule = this.camelCase(validation.value.split(':')[0]);
+                            const validationFn = validators[rule];
+                            const obj = {};
+                            let ruleObj = {};
+                            ruleObj[rule] = validationFn;
+                            obj[item.config.name] = ruleObj;
+                            merge(siblingValidations, obj);
+                        });
+                    });
+                });
+            }
+        });
+
+        if (Object.keys(siblingValidations).length != 0) {
+            // Update the loop validations with its siblings.
+            const loopValidations = get(validations, this.element.config.name);
+            if (loopValidations.hasOwnProperty('$each')) {
+                merge(loopValidations['$each'], siblingValidations);
+            }
+            set(validations[this.element.config.name]['$each'], loopValidations);
+        }
+    }
+    camelCase(name) {
+        return name.replace(/_\w/g, m => m.substr(1, 1).toUpperCase());
     }
 }
 
@@ -126,7 +179,7 @@ class FormMultiColumnValidations extends Validations {
         if (!this.isVisible()) {
             return;
         }
-        await ValidationsFactory(this.element.items, { screen: this.screen, data: this.data }).addValidations(validations);
+        await ValidationsFactory(this.element.items, { screen: this.screen, data: this.data, parentVisibilityRule: this.element.config.conditionalHide }).addValidations(validations);
     }
 }
 
@@ -167,19 +220,9 @@ class FormElementValidations extends Validations {
         }
         const fieldName = this.element.config.name;
         const validationConfig = this.element.config.validation;
-
-        // Disable validations if field is hidden
-        if (this.element.config.conditionalHide) {
-            let visible = true;
-            try {
-                visible = !!Parser.evaluate(this.element.config.conditionalHide, this.data);
-            } catch (error) {
-                visible = false;
-            }
-            if (!visible) {
-                return;
-            }
-        }
+        const conditionalHide = this.element.config.conditionalHide;
+        const parentVisibilityRule = this.parentVisibilityRule;
+        const insideLoop = this.insideLoop || false;
 
         set(validations, fieldName, get(validations, fieldName, {}));
         const fieldValidation = get(validations, fieldName);
@@ -203,7 +246,38 @@ class FormElementValidations extends Validations {
                     params.push(fieldName);
                     validationFn = validationFn(...params);
                 }
-                fieldValidation[rule] = validationFn;
+                fieldValidation[rule] = function(...props) {
+                    const data = props[1];
+                    const level = fieldName.split('.').length - 1;
+                    const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
+                    if (parentVisibilityRule) {
+                        const nextParentLevel = insideLoop ? 1 : 0;
+                        const parentDataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level + nextParentLevel);
+                        let isParentVisible = true;
+                        try {
+                            isParentVisible = !!Parser.evaluate(parentVisibilityRule, parentDataWithParent);
+                        } catch (error) {
+                            isParentVisible = false;
+                        }
+
+                        if (!isParentVisible ) {
+                            return true;
+                        }
+                    }
+                    // Check Field Visibility
+                    let visible = true;
+                    if (conditionalHide) {
+                        try {
+                            visible = !!Parser.evaluate(conditionalHide, dataWithParent);
+                        } catch (error) {
+                            visible = false;
+                        }
+                    }
+                    if (!visible) {
+                        return true;
+                    }
+                    return validationFn.apply(this,props);
+                };
             });
         } else if (typeof validationConfig === 'string' && validationConfig) {
             let validationFn = validators[validationConfig];
@@ -212,7 +286,39 @@ class FormElementValidations extends Validations {
                 console.error(`Undefined validation rule "${validationConfig}"`);
                 return;
             }
-            fieldValidation[validationConfig] = validationFn;
+            fieldValidation[validationConfig] = function(...props) {
+                const data = props[1];
+                const level = fieldName.split('.').length - 1;
+                const dataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level);
+                // Check Parent Visibility
+                if (parentVisibilityRule) {
+                    const nextParentLevel = insideLoop ? 1 : 0;
+                    const parentDataWithParent = this.getDataAccordingToFieldLevel(this.getRootScreen().addReferenceToParents(data), level + nextParentLevel);
+                    let isParentVisible = true;
+                    try {
+                        isParentVisible = !!Parser.evaluate(parentVisibilityRule, parentDataWithParent);
+                    } catch (error) {
+                        isParentVisible = false;
+                    }
+
+                    if (!isParentVisible) {
+                        return true;
+                    }
+                }
+                // Check Field Visibility
+                let visible = true;
+                if (conditionalHide) {
+                    try {
+                        visible = !!Parser.evaluate(conditionalHide, dataWithParent);
+                    } catch (error) {
+                        visible = false;
+                    }
+                }
+                if (!visible) {
+                    return true;
+                }
+                return validationFn.apply(this,props);
+            };
         }
         if (this.element.items) {
             ValidationsFactory(this.element.items, { screen: this.screen, data: this.data }).addValidations(validations);
